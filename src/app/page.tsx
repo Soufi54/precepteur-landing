@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { subscribeEmail } from "@/lib/supabase";
 import {
   Mail,
   TrendingUp,
@@ -284,11 +285,7 @@ function ExitIntentPopup() {
     e.preventDefault();
     if (!popupEmail) return;
     try {
-      await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: popupEmail }),
-      });
+      await subscribeEmail(popupEmail);
     } catch {
       // Mark as submitted for UX
     }
@@ -390,11 +387,7 @@ export default function Home() {
     }
 
     try {
-      await fetch("/api/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: emailValue }),
-      });
+      await subscribeEmail(emailValue);
     } catch {
       // Mark as submitted for UX
     }
