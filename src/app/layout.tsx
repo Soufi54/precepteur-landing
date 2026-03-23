@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://precepteur-ai.com",
+    canonical: "https://soufi54.github.io/precepteur-landing",
   },
   category: "education",
 };
@@ -76,18 +76,18 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://precepteur-ai.com/#website",
+      "@id": "https://soufi54.github.io/precepteur-landing/#website",
       url: "https://soufi54.github.io/precepteur-landing",
       name: "Precepteur AI",
       description: "Assistant scolaire intelligent pour les parents - Bilans quotidiens via Telegram et WhatsApp",
       publisher: {
-        "@id": "https://precepteur-ai.com/#organization",
+        "@id": "https://soufi54.github.io/precepteur-landing/#organization",
       },
       inLanguage: "fr-FR",
     },
     {
       "@type": "Organization",
-      "@id": "https://precepteur-ai.com/#organization",
+      "@id": "https://soufi54.github.io/precepteur-landing/#organization",
       name: "Precepteur AI",
       url: "https://soufi54.github.io/precepteur-landing",
       email: "contact@precepteur.ai",
