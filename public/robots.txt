@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://precepteur-ai.com/sitemap.xml
+Sitemap: https://soufi54.github.io/precepteur-landing/sitemap.xml

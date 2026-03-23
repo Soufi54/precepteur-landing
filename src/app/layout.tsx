@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://precepteur-ai.com"),
+  metadataBase: new URL("https://soufi54.github.io/precepteur-landing"),
   title: {
     default: "Precepteur AI - Le suivi scolaire intelligent pour les parents | Pronote sur Telegram",
     template: "%s | Precepteur AI",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       "Recevez chaque soir un bilan personnalise de la journee scolaire de votre enfant sur Telegram ou WhatsApp. Compatible Pronote. 7 jours gratuits.",
     type: "website",
     locale: "fr_FR",
-    url: "https://precepteur-ai.com",
+    url: "https://soufi54.github.io/precepteur-landing",
     siteName: "Precepteur AI",
   },
   twitter: {
@@ -77,7 +77,7 @@ const jsonLd = {
     {
       "@type": "WebSite",
       "@id": "https://precepteur-ai.com/#website",
-      url: "https://precepteur-ai.com",
+      url: "https://soufi54.github.io/precepteur-landing",
       name: "Precepteur AI",
       description: "Assistant scolaire intelligent pour les parents - Bilans quotidiens via Telegram et WhatsApp",
       publisher: {
@@ -89,7 +89,7 @@ const jsonLd = {
       "@type": "Organization",
       "@id": "https://precepteur-ai.com/#organization",
       name: "Precepteur AI",
-      url: "https://precepteur-ai.com",
+      url: "https://soufi54.github.io/precepteur-landing",
       email: "contact@precepteur.ai",
       description: "Assistant scolaire intelligent qui aide les parents a suivre la scolarite de leurs enfants via Telegram et WhatsApp.",
       areaServed: {
