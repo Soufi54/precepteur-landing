@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = "https://precepteur-ai.com";
+  const baseUrl = "https://precepteur.net";
 
   return {
     rules: [

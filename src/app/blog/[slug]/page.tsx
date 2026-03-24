@@ -37,7 +37,7 @@ export async function generateMetadata({
       locale: "fr_FR",
       publishedTime: article.date,
       siteName: "Precepteur AI",
-      url: `https://soufi54.github.io/precepteur-landing/blog/${slug}`,
+      url: `https://precepteur.net/blog/${slug}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -45,7 +45,7 @@ export async function generateMetadata({
       description: article.metaDescription,
     },
     alternates: {
-      canonical: `https://soufi54.github.io/precepteur-landing/blog/${slug}`,
+      canonical: `https://precepteur.net/blog/${slug}`,
     },
   };
 }
@@ -276,7 +276,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://soufi54.github.io/precepteur-landing/blog/${slug}`,
+      "@id": `https://precepteur.net/blog/${slug}`,
     },
   };
 

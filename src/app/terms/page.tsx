@@ -41,7 +41,7 @@ export default function TermsPage() {
               <p>
                 Les presentes Conditions Generales d&apos;Utilisation (ci-apres &laquo; CGU &raquo;) regissent l&apos;utilisation
                 du service Precepteur AI, un assistant scolaire intelligent accessible via Telegram, WhatsApp et le site
-                web precepteur-ai.com.
+                web precepteur.net.
               </p>
               <p className="mt-2">
                 En utilisant le service, vous acceptez sans reserve les presentes CGU. Si vous n&apos;acceptez pas ces conditions,

@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://soufi54.github.io/precepteur-landing"),
+  metadataBase: new URL("https://precepteur.net"),
   title: {
     default: "Precepteur AI - Le suivi scolaire intelligent pour les parents | Pronote sur Telegram",
     template: "%s | Precepteur AI",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       "Recevez chaque soir un bilan personnalise de la journee scolaire de votre enfant sur Telegram ou WhatsApp. Compatible Pronote. 7 jours gratuits.",
     type: "website",
     locale: "fr_FR",
-    url: "https://soufi54.github.io/precepteur-landing",
+    url: "https://precepteur.net",
     siteName: "Precepteur AI",
   },
   twitter: {
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://soufi54.github.io/precepteur-landing",
+    canonical: "https://precepteur.net",
   },
   category: "education",
 };
@@ -76,20 +76,20 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://soufi54.github.io/precepteur-landing/#website",
-      url: "https://soufi54.github.io/precepteur-landing",
+      "@id": "https://precepteur.net/#website",
+      url: "https://precepteur.net",
       name: "Precepteur AI",
       description: "Assistant scolaire intelligent pour les parents - Bilans quotidiens via Telegram et WhatsApp",
       publisher: {
-        "@id": "https://soufi54.github.io/precepteur-landing/#organization",
+        "@id": "https://precepteur.net/#organization",
       },
       inLanguage: "fr-FR",
     },
     {
       "@type": "Organization",
-      "@id": "https://soufi54.github.io/precepteur-landing/#organization",
+      "@id": "https://precepteur.net/#organization",
       name: "Precepteur AI",
-      url: "https://soufi54.github.io/precepteur-landing",
+      url: "https://precepteur.net",
       email: "contact@precepteur.ai",
       description: "Assistant scolaire intelligent qui aide les parents a suivre la scolarite de leurs enfants via Telegram et WhatsApp.",
       areaServed: {
@@ -172,7 +172,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {/* Plausible Analytics (privacy-friendly) - Replace data-domain when deploying */}
-        {/* <script defer data-domain="precepteur-ai.com" src="https://plausible.io/js/script.js"></script> */}
+        {/* <script defer data-domain="precepteur.net" src="https://plausible.io/js/script.js"></script> */}
 
         {/* Umami Analytics (privacy-friendly alternative) - Replace data-website-id when deploying */}
         {/* <script defer src="https://analytics.example.com/script.js" data-website-id="YOUR_WEBSITE_ID"></script> */}

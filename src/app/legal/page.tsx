@@ -34,14 +34,14 @@ export default function LegalPage() {
           <p className="text-sm text-muted-foreground mb-8">
             Conformement aux dispositions de la loi n&deg; 2004-575 du 21 juin 2004 pour la confiance dans
             l&apos;economie numerique (LCEN), les presentes mentions legales sont portees a la connaissance
-            des utilisateurs du site precepteur-ai.com.
+            des utilisateurs du site precepteur.net.
           </p>
 
           <div className="space-y-8 text-sm leading-relaxed text-muted-foreground">
             <section>
               <h2 className="text-xl font-semibold text-foreground mb-3">1. Editeur du site</h2>
               <p>
-                Le site precepteur-ai.com est edite par :<br /><br />
+                Le site precepteur.net est edite par :<br /><br />
                 <strong className="text-foreground">Precepteur AI</strong><br />
                 Forme juridique : SAS (Societe par Actions Simplifiee)<br />
                 Siege social : Paris, France<br />
@@ -94,7 +94,7 @@ export default function LegalPage() {
             <section>
               <h2 className="text-xl font-semibold text-foreground mb-3">4. Propriete intellectuelle</h2>
               <p>
-                L&apos;ensemble du contenu du site precepteur-ai.com (textes, images, graphismes, logos, icones,
+                L&apos;ensemble du contenu du site precepteur.net (textes, images, graphismes, logos, icones,
                 logiciels, base de donnees) est la propriete exclusive de Precepteur AI ou de ses partenaires
                 et est protege par les lois francaises et internationales relatives a la propriete intellectuelle.
               </p>
@@ -108,7 +108,7 @@ export default function LegalPage() {
             <section>
               <h2 className="text-xl font-semibold text-foreground mb-3">5. Cookies</h2>
               <p>
-                Le site precepteur-ai.com utilise uniquement des cookies techniques strictement necessaires
+                Le site precepteur.net utilise uniquement des cookies techniques strictement necessaires
                 au fonctionnement du site. Aucun cookie publicitaire ou de tracking n&apos;est utilise.
               </p>
               <p className="mt-2">

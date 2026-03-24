@@ -1,67 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing</loc>
+    <loc>https://precepteur.net</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/blog</loc>
+    <loc>https://precepteur.net/blog</loc>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/connect-pronote</loc>
+    <loc>https://precepteur.net/connect-pronote</loc>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/privacy</loc>
+    <loc>https://precepteur.net/privacy</loc>
     <priority>0.3</priority>
     <changefreq>yearly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/terms</loc>
+    <loc>https://precepteur.net/terms</loc>
     <priority>0.3</priority>
     <changefreq>yearly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/legal</loc>
+    <loc>https://precepteur.net/legal</loc>
     <priority>0.3</priority>
     <changefreq>yearly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/blog/suivi-scolaire-sans-stress</loc>
+    <loc>https://precepteur.net/blog/suivi-scolaire-sans-stress</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/blog/alertes-notes-pronote</loc>
+    <loc>https://precepteur.net/blog/alertes-notes-pronote</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/blog/soutien-scolaire-whatsapp</loc>
+    <loc>https://precepteur.net/blog/soutien-scolaire-whatsapp</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/blog/pronote-alternative-parents</loc>
+    <loc>https://precepteur.net/blog/pronote-alternative-parents</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/blog/ia-aide-devoirs</loc>
+    <loc>https://precepteur.net/blog/ia-aide-devoirs</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/blog/application-suivi-scolaire-parents</loc>
+    <loc>https://precepteur.net/blog/application-suivi-scolaire-parents</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://soufi54.github.io/precepteur-landing/blog/comment-suivre-notes-enfant</loc>
+    <loc>https://precepteur.net/blog/comment-suivre-notes-enfant</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
