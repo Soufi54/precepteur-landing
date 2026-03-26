@@ -133,14 +133,14 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 </style>
 </head>
 <body>
-<nav id="nv"><div class="ni"><a href="#" class="lo">precepteur<span>.</span>ai</a><div class="nl" id="nl"><a href="#probleme">Le probleme</a><a href="#fonctionnement">Comment ca marche</a><a href="#fonctionnalites">Fonctionnalites</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#essai" class="btn bp nc">Essai gratuit</a></div><button class="mt" id="mb" aria-label="Menu"><span></span><span></span><span></span></button></div></nav>
+<nav id="nv"><div class="ni"><a href="#" class="lo">precepteur<span>.</span>ai</a><div class="nl" id="nl"><a href="#probleme">Le probleme</a><a href="#fonctionnement">Comment ca marche</a><a href="#fonctionnalites">Fonctionnalites</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="register.html" class="btn bp nc">Creer un compte</a></div><button class="mt" id="mb" aria-label="Menu"><span></span><span></span><span></span></button></div></nav>
 
 <section class="hero"><div class="ctr hg">
 <div class="hc">
 <span class="tag">Coach scolaire IA pour parents</span>
 <h1>Chaque soir, le bilan scolaire de votre enfant.<br><span class="tg">Sans ouvrir Pronote.</span></h1>
 <p class="sub">Notes, devoirs, absences, conseils personnalises — recevez tout directement sur WhatsApp ou Telegram. L'IA analyse et vous propose un plan d'action concret.</p>
-<div class="ha"><a href="#essai" class="btn bp bl">Essayer 7 jours gratuit</a><a href="#fonctionnement" class="btn bo bl">Comment ca marche</a></div>
+<div class="ha"><a href="register.html" class="btn bp bl">Creer un compte</a><a href="#fonctionnement" class="btn bo bl">Comment ca marche</a></div>
 <div class="hs"><div><div class="sv">18M</div><div class="sl">Utilisateurs Pronote</div></div><div><div class="sv">2 min</div><div class="sl">Pour configurer</div></div><div><div class="sv">17h</div><div class="sl">Bilan chaque soir</div></div></div>
 </div>
 <div class="pw"><div class="ph"><div class="ps">
@@ -221,16 +221,14 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <section class="cta" id="essai"><div class="ctr" style="position:relative;z-index:1">
 <h2>Fini les mauvaises surprises au bulletin</h2>
 <p class="sub">Rejoignez les parents qui suivent la scolarite de leur enfant sans stress. 7 jours d'essai gratuit, sans carte bancaire.</p>
-<div style="margin-bottom:20px"><a href="connect.html" class="btn bo" style="color:#fff;border-color:rgba(255,255,255,.3)">Connecter mon compte Pronote</a></div>
-<form class="ef" id="ef"><input type="email" class="ei" placeholder="votre@email.com" required id="em" aria-label="Email"><button type="submit" class="btn bp bl" id="eb">S'inscrire</button></form>
+<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:20px"><a href="register.html" class="btn bp bl">Creer un compte</a><a href="connect.html" class="btn bo bl" style="color:#fff;border-color:rgba(255,255,255,.3)">Connecter Pronote</a></div>
 <p class="cs">Pas de carte bancaire requise. Annulation en un message.</p>
-<p class="es" id="ok">Merci ! Vous recevrez un lien d'acces tres bientot.</p>
 </div></section>
 
 <footer><div class="ctr">
 <div class="ftg">
 <div class="ftb"><div class="lo">precepteur<span>.</span>ai</div><p>Le coach scolaire IA qui informe les parents chaque soir. Fait en France, pour les familles francaises.</p></div>
-<div class="ftc"><h4>Produit</h4><a href="#fonctionnement">Comment ca marche</a><a href="#fonctionnalites">Fonctionnalites</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="connect.html">Connecter Pronote</a></div>
+<div class="ftc"><h4>Produit</h4><a href="#fonctionnement">Comment ca marche</a><a href="#fonctionnalites">Fonctionnalites</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="connect.html">Connecter Pronote</a><a href="register.html">Creer un compte</a></div>
 <div class="ftc"><h4>Legal</h4><a href="#">Confidentialite</a><a href="#">CGU</a><a href="#">Mentions legales</a></div>
 <div class="ftc"><h4>Contact</h4><a href="mailto:contact@precepteur.net">contact@precepteur.net</a></div>
 </div>
@@ -243,7 +241,6 @@ document.querySelectorAll('.nl a').forEach(function(a){a.onclick=function(){docu
 document.querySelectorAll('.fq').forEach(function(b){b.onclick=function(){var i=this.parentElement,o=i.classList.contains('o');document.querySelectorAll('.fqi').forEach(function(x){x.classList.remove('o')});if(!o)i.classList.add('o')}});
 var rv=document.querySelectorAll('.rv');new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('vi')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'}).observe&&rv.forEach(function(el){new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('vi')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'}).observe(el)});
 window.onscroll=function(){document.getElementById('nv').classList.toggle('s',window.scrollY>20)};
-document.getElementById('ef').onsubmit=function(e){e.preventDefault();var m=document.getElementById('em').value,b=document.getElementById('eb');b.textContent='...';b.disabled=true;fetch('https://cztnbuesyiawazidkobt.supabase.co/rest/v1/email_subscribers',{method:'POST',headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dG5idWVzeWlhd2F6aWRrb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDIwNjMsImV4cCI6MjA2ODA3ODA2M30.dpaIMncJ-5Ytql7i8DbBfbHt6lD5uQIuRXGa1vo-kQA','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dG5idWVzeWlhd2F6aWRrb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDIwNjMsImV4cCI6MjA2ODA3ODA2M30.dpaIMncJ-5Ytql7i8DbBfbHt6lD5uQIuRXGa1vo-kQA','Prefer':'return=minimal'},body:JSON.stringify({email:m,source:'landing'})}).finally(function(){document.getElementById('ef').style.display='none';document.getElementById('ok').style.display='block'})};
 </script>
 </body>
 </html>
