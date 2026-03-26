@@ -208,6 +208,10 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <div class="pronote-hidden-msg" id="no-pronote-msg">Pas de souci, le bot fonctionnera sans Pronote. Vous pourrez toujours le connecter plus tard.</div>
 
 <div class="pronote-fields" id="pronote-fields">
+<div style="padding:14px 18px;background:rgba(79,70,229,.04);border:1px solid rgba(79,70,229,.12);border-radius:12px;margin-bottom:20px;font-size:.88rem;color:var(--ts);line-height:1.7">
+<strong style="display:flex;align-items:center;gap:6px;color:var(--t);margin-bottom:4px">&#128274; Connexion securisee</strong>
+Pourquoi avons-nous besoin de vos identifiants Pronote ? Pour recuperer automatiquement les notes, devoirs et absences de votre enfant chaque jour. Vos identifiants sont chiffres et ne sont jamais partages.
+</div>
 <div class="field">
 <label for="f-purl">URL Pronote</label>
 <div class="hint">Copiez l'URL depuis votre navigateur quand vous etes sur Pronote.</div>
@@ -261,6 +265,11 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <label for="f-tutor-contact">Email ou telephone du tuteur</label>
 <input type="text" id="f-tutor-contact" placeholder="tuteur@email.com ou +33 6 ...">
 </div>
+</div>
+
+<div class="check-field" style="margin-top:24px;align-items:flex-start">
+<input type="checkbox" id="f-rgpd" required>
+<label for="f-rgpd" style="font-size:.84rem;line-height:1.6;color:var(--ts)">J'accepte les conditions d'utilisation et la politique de confidentialite de Precepteur AI. Je consens au traitement des donnees scolaires de mon enfant conformement au RGPD.</label>
 </div>
 
 <button type="submit" class="btn bp submit-btn" id="submit-btn">Creer mon compte</button>
