@@ -162,15 +162,14 @@ Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:
 <div class="ftg">
 <div class="ftb"><div class="lo">precepteur<span>.</span>ai</div><p>Le coach scolaire IA qui informe les parents chaque soir. Fait en France, pour les familles francaises.</p></div>
 <div class="ftc"><h4>Produit</h4><a href="index.html#fonctionnement">Comment ca marche</a><a href="index.html#fonctionnalites">Fonctionnalites</a><a href="index.html#tarifs">Tarifs</a><a href="index.html#faq">FAQ</a></div>
-<div class="ftc"><h4>Legal</h4><a href="#">Confidentialite</a><a href="#">CGU</a><a href="#">Mentions legales</a></div>
+<div class="ftc"><h4>Legal</h4><a href="privacy.html">Confidentialite</a><a href="terms.html">CGU</a><a href="legal.html">Mentions legales</a></div>
 <div class="ftc"><h4>Contact</h4><a href="mailto:contact@precepteur.net">contact@precepteur.net</a></div>
 </div>
 <div class="ftm"><span>2026 Precepteur AI. Tous droits reserves.</span><span>Fait avec soin en France</span></div>
 </div></footer>
 
 <script>
-var SUPABASE_URL='https://cztnbuesyiawazidkobt.supabase.co';
-var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dG5idWVzeWlhd2F6aWRrb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDIwNjMsImV4cCI6MjA2ODA3ODA2M30.dpaIMncJ-5Ytql7i8DbBfbHt6lD5uQIuRXGa1vo-kQA';
+var API_URL='https://precepteur-ai.onrender.com';
 
 document.getElementById('pronote-form').onsubmit=function(e){
 e.preventDefault();
@@ -181,7 +180,7 @@ var ent=document.getElementById('f-ent').value;
 var user=document.getElementById('f-user').value;
 var pass=document.getElementById('f-pass').value;
 
-btn.textContent='Envoi en cours...';
+btn.textContent='Verification en cours...';
 btn.disabled=true;
 
 var isTelegram=email.startsWith('@');
@@ -190,25 +189,31 @@ pronote_url:url,
 ent_type:ent,
 username:user,
 password:pass,
-status:'pending'
+registration_id:Math.random().toString(36).substr(2,8),
+parent_first_name:'',
+parent_email:isTelegram?'':email
 };
-if(isTelegram){payload.telegram_username=email}else{payload.email=email}
+if(isTelegram){payload.telegram_username=email}
 
-fetch(SUPABASE_URL+'/rest/v1/pronote_registration_requests',{
+fetch(API_URL+'/api/pronote/register',{
 method:'POST',
-headers:{
-'Content-Type':'application/json',
-'apikey':SUPABASE_KEY,
-'Authorization':'Bearer '+SUPABASE_KEY,
-'Prefer':'return=minimal'
-},
+headers:{'Content-Type':'application/json'},
 body:JSON.stringify(payload)
-}).then(function(r){
-if(r.ok){
+}).then(function(r){return r.json()}).then(function(data){
+if(data.ok){
 document.getElementById('pronote-form').style.display='none';
-document.getElementById('msg-ok').style.display='block';
+var msgOk=document.getElementById('msg-ok');
+var children=data.children||[];
+var childInfo=children.length>0?children.map(function(c){return c.name+(c.class_name?' ('+c.class_name+')':'')}).join(', '):'';
+msgOk.innerHTML='<strong>Connexion Pronote reussie !</strong>'+
+(childInfo?'<p style="margin-top:8px">Enfant(s) trouve(s) : '+childInfo+'</p>':'')+
+'<p style="margin-top:12px">Ouvrez Telegram pour demarrer :</p>'+
+'<a href="https://t.me/precepteur_ai_bot?start='+data.registration_id+'" target="_blank" style="display:inline-block;margin-top:12px;padding:12px 28px;background:var(--p);color:#fff;border-radius:10px;font-weight:600;text-decoration:none">Ouvrir Telegram</a>';
+msgOk.style.display='block';
 }else{
-document.getElementById('msg-err').style.display='block';
+var errEl=document.getElementById('msg-err');
+errEl.textContent=data.error||'Une erreur est survenue. Verifiez vos identifiants.';
+errEl.style.display='block';
 btn.textContent='Connecter Pronote';
 btn.disabled=false;
 }

@@ -290,15 +290,14 @@ Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:
 <div class="ftg">
 <div class="ftb"><div class="lo">precepteur<span>.</span>ai</div><p>Le coach scolaire IA qui informe les parents chaque soir. Fait en France, pour les familles francaises.</p></div>
 <div class="ftc"><h4>Produit</h4><a href="index.html#fonctionnement">Comment ca marche</a><a href="index.html#fonctionnalites">Fonctionnalites</a><a href="index.html#tarifs">Tarifs</a><a href="index.html#faq">FAQ</a><a href="connect.html">Connecter Pronote</a><a href="register.html">Creer un compte</a></div>
-<div class="ftc"><h4>Legal</h4><a href="#">Confidentialite</a><a href="#">CGU</a><a href="#">Mentions legales</a></div>
+<div class="ftc"><h4>Legal</h4><a href="privacy.html">Confidentialite</a><a href="terms.html">CGU</a><a href="legal.html">Mentions legales</a></div>
 <div class="ftc"><h4>Contact</h4><a href="mailto:contact@precepteur.net">contact@precepteur.net</a></div>
 </div>
 <div class="ftm"><span>2026 Precepteur AI. Tous droits reserves.</span><span>Fait avec soin en France</span></div>
 </div></footer>
 
 <script>
-var SUPABASE_URL='https://cztnbuesyiawazidkobt.supabase.co';
-var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dG5idWVzeWlhd2F6aWRrb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDIwNjMsImV4cCI6MjA2ODA3ODA2M30.dpaIMncJ-5Ytql7i8DbBfbHt6lD5uQIuRXGa1vo-kQA';
+var API_URL='https://precepteur-ai.onrender.com';
 
 // Pronote toggle
 var hasPronote=document.getElementById('f-has-pronote');
@@ -357,26 +356,27 @@ pronote_ent:hasPronoteChecked?document.getElementById('f-pent').value||null:null
 pronote_username:hasPronoteChecked?document.getElementById('f-puser').value||null:null,
 pronote_password:hasPronoteChecked?document.getElementById('f-ppass').value||null:null,
 tutor_type:tutorType,
-tutor_contact:tutorType==='existing'?document.getElementById('f-tutor-contact').value.trim()||null:null,
-status:'pending'
+tutor_contact:tutorType==='existing'?document.getElementById('f-tutor-contact').value.trim()||null:null
 };
 
-fetch(SUPABASE_URL+'/rest/v1/registration_requests',{
+fetch(API_URL+'/api/register',{
 method:'POST',
-headers:{
-'Content-Type':'application/json',
-'apikey':SUPABASE_KEY,
-'Authorization':'Bearer '+SUPABASE_KEY,
-'Prefer':'return=minimal'
-},
+headers:{'Content-Type':'application/json'},
 body:JSON.stringify(payload)
-}).then(function(r){
-if(r.ok){
+}).then(function(r){return r.json()}).then(function(data){
+if(data.ok){
 document.getElementById('register-form').style.display='none';
-document.getElementById('msg-ok').style.display='block';
+var msgOk=document.getElementById('msg-ok');
+var tgLink=data.telegram_link||'https://t.me/precepteur_ai_bot';
+msgOk.innerHTML='<strong>Votre inscription est enregistree.</strong>'+
+'<p style="margin-top:12px">Cliquez sur le lien ci-dessous pour demarrer sur Telegram :</p>'+
+'<a href="'+tgLink+'" target="_blank" style="display:inline-block;margin-top:12px;padding:12px 28px;background:var(--p);color:#fff;border-radius:10px;font-weight:600;text-decoration:none">Ouvrir Telegram</a>';
+msgOk.style.display='block';
 window.scrollTo({top:0,behavior:'smooth'});
 }else{
-document.getElementById('msg-err').style.display='block';
+var errEl=document.getElementById('msg-err');
+errEl.textContent=data.error||'Une erreur est survenue. Veuillez reessayer.';
+errEl.style.display='block';
 btn.textContent='Creer mon compte';
 btn.disabled=false;
 }
