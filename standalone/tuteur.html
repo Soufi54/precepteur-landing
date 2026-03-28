@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devenir tuteur — Precepteur AI</title>
+<meta name="description" content="Inscrivez-vous comme tuteur sur Precepteur AI. Accompagnez des eleves, recevez des rapports de progression et des alertes.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-weight='900' font-size='20' fill='white'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!--
+=== SQL A EXECUTER DANS SUPABASE ===
+
+ALTER TABLE registration_requests ADD COLUMN IF NOT EXISTS role TEXT DEFAULT 'parent';
+ALTER TABLE registration_requests ADD COLUMN IF NOT EXISTS tutor_subjects TEXT[];
+ALTER TABLE registration_requests ADD COLUMN IF NOT EXISTS tutor_levels TEXT[];
+ALTER TABLE registration_requests ADD COLUMN IF NOT EXISTS tutor_experience TEXT;
+ALTER TABLE registration_requests ADD COLUMN IF NOT EXISTS student_code TEXT;
+
+================================
+-->
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:#0f172a;background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+:root{--p:#4f46e5;--pl:#818cf8;--pd:#3730a3;--ac:#06b6d4;--al:#67e8f9;--ok:#10b981;--warn:#f59e0b;--bg:#f8fafc;--glass:rgba(255,255,255,0.7);--t:#0f172a;--ts:#475569;--tm:#94a3b8;--b:#e2e8f0;--r:16px;--sh:0 4px 20px rgba(0,0,0,.08);--mx:1200px}
+.ctr{max-width:var(--mx);margin:0 auto;padding:0 24px}
+.tg{background:linear-gradient(135deg,var(--p),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.12;letter-spacing:-.02em}
+.sub{font-size:clamp(1rem,2vw,1.1rem);color:var(--ts);line-height:1.7;max-width:560px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-size:1rem;font-weight:600;padding:14px 32px;border-radius:12px;border:none;cursor:pointer;transition:all .2s}
+.bp{background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.35)}.bp:hover{background:var(--pd);transform:translateY(-2px);box-shadow:0 6px 20px rgba(79,70,229,.45)}
+.bp:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--b);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ni{max-width:var(--mx);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px}
+.lo{font-size:1.4rem;font-weight:900;letter-spacing:-.03em}.lo span{color:var(--p)}
+.nb{font-size:.9rem;font-weight:500;color:var(--ts);transition:color .2s}.nb:hover{color:var(--p)}
+
+.page{padding:120px 0 80px;min-height:calc(100vh - 200px)}
+.page-header{text-align:center;margin-bottom:48px}
+.page-header h1{margin-bottom:12px}
+.page-header .sub{margin:0 auto}
+
+.form-wrap{max-width:520px;margin:0 auto;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--b);border-radius:20px;padding:40px 36px;box-shadow:var(--sh)}
+
+.field{margin-bottom:20px}
+.field label{display:block;font-size:.9rem;font-weight:600;margin-bottom:6px;color:var(--t)}
+.field .hint{font-size:.78rem;color:var(--tm);margin-bottom:8px;line-height:1.5}
+.field .optional{font-weight:400;color:var(--tm);font-size:.8rem}
+.field input,.field select,.field textarea{width:100%;padding:14px 16px;border:2px solid var(--b);border-radius:12px;font-family:inherit;font-size:.95rem;color:var(--t);background:#fff;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--p)}
+.field input::placeholder,.field textarea::placeholder{color:var(--tm)}
+.field textarea{resize:vertical;min-height:80px}
+.field .error{font-size:.8rem;color:#ef4444;margin-top:4px;display:none}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* Section accordeon */
+.section-toggle{width:100%;background:0 0;border:2px solid var(--b);border-radius:14px;padding:18px 20px;font-family:inherit;font-size:.95rem;font-weight:600;color:var(--t);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all .2s;margin-bottom:16px;text-align:left}
+.section-toggle:hover{border-color:var(--pl);background:rgba(79,70,229,.02)}
+.section-toggle.open{border-color:var(--p);background:rgba(79,70,229,.03);border-radius:14px 14px 0 0;margin-bottom:0}
+.section-toggle svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .3s;flex-shrink:0}
+.section-toggle.open svg{transform:rotate(180deg)}
+.section-content{display:none;border:2px solid var(--p);border-top:none;border-radius:0 0 14px 14px;padding:20px;background:rgba(79,70,229,.02);margin-bottom:16px}
+.section-content.open{display:block}
+
+.section-label{font-size:.82rem;color:var(--tm);font-weight:400}
+
+.check-field{margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.check-field input[type="checkbox"]{width:20px;height:20px;accent-color:var(--p);cursor:pointer;flex-shrink:0;margin-top:2px}
+.check-field label{font-size:.84rem;font-weight:500;color:var(--ts);cursor:pointer;line-height:1.6}
+
+/* Checkbox grid for subjects/levels */
+.checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-bottom:16px}
+.checkbox-grid label{display:flex;align-items:center;gap:8px;font-size:.88rem;font-weight:500;color:var(--ts);cursor:pointer}
+.checkbox-grid input[type="checkbox"]{width:18px;height:18px;accent-color:var(--p);cursor:pointer;flex-shrink:0}
+
+.submit-btn{width:100%;padding:16px;font-size:1.05rem;border-radius:14px;margin-top:8px}
+
+.reassurance{display:flex;gap:24px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.reassurance span{font-size:.8rem;color:var(--tm);display:flex;align-items:center;gap:6px}
+.reassurance svg{width:14px;height:14px;stroke:var(--ok);fill:none;stroke-width:2}
+
+.msg{display:none;text-align:center;padding:32px 24px;border-radius:14px;margin-top:20px;font-size:.95rem;line-height:1.7}
+.msg-ok{background:rgba(16,185,129,.08);color:#065f46;border:1px solid rgba(16,185,129,.2)}
+.msg-ok strong{display:block;font-size:1.1rem;margin-bottom:8px}
+.msg-err{background:rgba(239,68,68,.08);color:#991b1b;border:1px solid rgba(239,68,68,.2)}
+
+.tg-btn{display:inline-flex;align-items:center;gap:10px;background:#0088cc;color:#fff;padding:14px 28px;border-radius:12px;font-weight:600;font-size:1rem;margin-top:16px;transition:all .2s}
+.tg-btn:hover{background:#006da3;transform:translateY(-2px)}
+.tg-btn svg{width:20px;height:20px;fill:currentColor}
+
+footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
+.ftg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+.ftb p{color:var(--ts);font-size:.88rem;margin-top:10px;max-width:260px}
+.ftc h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tm);margin-bottom:14px}
+.ftc a{display:block;color:var(--ts);font-size:.88rem;padding:5px 0;cursor:pointer}.ftc a:hover{color:var(--p)}
+.ftm{padding-top:20px;border-top:1px solid var(--b);display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--tm)}
+
+@media(max-width:768px){
+.form-wrap{padding:28px 20px;border-radius:16px}
+.row{grid-template-columns:1fr}
+.checkbox-grid{grid-template-columns:1fr}
+.ftg{grid-template-columns:1fr}
+.ftm{flex-direction:column;gap:10px;text-align:center}
+.reassurance{flex-direction:column;align-items:center;gap:8px}
+}
+</style>
+</head>
+<body>
+
+<nav><div class="ni">
+<a href="index.html" class="lo">precepteur<span>.</span>ai</a>
+<a href="index.html" class="nb">Retour a l'accueil</a>
+</div></nav>
+
+<section class="page"><div class="ctr">
+<div class="page-header">
+<h1>Devenir <span class="tg">tuteur</span> sur Precepteur AI</h1>
+<p class="sub">Accompagnez des eleves dans leur progression scolaire. Recevez des rapports de progression et des alertes.</p>
+</div>
+
+<div class="form-wrap">
+
+<form id="tutor-form">
+
+<!-- Phase 1 : Informations tuteur (obligatoire) -->
+<div class="row">
+<div class="field">
+<label for="f-first">Prenom</label>
+<input type="text" id="f-first" placeholder="Prenom" required autocomplete="given-name">
+<div class="error" id="err-first">Veuillez entrer votre prenom.</div>
+</div>
+<div class="field">
+<label for="f-last">Nom</label>
+<input type="text" id="f-last" placeholder="Nom" required autocomplete="family-name">
+<div class="error" id="err-last">Veuillez entrer votre nom.</div>
+</div>
+</div>
+
+<div class="field">
+<label for="f-email">Email</label>
+<input type="email" id="f-email" placeholder="votre@email.com" required autocomplete="email">
+<div class="error" id="err-email">Veuillez entrer un email valide.</div>
+</div>
+
+<div class="field">
+<label for="f-phone">Telephone</label>
+<input type="tel" id="f-phone" placeholder="06 12 34 56 78" required autocomplete="tel">
+<div class="error" id="err-phone">Veuillez entrer votre numero de telephone.</div>
+</div>
+
+<div class="field">
+<label for="f-telegram">Username Telegram <span class="optional">(optionnel)</span></label>
+<input type="text" id="f-telegram" placeholder="@username" autocomplete="off">
+</div>
+
+<!-- Phase 2 : Profil pedagogique (accordeon) -->
+<button type="button" class="section-toggle" id="toggle-profile" onclick="toggleSection('profile')">
+<div>Profil pedagogique <span class="section-label">(optionnel)</span></div>
+<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+<div class="section-content" id="section-profile">
+<div class="field">
+<label>Matieres de specialite</label>
+<div class="checkbox-grid">
+<label><input type="checkbox" name="subject" value="Mathematiques"> Mathematiques</label>
+<label><input type="checkbox" name="subject" value="Francais"> Francais</label>
+<label><input type="checkbox" name="subject" value="Anglais"> Anglais</label>
+<label><input type="checkbox" name="subject" value="Physique-Chimie"> Physique-Chimie</label>
+<label><input type="checkbox" name="subject" value="SVT"> SVT</label>
+<label><input type="checkbox" name="subject" value="Histoire-Geo"> Histoire-Geo</label>
+<label><input type="checkbox" name="subject" value="SES"> SES</label>
+<label><input type="checkbox" name="subject" value="Autre"> Autre</label>
+</div>
+</div>
+<div class="field">
+<label>Niveaux suivis</label>
+<div class="checkbox-grid">
+<label><input type="checkbox" name="level" value="College 6e-3e"> College 6e-3e</label>
+<label><input type="checkbox" name="level" value="Lycee 2nde-Terminale"> Lycee 2nde-Terminale</label>
+</div>
+</div>
+<div class="field">
+<label for="f-experience">Experience <span class="optional">(optionnel)</span></label>
+<textarea id="f-experience" placeholder="Decrivez brievement votre experience"></textarea>
+</div>
+</div>
+
+<!-- Phase 3 : Code eleve (accordeon) -->
+<button type="button" class="section-toggle" id="toggle-student" onclick="toggleSection('student')">
+<div>Lier un eleve <span class="section-label">(optionnel)</span></div>
+<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+<div class="section-content" id="section-student">
+<p style="font-size:.88rem;color:var(--ts);margin-bottom:16px;line-height:1.6">Si un parent vous a donne un code eleve, entrez-le ici pour etre lie a son enfant.</p>
+<div class="field">
+<label for="f-student-code">Code eleve</label>
+<input type="text" id="f-student-code" placeholder="Ex : ABC-1234">
+</div>
+<p style="font-size:.82rem;color:var(--tm);line-height:1.5">Vous pourrez aussi etre assigne a des eleves plus tard par les parents.</p>
+</div>
+
+<!-- RGPD -->
+<div class="check-field" style="margin-top:24px">
+<input type="checkbox" id="f-rgpd" required>
+<label for="f-rgpd">J'accepte les <a href="terms.html" style="color:var(--p);text-decoration:underline" target="_blank">conditions d'utilisation</a> et la <a href="privacy.html" style="color:var(--p);text-decoration:underline" target="_blank">politique de confidentialite</a>. Je consens au traitement de mes donnees conformement au RGPD.</label>
+</div>
+
+<button type="submit" class="btn bp submit-btn" id="submit-btn">S'inscrire comme tuteur</button>
+
+<div class="reassurance">
+<span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Gratuit</span>
+<span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sans engagement</span>
+<span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Donnees protegees</span>
+</div>
+
+</form>
+
+<div class="msg msg-ok" id="msg-ok">
+<strong>Merci ! Vous etes inscrit comme tuteur.</strong>
+Ouvrez le bot Telegram pour commencer a accompagner vos eleves.
+<br>
+<a href="https://t.me/precepteur_ia_bot" target="_blank" class="tg-btn">
+<svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+Ouvrir le bot Telegram
+</a>
+</div>
+<div class="msg msg-err" id="msg-err">
+Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:contact@precepteur.net" style="color:var(--p)">contact@precepteur.net</a>.
+</div>
+</div>
+
+</div></section>
+
+<footer><div class="ctr">
+<div class="ftg">
+<div class="ftb"><div class="lo">precepteur<span>.</span>ai</div><p>Le coach scolaire IA qui informe les parents chaque soir. Fait en France, pour les familles francaises.</p></div>
+<div class="ftc"><h4>Produit</h4><a href="index.html#fonctionnement">Comment ca marche</a><a href="index.html#fonctionnalites">Fonctionnalites</a><a href="index.html#faq">FAQ</a></div>
+<div class="ftc"><h4>Legal</h4><a href="privacy.html">Confidentialite</a><a href="terms.html">CGU</a><a href="legal.html">Mentions legales</a></div>
+<div class="ftc"><h4>Contact</h4><a href="mailto:contact@precepteur.net">contact@precepteur.net</a></div>
+</div>
+<div class="ftm"><span>2026 Precepteur AI. Tous droits reserves.</span><span>Fait avec soin en France</span></div>
+</div></footer>
+
+<script>
+var SUPABASE_URL='https://cztnbuesyiawazidkobt.supabase.co';
+var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dG5idWVzeWlhd2F6aWRrb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDIwNjMsImV4cCI6MjA2ODA3ODA2M30.dpaIMncJ-5Ytql7i8DbBfbHt6lD5uQIuRXGa1vo-kQA';
+
+function toggleSection(name){
+var btn=document.getElementById('toggle-'+name);
+var content=document.getElementById('section-'+name);
+var isOpen=btn.classList.contains('open');
+if(isOpen){
+btn.classList.remove('open');
+content.classList.remove('open');
+}else{
+btn.classList.add('open');
+content.classList.add('open');
+}
+}
+
+document.getElementById('tutor-form').onsubmit=function(e){
+e.preventDefault();
+var btn=document.getElementById('submit-btn');
+var ok=true;
+
+// Reset errors
+document.querySelectorAll('.error').forEach(function(e){e.style.display='none'});
+document.querySelectorAll('.field input').forEach(function(f){f.style.borderColor='var(--b)'});
+
+var first=document.getElementById('f-first');
+var last=document.getElementById('f-last');
+var email=document.getElementById('f-email');
+var phone=document.getElementById('f-phone');
+var rgpd=document.getElementById('f-rgpd');
+
+if(!first.value.trim()){
+document.getElementById('err-first').style.display='block';
+first.style.borderColor='#ef4444';
+ok=false;
+}
+if(!last.value.trim()){
+document.getElementById('err-last').style.display='block';
+last.style.borderColor='#ef4444';
+ok=false;
+}
+if(!email.value.trim()||!email.value.includes('@')){
+document.getElementById('err-email').style.display='block';
+email.style.borderColor='#ef4444';
+ok=false;
+}
+if(!phone.value.trim()||phone.value.trim().length<8){
+document.getElementById('err-phone').style.display='block';
+phone.style.borderColor='#ef4444';
+ok=false;
+}
+if(!rgpd.checked){
+ok=false;
+}
+
+if(!ok)return;
+
+btn.textContent='Envoi en cours...';
+btn.disabled=true;
+
+// Collect subjects
+var subjects=[];
+document.querySelectorAll('input[name="subject"]:checked').forEach(function(cb){
+subjects.push(cb.value);
+});
+
+// Collect levels
+var levels=[];
+document.querySelectorAll('input[name="level"]:checked').forEach(function(cb){
+levels.push(cb.value);
+});
+
+var payload={
+parent_first_name:first.value.trim(),
+parent_last_name:last.value.trim(),
+phone:phone.value.trim(),
+email:email.value.trim(),
+telegram_username:document.getElementById('f-telegram').value.trim()||null,
+role:'tutor',
+tutor_subjects:subjects.length>0?subjects:null,
+tutor_levels:levels.length>0?levels:null,
+tutor_experience:document.getElementById('f-experience').value.trim()||null,
+student_code:document.getElementById('f-student-code').value.trim()||null,
+status:'pending',
+has_pronote:false
+};
+
+fetch(SUPABASE_URL+'/rest/v1/registration_requests',{
+method:'POST',
+headers:{
+'Content-Type':'application/json',
+'apikey':SUPABASE_KEY,
+'Authorization':'Bearer '+SUPABASE_KEY,
+'Prefer':'return=minimal'
+},
+body:JSON.stringify(payload)
+}).then(function(r){
+if(r.ok||r.status===201){
+document.getElementById('tutor-form').style.display='none';
+document.getElementById('msg-ok').style.display='block';
+window.scrollTo({top:0,behavior:'smooth'});
+}else{
+return r.text().then(function(t){throw new Error(t)});
+}
+}).catch(function(){
+document.getElementById('msg-err').style.display='block';
+btn.textContent="S'inscrire comme tuteur";
+btn.disabled=false;
+});
+};
+</script>
+</body>
+</html>
