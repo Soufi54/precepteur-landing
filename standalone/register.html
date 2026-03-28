@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Creer un compte — Precepteur AI</title>
+<title>S'inscrire — Precepteur AI</title>
 <meta name="description" content="Inscrivez-vous a Precepteur AI pour recevoir chaque soir le bilan scolaire de votre enfant sur Telegram.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-weight='900' font-size='20' fill='white'%3EP%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -15,13 +16,13 @@
 CREATE TABLE IF NOT EXISTS registration_requests (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     parent_first_name TEXT NOT NULL,
-    parent_last_name TEXT NOT NULL,
+    parent_last_name TEXT,
     phone TEXT NOT NULL,
     email TEXT NOT NULL,
     telegram_username TEXT,
-    child_first_name TEXT NOT NULL,
-    child_last_name TEXT NOT NULL,
-    child_class TEXT NOT NULL,
+    child_first_name TEXT,
+    child_last_name TEXT,
+    child_class TEXT,
     child_school TEXT,
     has_pronote BOOLEAN DEFAULT FALSE,
     pronote_url TEXT,
@@ -48,7 +49,6 @@ a{text-decoration:none;color:inherit}
 .ctr{max-width:var(--mx);margin:0 auto;padding:0 24px}
 .tg{background:linear-gradient(135deg,var(--p),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.12;letter-spacing:-.02em}
-h2{font-size:clamp(1.2rem,2.5vw,1.5rem);font-weight:700;line-height:1.2;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--b)}
 .sub{font-size:clamp(1rem,2vw,1.1rem);color:var(--ts);line-height:1.7;max-width:560px}
 .btn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-size:1rem;font-weight:600;padding:14px 32px;border-radius:12px;border:none;cursor:pointer;transition:all .2s}
 .bp{background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.35)}.bp:hover{background:var(--pd);transform:translateY(-2px);box-shadow:0 6px 20px rgba(79,70,229,.45)}
@@ -64,10 +64,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:va
 .page-header h1{margin-bottom:12px}
 .page-header .sub{margin:0 auto}
 
-.form-wrap{max-width:600px;margin:0 auto;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--b);border-radius:20px;padding:40px 36px;box-shadow:var(--sh)}
+.form-wrap{max-width:520px;margin:0 auto;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--b);border-radius:20px;padding:40px 36px;box-shadow:var(--sh)}
 
-.section-title{display:flex;align-items:center;gap:12px}
-.section-num{width:32px;height:32px;background:linear-gradient(135deg,var(--p),var(--pl));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0}
+.progress{display:flex;gap:8px;margin-bottom:32px}
+.progress-step{flex:1;height:4px;border-radius:2px;background:var(--b);transition:background .3s}
+.progress-step.active{background:var(--p)}
 
 .field{margin-bottom:20px}
 .field label{display:block;font-size:.9rem;font-weight:600;margin-bottom:6px;color:var(--t)}
@@ -77,31 +78,45 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:va
 .field input:focus,.field select:focus{border-color:var(--p)}
 .field input::placeholder{color:var(--tm)}
 .field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:44px}
+.field .error{font-size:.8rem;color:#ef4444;margin-top:4px;display:none}
 
 .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 
-.check-field{margin-bottom:20px;display:flex;align-items:center;gap:10px;cursor:pointer}
-.check-field input[type="checkbox"]{width:20px;height:20px;accent-color:var(--p);cursor:pointer;flex-shrink:0}
-.check-field label{font-size:.9rem;font-weight:500;color:var(--t);cursor:pointer}
+/* Phase sections */
+.phase{display:none}
+.phase.active{display:block}
 
-.radio-group{margin-bottom:20px}
-.radio-opt{display:flex;align-items:center;gap:10px;padding:12px 16px;border:2px solid var(--b);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:all .2s}
-.radio-opt:hover{border-color:var(--pl)}
-.radio-opt.active{border-color:var(--p);background:rgba(79,70,229,.03)}
-.radio-opt input[type="radio"]{width:18px;height:18px;accent-color:var(--p);cursor:pointer;flex-shrink:0}
-.radio-opt label{font-size:.9rem;font-weight:500;color:var(--t);cursor:pointer;flex:1}
+/* Section accordeon pour phase 2 */
+.section-toggle{width:100%;background:0 0;border:2px solid var(--b);border-radius:14px;padding:18px 20px;font-family:inherit;font-size:.95rem;font-weight:600;color:var(--t);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all .2s;margin-bottom:16px;text-align:left}
+.section-toggle:hover{border-color:var(--pl);background:rgba(79,70,229,.02)}
+.section-toggle.open{border-color:var(--p);background:rgba(79,70,229,.03);border-radius:14px 14px 0 0;margin-bottom:0}
+.section-toggle svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .3s;flex-shrink:0}
+.section-toggle.open svg{transform:rotate(180deg)}
+.section-content{display:none;border:2px solid var(--p);border-top:none;border-radius:0 0 14px 14px;padding:20px;background:rgba(79,70,229,.02);margin-bottom:16px}
+.section-content.open{display:block}
 
-.pronote-fields{display:none;padding:16px 0 0}
-.pronote-hidden-msg{display:none;padding:12px 16px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:12px;font-size:.88rem;color:#065f46;line-height:1.6;margin-bottom:20px}
+.section-label{font-size:.82rem;color:var(--tm);font-weight:400}
 
-.tutor-contact-field{display:none}
+.check-field{margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.check-field input[type="checkbox"]{width:20px;height:20px;accent-color:var(--p);cursor:pointer;flex-shrink:0;margin-top:2px}
+.check-field label{font-size:.84rem;font-weight:500;color:var(--ts);cursor:pointer;line-height:1.6}
 
 .submit-btn{width:100%;padding:16px;font-size:1.05rem;border-radius:14px;margin-top:8px}
+
+.reassurance{display:flex;gap:24px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.reassurance span{font-size:.8rem;color:var(--tm);display:flex;align-items:center;gap:6px}
+.reassurance svg{width:14px;height:14px;stroke:var(--ok);fill:none;stroke-width:2}
 
 .msg{display:none;text-align:center;padding:32px 24px;border-radius:14px;margin-top:20px;font-size:.95rem;line-height:1.7}
 .msg-ok{background:rgba(16,185,129,.08);color:#065f46;border:1px solid rgba(16,185,129,.2)}
 .msg-ok strong{display:block;font-size:1.1rem;margin-bottom:8px}
 .msg-err{background:rgba(239,68,68,.08);color:#991b1b;border:1px solid rgba(239,68,68,.2)}
+
+/* Info tooltip */
+.info-why{font-size:.78rem;color:var(--p);cursor:pointer;margin-top:8px;display:inline-block;font-weight:500}
+.info-why:hover{text-decoration:underline}
+.info-box{display:none;font-size:.82rem;color:var(--ts);background:rgba(79,70,229,.04);border:1px solid rgba(79,70,229,.1);border-radius:10px;padding:12px 16px;margin-top:8px;line-height:1.6}
+.info-box.open{display:block}
 
 footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 .ftg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
@@ -115,6 +130,7 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 .row{grid-template-columns:1fr}
 .ftg{grid-template-columns:1fr}
 .ftm{flex-direction:column;gap:10px;text-align:center}
+.reassurance{flex-direction:column;align-items:center;gap:8px}
 }
 </style>
 </head>
@@ -127,61 +143,69 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 
 <section class="page"><div class="ctr">
 <div class="page-header">
-<h1>Creer <span class="tg">un compte</span></h1>
-<p class="sub">Inscrivez votre enfant en quelques minutes. Vous recevrez un message Telegram pour demarrer.</p>
+<h1>Recevoir le <span class="tg">premier bilan</span></h1>
+<p class="sub">Inscrivez-vous en 30 secondes. Vous recevrez votre premier bilan ce soir a 17h sur Telegram.</p>
 </div>
 
 <div class="form-wrap">
+
+<!-- Progress bar -->
+<div class="progress">
+<div class="progress-step active" id="prog-1"></div>
+<div class="progress-step" id="prog-2"></div>
+</div>
+
 <form id="register-form">
 
-<!-- Section 1 : Parent -->
-<h2><span class="section-title"><span class="section-num">1</span> Informations parent</span></h2>
-
-<div class="row">
+<!-- PHASE 1 : Essentiel -->
+<div class="phase active" id="phase-1">
 <div class="field">
-<label for="f-pfirst">Prenom</label>
-<input type="text" id="f-pfirst" placeholder="Votre prenom" required>
-</div>
-<div class="field">
-<label for="f-plast">Nom</label>
-<input type="text" id="f-plast" placeholder="Votre nom" required>
-</div>
+<label for="f-pfirst">Votre prenom</label>
+<input type="text" id="f-pfirst" placeholder="Prenom" required autocomplete="given-name">
+<div class="error" id="err-pfirst">Veuillez entrer votre prenom.</div>
 </div>
 
 <div class="field">
-<label for="f-phone">Telephone</label>
-<input type="tel" id="f-phone" placeholder="+33 6 12 34 56 78" required>
+<label for="f-email">Votre email</label>
+<input type="email" id="f-email" placeholder="votre@email.com" required autocomplete="email">
+<div class="error" id="err-email">Veuillez entrer un email valide.</div>
 </div>
 
 <div class="field">
-<label for="f-email">Email</label>
-<input type="email" id="f-email" placeholder="votre@email.com" required>
+<label for="f-phone">Votre telephone</label>
+<input type="tel" id="f-phone" placeholder="06 12 34 56 78" required autocomplete="tel">
+<div class="error" id="err-phone">Veuillez entrer votre numero de telephone.</div>
 </div>
 
-<div class="field">
-<label for="f-telegram">Username Telegram <span class="optional">(optionnel)</span></label>
-<input type="text" id="f-telegram" placeholder="@username">
+<button type="button" class="btn bp submit-btn" id="btn-continue" onclick="goToPhase2()">Continuer</button>
+
+<div class="reassurance">
+<span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Gratuit</span>
+<span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Sans engagement</span>
+<span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Pas de carte bancaire</span>
+</div>
 </div>
 
-<!-- Section 2 : Enfant -->
-<h2 style="margin-top:36px"><span class="section-title"><span class="section-num">2</span> Informations enfant</span></h2>
+<!-- PHASE 2 : Details (optionnels, en accordeon) -->
+<div class="phase" id="phase-2">
 
+<p style="font-size:.92rem;color:var(--ts);margin-bottom:20px;line-height:1.6">Completez les informations ci-dessous pour personnaliser l'experience, ou passez directement a l'inscription.</p>
+
+<!-- Enfant -->
+<button type="button" class="section-toggle" id="toggle-child" onclick="toggleSection('child')">
+<div>Informations sur votre enfant <span class="section-label">(recommande)</span></div>
+<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+<div class="section-content" id="section-child">
 <div class="row">
 <div class="field">
 <label for="f-cfirst">Prenom de l'enfant</label>
-<input type="text" id="f-cfirst" placeholder="Prenom" required>
+<input type="text" id="f-cfirst" placeholder="Prenom">
 </div>
-<div class="field">
-<label for="f-clast">Nom de l'enfant</label>
-<input type="text" id="f-clast" placeholder="Nom" required>
-</div>
-</div>
-
-<div class="row">
 <div class="field">
 <label for="f-class">Classe</label>
-<select id="f-class" required>
-<option value="" disabled selected>Choisissez la classe</option>
+<select id="f-class">
+<option value="" selected>Choisissez</option>
 <option value="6e">6e</option>
 <option value="5e">5e</option>
 <option value="4e">4e</option>
@@ -191,93 +215,67 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <option value="terminale">Terminale</option>
 </select>
 </div>
+</div>
 <div class="field">
 <label for="f-school">Etablissement <span class="optional">(optionnel)</span></label>
 <input type="text" id="f-school" placeholder="Nom du college ou lycee">
 </div>
 </div>
 
-<!-- Section 3 : Pronote -->
-<h2 style="margin-top:36px"><span class="section-title"><span class="section-num">3</span> Connexion Pronote</span></h2>
-
-<div class="check-field">
-<input type="checkbox" id="f-has-pronote">
-<label for="f-has-pronote">J'ai un compte Pronote</label>
-</div>
-
-<div class="pronote-hidden-msg" id="no-pronote-msg">Pas de souci, le bot fonctionnera sans Pronote. Vous pourrez toujours le connecter plus tard.</div>
-
-<div class="pronote-fields" id="pronote-fields">
-<div style="padding:14px 18px;background:rgba(79,70,229,.04);border:1px solid rgba(79,70,229,.12);border-radius:12px;margin-bottom:20px;font-size:.88rem;color:var(--ts);line-height:1.7">
-<strong style="display:flex;align-items:center;gap:6px;color:var(--t);margin-bottom:4px">&#128274; Connexion securisee</strong>
-Pourquoi avons-nous besoin de vos identifiants Pronote ? Pour recuperer automatiquement les notes, devoirs et absences de votre enfant chaque jour. Vos identifiants sont chiffres et ne sont jamais partages.
+<!-- Pronote -->
+<button type="button" class="section-toggle" id="toggle-pronote" onclick="toggleSection('pronote')">
+<div>Connexion Pronote <span class="section-label">(vous pourrez le faire plus tard)</span></div>
+<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+<div class="section-content" id="section-pronote">
+<div style="padding:12px 16px;background:rgba(79,70,229,.04);border:1px solid rgba(79,70,229,.12);border-radius:10px;margin-bottom:16px;font-size:.85rem;color:var(--ts);line-height:1.6">
+<strong style="color:var(--t)">Connexion securisee</strong> — Vos identifiants sont chiffres (AES-256) et ne sont jamais partages. Ils servent uniquement a recuperer les notes et devoirs de votre enfant.
 </div>
 <div class="field">
 <label for="f-purl">URL Pronote</label>
 <div class="hint">Copiez l'URL depuis votre navigateur quand vous etes sur Pronote.</div>
 <input type="url" id="f-purl" placeholder="https://pronote.college-example.fr">
 </div>
-
 <div class="field">
 <label for="f-pent">ENT (Espace Numerique de Travail)</label>
 <select id="f-pent">
-<option value="" disabled selected>Choisissez votre ENT</option>
+<option value="" selected>Choisissez votre ENT</option>
 <option value="ile_de_france">MonLycee.net (Ile-de-France)</option>
 <option value="occitanie">Mon ENT Occitanie</option>
 <option value="none">Aucun (connexion directe)</option>
 <option value="other">Autre</option>
 </select>
 </div>
-
 <div class="field">
 <label for="f-puser">Identifiant Pronote</label>
 <input type="text" id="f-puser" placeholder="Votre identifiant">
 </div>
-
 <div class="field">
 <label for="f-ppass">Mot de passe Pronote</label>
 <input type="password" id="f-ppass" placeholder="Votre mot de passe">
 </div>
+<span class="info-why" onclick="toggleInfoBox('why-pronote')">Pourquoi ces informations ?</span>
+<div class="info-box" id="why-pronote">Precepteur AI se connecte a Pronote pour recuperer automatiquement les notes, devoirs et absences de votre enfant. Sans ces identifiants, le bot peut quand meme fonctionner, mais sans donnees en temps reel. Vous pourrez toujours les ajouter plus tard depuis le bot Telegram.</div>
 </div>
 
-<!-- Section 4 : Tuteur -->
-<h2 style="margin-top:36px"><span class="section-title"><span class="section-num">4</span> Tuteur</span></h2>
-
-<p style="font-size:.9rem;color:var(--ts);margin-bottom:16px;line-height:1.6">Par defaut, un tuteur est assigne a votre enfant pour l'accompagner dans son travail scolaire.</p>
-
-<div class="radio-group">
-<div class="radio-opt active" onclick="selectTutor('default')">
-<input type="radio" name="tutor" id="t-default" value="default" checked>
-<label for="t-default">Un tuteur sera assigne automatiquement</label>
-</div>
-<div class="radio-opt" onclick="selectTutor('parent')">
-<input type="radio" name="tutor" id="t-parent" value="parent">
-<label for="t-parent">Je suis moi-meme le tuteur</label>
-</div>
-<div class="radio-opt" onclick="selectTutor('existing')">
-<input type="radio" name="tutor" id="t-existing" value="existing">
-<label for="t-existing">Mon enfant a deja un tuteur</label>
-</div>
-</div>
-
-<div class="tutor-contact-field" id="tutor-contact-wrap">
-<div class="field">
-<label for="f-tutor-contact">Email ou telephone du tuteur</label>
-<input type="text" id="f-tutor-contact" placeholder="tuteur@email.com ou +33 6 ...">
-</div>
-</div>
-
-<div class="check-field" style="margin-top:24px;align-items:flex-start">
+<!-- RGPD -->
+<div class="check-field" style="margin-top:24px">
 <input type="checkbox" id="f-rgpd" required>
-<label for="f-rgpd" style="font-size:.84rem;line-height:1.6;color:var(--ts)">J'accepte les conditions d'utilisation et la politique de confidentialite de Precepteur AI. Je consens au traitement des donnees scolaires de mon enfant conformement au RGPD.</label>
+<label for="f-rgpd">J'accepte les <a href="terms.html" style="color:var(--p);text-decoration:underline" target="_blank">conditions d'utilisation</a> et la <a href="privacy.html" style="color:var(--p);text-decoration:underline" target="_blank">politique de confidentialite</a>. Je consens au traitement des donnees scolaires de mon enfant conformement au RGPD.</label>
 </div>
 
-<button type="submit" class="btn bp submit-btn" id="submit-btn">Creer mon compte</button>
+<button type="submit" class="btn bp submit-btn" id="submit-btn">Valider mon inscription</button>
+
+<div class="reassurance">
+<span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Donnees chiffrees</span>
+<span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Suppression sur demande</span>
+</div>
+</div>
+
 </form>
 
 <div class="msg msg-ok" id="msg-ok">
-<strong>Votre inscription est enregistree.</strong>
-Vous recevrez un message Telegram dans les prochaines heures pour demarrer.
+<strong>Inscription enregistree.</strong>
 </div>
 <div class="msg msg-err" id="msg-err">
 Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:contact@precepteur.net" style="color:var(--p)">contact@precepteur.net</a>.
@@ -289,7 +287,7 @@ Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:
 <footer><div class="ctr">
 <div class="ftg">
 <div class="ftb"><div class="lo">precepteur<span>.</span>ai</div><p>Le coach scolaire IA qui informe les parents chaque soir. Fait en France, pour les familles francaises.</p></div>
-<div class="ftc"><h4>Produit</h4><a href="index.html#fonctionnement">Comment ca marche</a><a href="index.html#fonctionnalites">Fonctionnalites</a><a href="index.html#tarifs">Tarifs</a><a href="index.html#faq">FAQ</a><a href="connect.html">Connecter Pronote</a><a href="register.html">Creer un compte</a></div>
+<div class="ftc"><h4>Produit</h4><a href="index.html#fonctionnement">Comment ca marche</a><a href="index.html#fonctionnalites">Fonctionnalites</a><a href="index.html#faq">FAQ</a></div>
 <div class="ftc"><h4>Legal</h4><a href="privacy.html">Confidentialite</a><a href="terms.html">CGU</a><a href="legal.html">Mentions legales</a></div>
 <div class="ftc"><h4>Contact</h4><a href="mailto:contact@precepteur.net">contact@precepteur.net</a></div>
 </div>
@@ -299,35 +297,56 @@ Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:
 <script>
 var API_URL='https://precepteur-ai.onrender.com';
 
-// Pronote toggle
-var hasPronote=document.getElementById('f-has-pronote');
-var pronoteFields=document.getElementById('pronote-fields');
-var noPronoteMsg=document.getElementById('no-pronote-msg');
-noPronoteMsg.style.display='block';
+function goToPhase2(){
+var pfirst=document.getElementById('f-pfirst');
+var email=document.getElementById('f-email');
+var phone=document.getElementById('f-phone');
+var ok=true;
 
-hasPronote.onchange=function(){
-if(this.checked){
-pronoteFields.style.display='block';
-noPronoteMsg.style.display='none';
-}else{
-pronoteFields.style.display='none';
-noPronoteMsg.style.display='block';
-}
-};
+// Reset errors
+document.querySelectorAll('.error').forEach(function(e){e.style.display='none'});
+[pfirst,email,phone].forEach(function(f){f.style.borderColor='var(--b)'});
 
-// Tutor radio
-function selectTutor(type){
-document.querySelectorAll('.radio-opt').forEach(function(el){el.classList.remove('active')});
-var radio=document.querySelector('input[name="tutor"][value="'+type+'"]');
-radio.checked=true;
-radio.closest('.radio-opt').classList.add('active');
-var contactWrap=document.getElementById('tutor-contact-wrap');
-if(type==='existing'){
-contactWrap.style.display='block';
-}else{
-contactWrap.style.display='none';
-document.getElementById('f-tutor-contact').value='';
+if(!pfirst.value.trim()){
+document.getElementById('err-pfirst').style.display='block';
+pfirst.style.borderColor='#ef4444';
+ok=false;
 }
+if(!email.value.trim()||!email.value.includes('@')){
+document.getElementById('err-email').style.display='block';
+email.style.borderColor='#ef4444';
+ok=false;
+}
+if(!phone.value.trim()||phone.value.trim().length<8){
+document.getElementById('err-phone').style.display='block';
+phone.style.borderColor='#ef4444';
+ok=false;
+}
+
+if(!ok)return;
+
+document.getElementById('phase-1').classList.remove('active');
+document.getElementById('phase-2').classList.add('active');
+document.getElementById('prog-2').classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleSection(name){
+var btn=document.getElementById('toggle-'+name);
+var content=document.getElementById('section-'+name);
+var isOpen=btn.classList.contains('open');
+if(isOpen){
+btn.classList.remove('open');
+content.classList.remove('open');
+}else{
+btn.classList.add('open');
+content.classList.add('open');
+}
+}
+
+function toggleInfoBox(id){
+var box=document.getElementById(id);
+box.classList.toggle('open');
 }
 
 // Form submit
@@ -337,26 +356,25 @@ var btn=document.getElementById('submit-btn');
 btn.textContent='Envoi en cours...';
 btn.disabled=true;
 
-var hasPronoteChecked=document.getElementById('f-has-pronote').checked;
-var tutorType=document.querySelector('input[name="tutor"]:checked').value;
+var hasPronote=!!document.getElementById('f-purl').value.trim();
 
 var payload={
 parent_first_name:document.getElementById('f-pfirst').value.trim(),
-parent_last_name:document.getElementById('f-plast').value.trim(),
+parent_last_name:'',
 phone:document.getElementById('f-phone').value.trim(),
 email:document.getElementById('f-email').value.trim(),
-telegram_username:document.getElementById('f-telegram').value.trim()||null,
-child_first_name:document.getElementById('f-cfirst').value.trim(),
-child_last_name:document.getElementById('f-clast').value.trim(),
-child_class:document.getElementById('f-class').value,
+telegram_username:null,
+child_first_name:document.getElementById('f-cfirst').value.trim()||null,
+child_last_name:null,
+child_class:document.getElementById('f-class').value||null,
 child_school:document.getElementById('f-school').value.trim()||null,
-has_pronote:hasPronoteChecked,
-pronote_url:hasPronoteChecked?document.getElementById('f-purl').value.trim()||null:null,
-pronote_ent:hasPronoteChecked?document.getElementById('f-pent').value||null:null,
-pronote_username:hasPronoteChecked?document.getElementById('f-puser').value||null:null,
-pronote_password:hasPronoteChecked?document.getElementById('f-ppass').value||null:null,
-tutor_type:tutorType,
-tutor_contact:tutorType==='existing'?document.getElementById('f-tutor-contact').value.trim()||null:null
+has_pronote:hasPronote,
+pronote_url:hasPronote?document.getElementById('f-purl').value.trim():null,
+pronote_ent:hasPronote?document.getElementById('f-pent').value||null:null,
+pronote_username:hasPronote?document.getElementById('f-puser').value||null:null,
+pronote_password:hasPronote?document.getElementById('f-ppass').value||null:null,
+tutor_type:'default',
+tutor_contact:null
 };
 
 fetch(API_URL+'/api/register',{
@@ -365,24 +383,25 @@ headers:{'Content-Type':'application/json'},
 body:JSON.stringify(payload)
 }).then(function(r){return r.json()}).then(function(data){
 if(data.ok){
-document.getElementById('register-form').style.display='none';
-var msgOk=document.getElementById('msg-ok');
-var tgLink=data.telegram_link||'https://t.me/precepteur_ai_bot';
-msgOk.innerHTML='<strong>Votre inscription est enregistree.</strong>'+
-'<p style="margin-top:12px">Cliquez sur le lien ci-dessous pour demarrer sur Telegram :</p>'+
-'<a href="'+tgLink+'" target="_blank" style="display:inline-block;margin-top:12px;padding:12px 28px;background:var(--p);color:#fff;border-radius:10px;font-weight:600;text-decoration:none">Ouvrir Telegram</a>';
-msgOk.style.display='block';
-window.scrollTo({top:0,behavior:'smooth'});
+// Redirect to confirmation page
+var params=new URLSearchParams();
+params.set('prenom',payload.parent_first_name);
+if(hasPronote)params.set('pronote','1');
+if(data.children&&data.children.length>0){
+params.set('enfants',data.children.map(function(c){return c.name}).join(','));
+}
+if(data.telegram_link)params.set('tg',data.telegram_link);
+window.location.href='confirmation.html?'+params.toString();
 }else{
 var errEl=document.getElementById('msg-err');
 errEl.textContent=data.error||'Une erreur est survenue. Veuillez reessayer.';
 errEl.style.display='block';
-btn.textContent='Creer mon compte';
+btn.textContent='Valider mon inscription';
 btn.disabled=false;
 }
 }).catch(function(){
 document.getElementById('msg-err').style.display='block';
-btn.textContent='Creer mon compte';
+btn.textContent='Valider mon inscription';
 btn.disabled=false;
 });
 };
