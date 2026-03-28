@@ -32,15 +32,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:rg
 .confirm-card h1{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;margin-bottom:12px;letter-spacing:-.02em}
 .confirm-card .desc{font-size:1rem;color:var(--ts);line-height:1.7;margin-bottom:28px}
 
-.tg-btn{display:inline-flex;align-items:center;gap:10px;background:#2AABEE;color:#fff;font-family:inherit;font-size:1.1rem;font-weight:700;padding:18px 40px;border-radius:14px;border:none;cursor:pointer;transition:all .2s;text-decoration:none;box-shadow:0 4px 14px rgba(42,171,238,.35)}
-.tg-btn:hover{background:#229ED9;transform:translateY(-2px);box-shadow:0 6px 20px rgba(42,171,238,.45)}
-.tg-btn svg{width:22px;height:22px;fill:#fff}
-
 .status-box{margin-top:28px;padding:16px 20px;border-radius:12px;font-size:.9rem;line-height:1.6}
 .status-ok{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);color:#065f46}
 .status-later{background:rgba(79,70,229,.04);border:1px solid rgba(79,70,229,.1);color:var(--ts)}
 
 .next-step{margin-top:28px;font-size:.88rem;color:var(--tm);line-height:1.6}
+
+.ready-indicator{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:24px;font-size:.95rem;font-weight:600;color:var(--ok)}
+.pulse-dot{width:12px;height:12px;background:var(--ok);border-radius:50%;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+
+.tg-btn{display:inline-flex;align-items:center;gap:10px;background:#2AABEE;color:#fff;font-family:inherit;font-size:1.2rem;font-weight:700;padding:22px 48px;border-radius:16px;border:none;cursor:pointer;transition:all .2s;text-decoration:none;box-shadow:0 6px 20px rgba(42,171,238,.4);width:100%;justify-content:center;max-width:400px}
+.tg-btn:hover{background:#229ED9;transform:translateY(-2px);box-shadow:0 8px 28px rgba(42,171,238,.5)}
+.tg-btn svg{width:24px;height:24px;fill:#fff}
+
+.desktop-hint{display:none;margin-top:20px;padding:14px 18px;background:var(--bg);border:1px solid var(--b);border-radius:12px;font-size:.85rem;color:var(--ts);align-items:center;gap:10px;line-height:1.5}
 
 footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 .ftg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
@@ -69,16 +75,27 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
 
 <h1 id="title">Merci ! Votre inscription est enregistree.</h1>
-<p class="desc" id="desc">Vous recevrez votre premier bilan ce soir a 17h sur Telegram.</p>
+<p class="desc" id="desc">Plus qu'une etape : ouvrez Telegram pour demarrer votre coach scolaire.</p>
+
+<div class="ready-indicator" id="ready-indicator">
+<div class="pulse-dot"></div>
+<span>Le bot est pret et vous attend</span>
+</div>
 
 <a href="https://t.me/precepteur_ia_bot" target="_blank" class="tg-btn" id="tg-btn">
 <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-Ouvrir le bot sur Telegram
+Ouvrir Telegram et demarrer
 </a>
 
 <div id="status-container"></div>
 
-<p class="next-step">Cliquez sur le bouton "Demarrer" dans Telegram pour activer le bot. Si vous avez connecte Pronote, votre bilan arrivera a 17h. Sinon, vous pourrez le faire plus tard depuis le bot.</p>
+<div class="desktop-hint" id="desktop-hint">
+<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+<span>Sur ordinateur ? <a href="https://desktop.telegram.org/" target="_blank" style="color:var(--p);text-decoration:underline">Installez Telegram Desktop</a> ou scannez le QR code depuis votre telephone.</span>
+</div>
+
+<p class="next-step">Cliquez sur <strong>"Demarrer"</strong> dans Telegram pour activer le bot. Votre premier bilan arrivera ce soir a 17h.</p>
+<p class="next-step" style="margin-top:12px"><a href="https://precepteur.net/#faq" style="color:var(--p);text-decoration:underline">Questions frequentes</a></p>
 
 </div>
 </div></section>
@@ -124,6 +141,12 @@ var box=document.createElement('div');
 box.className='status-box status-later';
 box.textContent='Vous pourrez connecter Pronote plus tard directement depuis le bot Telegram.';
 container.appendChild(box);
+}
+
+// Detecter desktop pour afficher l'aide d'installation Telegram
+var isMobile=/Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+if(!isMobile){
+document.getElementById('desktop-hint').style.display='flex';
 }
 </script>
 </body>
