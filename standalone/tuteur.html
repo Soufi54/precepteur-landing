@@ -249,8 +249,7 @@ Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:
 </div></footer>
 
 <script>
-var SUPABASE_URL='https://cztnbuesyiawazidkobt.supabase.co';
-var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dG5idWVzeWlhd2F6aWRrb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDIwNjMsImV4cCI6MjA2ODA3ODA2M30.dpaIMncJ-5Ytql7i8DbBfbHt6lD5uQIuRXGa1vo-kQA';
+var API_URL='https://precepteur-ai.onrender.com';
 
 function toggleSection(name){
 var btn=document.getElementById('toggle-'+name);
@@ -336,22 +335,26 @@ status:'pending',
 has_pronote:false
 };
 
-fetch(SUPABASE_URL+'/rest/v1/registration_requests',{
+fetch(API_URL+'/api/register',{
 method:'POST',
-headers:{
-'Content-Type':'application/json',
-'apikey':SUPABASE_KEY,
-'Authorization':'Bearer '+SUPABASE_KEY,
-'Prefer':'return=minimal'
-},
+headers:{'Content-Type':'application/json'},
 body:JSON.stringify(payload)
-}).then(function(r){
-if(r.ok||r.status===201){
+}).then(function(r){return r.json()}).then(function(data){
+if(data.ok){
 document.getElementById('tutor-form').style.display='none';
-document.getElementById('msg-ok').style.display='block';
+var okDiv=document.getElementById('msg-ok');
+okDiv.style.display='block';
+if(data.telegram_link){
+var tgBtn=okDiv.querySelector('.tg-btn');
+if(tgBtn)tgBtn.href=data.telegram_link;
+}
 window.scrollTo({top:0,behavior:'smooth'});
 }else{
-return r.text().then(function(t){throw new Error(t)});
+var errEl=document.getElementById('msg-err');
+errEl.textContent=data.error||'Une erreur est survenue. Veuillez reessayer.';
+errEl.style.display='block';
+btn.textContent="S'inscrire comme tuteur";
+btn.disabled=false;
 }
 }).catch(function(){
 document.getElementById('msg-err').style.display='block';
