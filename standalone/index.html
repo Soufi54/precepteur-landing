@@ -1,428 +1,2218 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Precepteur AI — Le pr&eacute;cepteur qui suit votre enfant chaque soir</title>
-<meta name="description" content="Chaque soir, votre enfant re&ccedil;oit 3 exercices cibl&eacute;s sur ses vraies lacunes. 15 minutes. Correction imm&eacute;diate. Et vous recevez le bilan. De la 6e &agrave; la Terminale.">
-<meta name="keywords" content="soutien scolaire IA, exercices personnalis&eacute;s, aide devoirs coll&egrave;ge lyc&eacute;e, suivi scolaire quotidien, pr&eacute;cepteur intelligent, parents">
-<meta property="og:title" content="Precepteur AI — Un pr&eacute;cepteur qui conna&icirc;t votre enfant et s'en occupe chaque jour">
-<meta property="og:description" content="15 minutes par soir, des exercices cibl&eacute;s, un bilan pour les parents. Le soutien scolaire qui fonctionne vraiment. Gratuit pendant la b&ecirc;ta.">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230EA5E9'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-weight='900' font-size='20' fill='white'%3EP%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:#1C1917;background:#FFFBF5;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{text-decoration:none;color:inherit}
-ul{list-style:none}
-:root{--p:#0EA5E9;--pl:#38BDF8;--pd:#0284C7;--cta:#F97316;--cta-d:#EA580C;--ac:#FDE68A;--bg:#FFF7ED;--bg2:#FFFBF5;--glass:rgba(255,251,245,0.85);--t:#1C1917;--ts:#57534E;--tm:#A8A29E;--b:#E7E5E4;--r:20px;--sh:0 4px 24px rgba(28,25,23,.08);--mx:1200px}
-.ctr{max-width:var(--mx);margin:0 auto;padding:0 24px}
-.sec{padding:100px 0}.sec-a{background:var(--bg)}.tc{text-align:center}
-.tg{background:linear-gradient(135deg,var(--p),var(--pd));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:900;line-height:1.1;letter-spacing:-.03em}
-h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;line-height:1.14;letter-spacing:-.02em}
-h3{font-size:1.25rem;font-weight:700;line-height:1.3}
-.sub{font-size:clamp(1.05rem,2vw,1.2rem);color:var(--ts);line-height:1.7;max-width:620px}
-.tag{display:inline-block;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--pd);background:rgba(14,165,233,.08);padding:6px 16px;border-radius:100px;margin-bottom:16px}
-.btn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-size:1rem;font-weight:600;padding:14px 32px;border-radius:14px;border:none;cursor:pointer;transition:all .2s}
-.bp{background:var(--cta);color:#fff;box-shadow:0 4px 14px rgba(249,115,22,.3)}.bp:hover{background:var(--cta-d);transform:translateY(-2px);box-shadow:0 6px 20px rgba(249,115,22,.4)}
-.bo{background:0 0;color:var(--pd);border:2px solid var(--b)}.bo:hover{border-color:var(--p);background:rgba(14,165,233,.04)}
-.bl{padding:18px 40px;font-size:1.1rem;border-radius:16px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Précepteur — Soutien scolaire nouvelle génération</title>
+    <meta name="description" content="Chaque soir, 3 exercices ciblés pour votre enfant. Un bilan pour les parents. Un suivi IA qui s'adapte. Directement sur Telegram.">
+    <meta name="keywords" content="suivi scolaire, pronote, parents, IA, coach scolaire, notes, devoirs, Telegram, alertes notes enfant">
+    <link rel="canonical" href="https://precepteur.net">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Précepteur — Votre coach scolaire IA">
+    <meta property="og:description" content="Chaque soir, un bilan personnalisé de la journée scolaire de votre enfant. Sans ouvrir Pronote.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://precepteur.net">
+    <meta property="og:locale" content="fr_FR">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a1a2e;
+            background: #FFFBF5;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        img { max-width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
 
-/* Beta banner */
-.beta-banner{background:linear-gradient(90deg,var(--pd),#075985);color:#fff;text-align:center;padding:10px 24px;font-size:.88rem;font-weight:600;letter-spacing:.01em;position:relative;z-index:101}
-.beta-banner span{opacity:.85;font-weight:400}
+        /* ===== VARIABLES ===== */
+        :root {
+            --primary: #F97316;
+            --primary-light: #FB923C;
+            --primary-dark: #EA580C;
+            --accent: #0EA5E9;
+            --accent-light: #38BDF8;
+            --success: #22C55E;
+            --warning: #FDE68A;
+            --bg-soft: #FFF7ED;
+            --bg-card: #ffffff;
+            --text-primary: #1C1917;
+            --text-secondary: #57534E;
+            --text-muted: #A8A29E;
+            --border: #E7E5E4;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --max-width: 1200px;
+        }
 
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;transition:all .3s}
-nav.s{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--b);box-shadow:0 1px 3px rgba(28,25,23,.06)}
-.ni{max-width:var(--mx);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px}
-.lo{font-size:1.4rem;font-weight:900;letter-spacing:-.03em}.lo span{color:var(--p)}
-.nl{display:flex;gap:28px;align-items:center}.nl a{font-size:.9rem;font-weight:500;color:var(--ts);transition:color .2s;cursor:pointer}.nl a:hover{color:var(--p)}
-.nc{margin-left:12px}
-.mt{display:none;background:0 0;border:none;cursor:pointer;padding:8px}.mt span{display:block;width:22px;height:2px;background:var(--t);margin:5px 0;transition:all .3s}
-.hero{padding:140px 0 100px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(14,165,233,.07),transparent 70%);border-radius:50%}
-.hero::after{content:'';position:absolute;bottom:-100px;left:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(253,230,138,.15),transparent 70%);border-radius:50%}
-.hg{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
-.hc{max-width:560px}.hc h1{margin-bottom:24px}.hc .sub{margin-bottom:36px}
-.ha{display:flex;gap:14px;flex-wrap:wrap}
-.hs{display:flex;gap:40px;margin-top:44px;padding-top:28px;border-top:1px solid var(--b)}
-.sv{font-size:1.7rem;font-weight:800;color:var(--pd)}.sl{font-size:.82rem;color:var(--tm);margin-top:2px}
-.pw{display:flex;justify-content:center}
-.ph{width:290px;background:#1C1917;border-radius:36px;padding:10px;box-shadow:0 12px 40px rgba(28,25,23,.15)}
-.ps{background:#292524;border-radius:28px;padding:28px 16px;min-height:480px;display:flex;flex-direction:column}
-.phd{text-align:center;margin-bottom:20px}
-.pav{width:44px;height:44px;background:linear-gradient(135deg,var(--p),var(--pd));border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem}
-.pnm{color:#fff;font-weight:600;font-size:.9rem}.pst{color:#22C55E;font-size:.7rem}
-.ch{flex:1;display:flex;flex-direction:column;gap:10px}
-.bb{max-width:82%;padding:10px 14px;border-radius:16px;font-size:.78rem;line-height:1.5;opacity:0;animation:bi .5s ease forwards}
-.bb.b{background:#44403C;color:#E7E5E4;align-self:flex-start;border-bottom-left-radius:4px}
-.bb.u{background:var(--p);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
-.bb:nth-child(1){animation-delay:.3s}.bb:nth-child(2){animation-delay:.8s}.bb:nth-child(3){animation-delay:1.3s}.bb:nth-child(4){animation-delay:1.8s}.bb:nth-child(5){animation-delay:2.3s}
-@keyframes bi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        /* ===== UTILITIES ===== */
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+        .section { padding: 100px 0; }
+        .section-alt { background: var(--bg-soft); }
+        .text-center { text-align: center; }
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-/* Problem cards */
-.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-.pc{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--b);border-radius:var(--r);padding:32px;transition:all .25s;cursor:default}
-.pc:hover{box-shadow:var(--sh);transform:translateY(-4px)}
-.pi{width:48px;height:48px;background:#FEF2F2;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-.pi svg{width:24px;height:24px;stroke:#EF4444;fill:none;stroke-width:2}
-.pc h3{margin-bottom:6px}.pc p{color:var(--ts);font-size:.92rem}
+        /* ===== TYPOGRAPHY ===== */
+        h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; }
+        h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
+        h3 { font-size: 1.3rem; font-weight: 700; line-height: 1.3; }
+        .subtitle { font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--text-secondary); line-height: 1.7; max-width: 640px; }
+        .label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--primary);
+            background: rgba(249, 115, 22, 0.08);
+            padding: 6px 14px;
+            border-radius: 100px;
+            margin-bottom: 16px;
+        }
 
-/* Alternatives section */
-.alt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}
-.alt-card{background:var(--glass);border:1px solid var(--b);border-radius:var(--r);padding:28px 24px;text-align:center;transition:all .25s}
-.alt-card:hover{box-shadow:var(--sh);transform:translateY(-3px)}
-.alt-icon{width:52px;height:52px;background:rgba(14,165,233,.06);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-.alt-icon svg{width:26px;height:26px;stroke:var(--ts);fill:none;stroke-width:1.8}
-.alt-card h3{font-size:1.05rem;margin-bottom:8px}
-.alt-card p{color:var(--ts);font-size:.88rem;line-height:1.6}
-.alt-card .alt-verdict{margin-top:12px;font-size:.82rem;font-weight:600;color:#DC2626}
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 32px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--border);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary);
+            background: rgba(249, 115, 22, 0.04);
+        }
+        .btn-lg { padding: 18px 40px; font-size: 1.1rem; border-radius: 14px; }
 
-/* Steps */
-.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:56px}
-.sp{text-align:center;position:relative}
-.sn{width:56px;height:56px;background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;margin:0 auto 18px}
-.sp h3{margin-bottom:6px}.sp p{color:var(--ts);font-size:.92rem}
-.sln{position:absolute;top:28px;left:calc(50% + 40px);width:calc(100% - 80px);height:2px;background:linear-gradient(90deg,var(--pl),var(--p));opacity:.2}
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+        .navbar-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-cta { margin-left: 16px; }
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            margin: 6px 0;
+            transition: all 0.3s;
+        }
 
-/* Modes section */
-.modes-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:48px}
-.mode-card{border-radius:var(--r);padding:36px;position:relative;overflow:hidden}
-.mode-card.remediation{background:linear-gradient(135deg,rgba(249,115,22,.04),rgba(249,115,22,.01));border:1px solid rgba(249,115,22,.15)}
-.mode-card.excellence{background:linear-gradient(135deg,rgba(14,165,233,.04),rgba(2,132,199,.01));border:1px solid rgba(14,165,233,.15)}
-.mode-badge{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:5px 14px;border-radius:100px;margin-bottom:16px}
-.mode-card.remediation .mode-badge{background:rgba(249,115,22,.1);color:var(--cta-d)}
-.mode-card.excellence .mode-badge{background:rgba(14,165,233,.1);color:var(--pd)}
-.mode-card h3{font-size:1.2rem;margin-bottom:8px}
-.mode-card p{color:var(--ts);font-size:.92rem;margin-bottom:16px;line-height:1.6}
-.mode-example{background:rgba(255,255,255,.6);border:1px solid var(--b);border-radius:14px;padding:20px;font-size:.85rem;line-height:1.7;color:var(--ts)}
-.mode-example strong{color:var(--t);font-weight:600}
-.mode-example .mode-label{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--tm);margin-bottom:8px}
-.mode-vision{margin-top:20px;padding:16px 20px;background:rgba(253,230,138,.15);border:1px solid rgba(253,230,138,.4);border-radius:14px;font-size:.9rem;color:var(--t);line-height:1.6;font-weight:500}
+        /* ===== HERO ===== */
+        .hero {
+            padding: 140px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-content { max-width: 560px; }
+        .hero h1 { margin-bottom: 24px; }
+        .hero .subtitle { margin-bottom: 40px; }
+        .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+        .hero-stat-value { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+        .hero-stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
 
-/* Pronote section */
-.pronote-box{max-width:720px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;background:linear-gradient(135deg,rgba(14,165,233,.04),rgba(253,230,138,.04));border:1px solid var(--b);border-radius:var(--r);padding:36px}
-.pronote-icon{width:64px;height:64px;background:rgba(14,165,233,.08);border-radius:16px;display:flex;align-items:center;justify-content:center}
-.pronote-icon svg{width:32px;height:32px;stroke:var(--p);fill:none;stroke-width:2}
-.pronote-box h3{font-size:1.15rem;margin-bottom:6px}
-.pronote-box p{color:var(--ts);font-size:.92rem;line-height:1.6}
+        /* ===== HERO VISUAL ===== */
+        .hero-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
 
-/* Security section */
-.sec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:48px}
-.sec-card{text-align:center;padding:32px 24px}
-.sec-icon{width:56px;height:56px;background:rgba(14,165,233,.08);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
-.sec-icon svg{width:28px;height:28px;stroke:var(--pd);fill:none;stroke-width:2}
-.sec-card h3{margin-bottom:8px;font-size:1.1rem}.sec-card p{color:var(--ts);font-size:.9rem;line-height:1.6}
+        /* Two phones */
+        .hero-visual-phones {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            justify-content: center;
+            padding: 8px 0;
+        }
+        .phone {
+            max-width: 200px; width: 100%;
+            flex-shrink: 0;
+            border-radius: 32px;
+            padding: 8px;
+        }
+        .phone-dark {
+            background: #0f172a;
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.08);
+        }
+        .phone-light {
+            background: #e2e8f0;
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,0,0,0.06);
+            opacity: 0;
+            transform: translateX(16px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .phone-light.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .phone-screen {
+            border-radius: 26px;
+            padding: 24px 14px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        .phone-dark .phone-screen { background: #1e293b; }
+        .phone-light .phone-screen { background: #ffffff; }
+        .phone-header {
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        .phone-header .avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            margin: 0 auto 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: white;
+            font-weight: 700;
+        }
+        .phone-header .name { font-weight: 600; font-size: 0.8rem; }
+        .phone-dark .phone-header .name { color: white; }
+        .phone-light .phone-header .name { color: var(--text-primary); }
+        .phone-header .status { font-size: 0.64rem; }
+        .phone-dark .phone-header .status { color: #22c55e; }
+        .phone-light .phone-header .status { color: #64748b; }
+        .chat-messages {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .chat-bubble {
+            max-width: 88%;
+            padding: 8px 11px;
+            border-radius: 13px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .chat-bubble.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .phone-dark .chat-bubble.bot {
+            background: #334155;
+            color: #e2e8f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+        }
+        .phone-dark .chat-bubble.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+        .phone-light .chat-bubble.bot {
+            background: #f1f5f9;
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+        }
+        .chat-badge {
+            display: inline-block;
+            background: #22c55e;
+            color: white;
+            font-size: 0.63rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 100px;
+            margin-top: 5px;
+            opacity: 0;
+            transform: scale(0.6);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .chat-badge.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .phone-label {
+            font-size: 0.63rem;
+            font-weight: 600;
+            color: #64748b;
+            text-align: center;
+            margin-top: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .phone-progress-update {
+            font-size: 0.66rem;
+            color: #ea580c;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 6px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .phone-progress-update.visible { opacity: 1; }
 
-/* Beta section */
-.beta-box{max-width:640px;margin:48px auto 0;background:linear-gradient(135deg,rgba(14,165,233,.04),rgba(253,230,138,.06));border:2px dashed var(--pl);border-radius:var(--r);padding:40px 36px;text-align:center}
-.beta-box h3{font-size:1.3rem;margin-bottom:12px}
-.beta-box p{color:var(--ts);font-size:1rem;line-height:1.7;margin-bottom:24px}
-.beta-box .btn{font-size:1.05rem}
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* Email form */
-.email-form{display:flex;gap:12px;max-width:480px;margin:0 auto;flex-wrap:wrap;justify-content:center}
-.email-form input{flex:1;min-width:220px;font-family:inherit;font-size:1rem;padding:14px 20px;border:2px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(255,255,255,.1);color:#fff;outline:none;transition:border-color .2s}
-.email-form input::placeholder{color:rgba(255,255,255,.4)}
-.email-form input:focus{border-color:var(--pl)}
-.email-form button{font-family:inherit;font-size:1rem;font-weight:600;padding:14px 32px;border-radius:14px;border:none;background:var(--cta);color:#fff;cursor:pointer;transition:all .2s}
-.email-form button:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(249,115,22,.4);background:var(--cta-d)}
-.form-msg{margin-top:10px;font-size:.85rem;min-height:20px}
-.form-msg.ok{color:#22C55E}.form-msg.err{color:#EF4444}
+        /* Responsive hero */
+        @media (max-width: 1024px) {
+            .hero-visual { margin-top: 40px; }
+            .hero-visual-phones { flex-direction: column; align-items: center; }
+        }
+        @media (max-width: 768px) {
+            .phone-light { display: none; }
+            .phone { width: 240px; }
+        }
 
-/* FAQ */
-.fl{max-width:720px;margin:48px auto 0}
-.fqi{border-bottom:1px solid var(--b)}
-.fq{width:100%;background:0 0;border:none;font-family:inherit;font-size:1rem;font-weight:600;text-align:left;padding:22px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;color:var(--t);transition:color .2s}
-.fq:hover{color:var(--p)}
-.fq svg{width:20px;height:20px;min-width:20px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .3s}
-.fqi.o .fq svg{transform:rotate(180deg)}
-.fa{max-height:0;overflow:hidden;transition:max-height .3s ease}
-.fai{padding:0 0 22px;color:var(--ts);font-size:.92rem;line-height:1.7}
-.fqi.o .fa{max-height:400px}
+        /* ===== PROBLEM SECTION ===== */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .problem-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: all 0.2s;
+        }
+        .problem-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+        .problem-icon {
+            width: 48px;
+            height: 48px;
+            background: #fef2f2;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+        }
+        .problem-card h3 { margin-bottom: 8px; }
+        .problem-card p { color: var(--text-secondary); font-size: 0.95rem; }
+        .problem-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: var(--warning);
+            font-weight: 600;
+        }
 
-/* CTA */
-.cta{padding:100px 0;background:linear-gradient(135deg,var(--pd),#075985);color:#fff;text-align:center;position:relative;overflow:hidden}
-.cta::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(253,230,138,.1),transparent 70%);border-radius:50%}
-.cta h2{color:#fff;margin-bottom:14px}
-.cta .sub{color:rgba(255,255,255,.7);margin:0 auto 32px}
-.cs{margin-top:14px;font-size:.82rem;color:rgba(255,255,255,.5)}
+        /* ===== HOW IT WORKS ===== */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 56px;
+        }
+        .step {
+            text-align: center;
+            position: relative;
+        }
+        .step-number {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+        .step h3 { margin-bottom: 8px; }
+        .step p { color: var(--text-secondary); font-size: 0.95rem; }
+        .step-connector {
+            position: absolute;
+            top: 28px;
+            left: calc(50% + 40px);
+            width: calc(100% - 80px);
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+            opacity: 0.3;
+        }
 
-/* Telegram link */
-.tg-link{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:.9rem;color:rgba(255,255,255,.6);transition:color .2s}
-.tg-link:hover{color:#fff}
-.tg-link svg{width:18px;height:18px;fill:currentColor}
+        /* ===== FEATURES ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .feature-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 36px;
+            display: flex;
+            gap: 20px;
+            transition: all 0.2s;
+        }
+        .feature-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            min-width: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .feature-icon.purple { background: rgba(249, 115, 22, 0.1); }
+        .feature-icon.cyan { background: rgba(14, 165, 233, 0.1); }
+        .feature-icon.green { background: rgba(34, 197, 94, 0.1); }
+        .feature-icon.amber { background: rgba(245, 158, 11, 0.1); }
+        .feature-icon.rose { background: rgba(244, 63, 94, 0.1); }
+        .feature-icon.blue { background: rgba(59, 130, 246, 0.1); }
+        .feature-card h3 { margin-bottom: 6px; }
+        .feature-card p { color: var(--text-secondary); font-size: 0.92rem; }
 
-footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
-.ftg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
-.ftb p{color:var(--ts);font-size:.88rem;margin-top:10px;max-width:260px}
-.ftc h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tm);margin-bottom:14px}
-.ftc a{display:block;color:var(--ts);font-size:.88rem;padding:5px 0;cursor:pointer}.ftc a:hover{color:var(--p)}
-.ftm{padding-top:20px;border-top:1px solid var(--b);display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--tm)}
-.rv{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.22,1,.36,1)}.rv.vi{opacity:1;transform:translateY(0)}
+        /* ===== SOCIAL PROOF ===== */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+        .testimonial-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+        }
+        .testimonial-stars { color: var(--warning); font-size: 1rem; margin-bottom: 16px; }
+        .testimonial-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        .testimonial-author { display: flex; align-items: center; gap: 12px; }
+        .testimonial-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .testimonial-name { font-weight: 600; font-size: 0.9rem; }
+        .testimonial-role { font-size: 0.8rem; color: var(--text-muted); }
 
-@media(max-width:1024px){.hg{grid-template-columns:1fr;text-align:center}.hc{max-width:100%}.hc .sub{margin:0 auto 36px}.ha{justify-content:center}.hs{justify-content:center}.pw{margin-top:36px}.pg,.sec-grid,.modes-grid{grid-template-columns:1fr;max-width:500px;margin-left:auto;margin-right:auto}.alt-grid{grid-template-columns:repeat(2,1fr);max-width:600px;margin-left:auto;margin-right:auto}.sg{grid-template-columns:repeat(2,1fr)}.ftg{grid-template-columns:1fr 1fr}.pronote-box{grid-template-columns:1fr;text-align:center}}
-@media(max-width:768px){.sec{padding:72px 0}.nl{display:none}.nl.ac{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:var(--bg2);padding:24px;border-bottom:1px solid var(--b);box-shadow:var(--sh)}.mt{display:block}.sg{grid-template-columns:1fr;gap:28px}.sln{display:none}.hs{flex-wrap:wrap;gap:20px}.ftg{grid-template-columns:1fr}.ftm{flex-direction:column;gap:10px;text-align:center}.beta-box{padding:28px 20px}.email-form{flex-direction:column;align-items:stretch}.email-form input{min-width:0}.alt-grid{grid-template-columns:1fr;max-width:400px}}
-@media(max-width:480px){.ha{flex-direction:column;align-items:stretch}.bl{text-align:center;justify-content:center}.beta-banner{font-size:.8rem;padding:8px 16px}}
-@media(prefers-reduced-motion:reduce){.rv{transition:none;opacity:1;transform:none}.bb{animation:none;opacity:1}}
-</style>
+        /* ===== PRICING ===== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+            align-items: start;
+        }
+        .pricing-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px 32px;
+            text-align: center;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .pricing-card:hover { box-shadow: var(--shadow-md); }
+        .pricing-card.featured {
+            border: 2px solid var(--primary);
+            box-shadow: var(--shadow-lg);
+            transform: scale(1.04);
+        }
+        .pricing-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 6px 20px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .pricing-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+            margin: 16px 0 4px;
+        }
+        .pricing-price span { font-size: 1rem; font-weight: 500; color: var(--text-muted); }
+        .pricing-annual { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; }
+        .pricing-features { margin-bottom: 32px; }
+        .pricing-features li {
+            padding: 10px 0;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--bg-soft);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pricing-check {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        /* ===== FONDATEUR ===== */
+        .founder-section {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 48px;
+            align-items: start;
+            text-align: left;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .founder-photo {
+            display: flex;
+            justify-content: center;
+            padding-top: 40px;
+        }
+        .founder-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 8px 32px rgba(249,115,22,0.25);
+        }
+        .founder-story h2 {
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            margin: 12px 0 20px;
+        }
+        .founder-story p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+        }
+        .founder-links {
+            margin: 20px 0;
+        }
+        .founder-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent);
+            transition: color 0.2s;
+        }
+        .founder-link:hover { color: var(--primary); }
+        .founder-cta {
+            margin-top: 32px;
+            padding: 28px;
+            background: var(--bg-soft);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        .founder-cta h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 768px) {
+            .founder-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 24px;
+            }
+            .founder-photo { padding-top: 0; }
+            .founder-cta { text-align: center; }
+        }
+
+        /* ===== FAQ ===== */
+        .faq-list {
+            max-width: 760px;
+            margin: 48px auto 0;
+        }
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-align: left;
+            padding: 24px 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-primary);
+        }
+        .faq-question:hover { color: var(--primary); }
+        .faq-chevron {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            transition: transform 0.3s;
+        }
+        .faq-item.open .faq-chevron { transform: rotate(180deg); }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .faq-answer-inner {
+            padding: 0 0 24px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .faq-item.open .faq-answer { max-height: 300px; }
+
+        /* ===== CTA FINAL ===== */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #7C2D12 100%);
+            color: white;
+            text-align: center;
+        }
+        .cta-section h2 { color: white; margin-bottom: 16px; }
+        .cta-section .subtitle { color: rgba(255,255,255,0.75); margin: 0 auto 40px; }
+        .cta-section .btn-primary {
+            background: white;
+            color: var(--primary-dark);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+        }
+        .cta-section .btn-primary:hover {
+            background: #f0f0ff;
+            transform: translateY(-2px);
+        }
+        .cta-guarantee {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--bg-soft);
+            padding: 60px 0 32px;
+            border-top: 1px solid var(--border);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-brand p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 12px; max-width: 280px; }
+        .footer-col h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 16px; }
+        .footer-col a { display: block; color: var(--text-secondary); font-size: 0.9rem; padding: 6px 0; }
+        .footer-col a:hover { color: var(--primary); }
+        .footer-bottom {
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-inner { grid-template-columns: 1fr; text-align: center; }
+            .hero-content { max-width: 100%; }
+            .hero .subtitle { margin: 0 auto 40px; }
+            .hero-actions { justify-content: center; }
+            .hero-stats { justify-content: center; }
+            .hero-visual {
+            max-width: 100%;
+            overflow: hidden; margin-top: 40px; }
+            .problem-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
+            .features-grid { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+            .pricing-card.featured { transform: none; }
+            .testimonials-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .section { padding: 72px 0; }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: 24px;
+                border-bottom: 1px solid var(--border);
+                box-shadow: var(--shadow-md);
+            }
+            .nav-cta { margin-left: 0; }
+            .steps { grid-template-columns: 1fr; gap: 32px; }
+            .step-connector { display: none; }
+            .hero-stats { flex-wrap: wrap; gap: 24px; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .hero-actions { flex-direction: column; align-items: stretch; }
+            .btn-lg { text-align: center; justify-content: center; }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== SIMPLE STEPS (Comment ca marche) ===== */
+        .simple-steps {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0;
+            margin-top: 48px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .simple-step {
+            flex: 1;
+            padding: 0 24px;
+            text-align: center;
+        }
+        .step-num {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+        .simple-step h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .simple-step p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .step-arrow {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            padding-top: 12px;
+            flex-shrink: 0;
+        }
+        @media (max-width: 768px) {
+            .simple-steps { flex-direction: column; gap: 32px; }
+            .step-arrow { display: none; }
+        }
+
+        /* ===== BRAIN / ECOSYSTEME ===== */
+        .brain-section {
+            background: #0b1120;
+            color: #f1f5f9;
+            padding: 100px 0;
+            position: relative;
+        }
+        .brain-section::before,
+        .brain-section::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0;
+            height: 80px;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .brain-section::before {
+            top: 0;
+            background: linear-gradient(to bottom, #ffffff 0%, transparent 100%);
+        }
+        .brain-section::after {
+            bottom: 0;
+            background: linear-gradient(to top, #ffffff 0%, transparent 100%);
+        }
+        .brain-section .label {
+            color: #FB923C;
+            background: rgba(249,115,22,0.15);
+        }
+        .brain-section h2 { color: #f1f5f9; max-width: 680px; margin: 0 auto; }
+
+        /* Trio grid: 3 actors around precepteur */
+        .trio-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            grid-template-rows: auto auto;
+            gap: 24px 40px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        .trio-actor {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+        }
+        .trio-bottom {
+            grid-column: 1 / -1;
+            max-width: 340px;
+            margin: 0 auto;
+        }
+        .trio-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2.5px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: rgba(255,255,255,0.04);
+            box-shadow: 0 0 20px rgba(255,255,255,0.06);
+        }
+        .trio-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+        .trio-receives, .trio-does {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 0.82rem;
+            color: #d6d3d1;
+            line-height: 1.5;
+            width: 100%;
+            backdrop-filter: blur(4px);
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        .trio-receives:hover, .trio-does:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.15);
+        }
+        .trio-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #a8a29e;
+            margin-bottom: 6px;
+        }
+        .trio-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .trio-hub {
+            background: rgba(249,115,22,0.08);
+            border: 2px solid rgba(249,115,22,0.3);
+            border-radius: 16px;
+            padding: 20px 24px;
+            text-align: center;
+        }
+        .trio-arrows { display: none; }
+        @media (max-width: 768px) {
+            .trio-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .trio-bottom { max-width: 100%; }
+            .trio-center { order: -1; }
+        }
+
+        /* Flow section (input -> precepteur -> output) */
+        .flow-section {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 32px;
+        }
+        .flow-col {
+            flex: 1;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .flow-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 4px;
+        }
+        .flow-box {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.85rem;
+            color: #d6d3d1;
+            line-height: 1.5;
+        }
+        .flow-box strong { color: #f5f5f4; }
+        .flow-out { background: rgba(255,255,255,0.04); }
+        .flow-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 36px;
+            flex-shrink: 0;
+        }
+        @media (max-width: 768px) {
+            .flow-section { flex-direction: column; align-items: center; }
+            .flow-col { max-width: 100%; }
+            .flow-arrow svg { transform: rotate(90deg); }
+        }
+
+        /* 3-column grid */
+        .brain-grid {
+            display: grid;
+            grid-template-columns: 220px 1fr 300px;
+            align-items: center;
+            margin-top: 64px;
+            min-height: 240px;
+        }
+
+        /* LEFT: data sources */
+        .brain-sources {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-self: center;
+            gap: 24px;
+        }
+        .brain-src-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brain-src-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.85rem;
+        }
+        .brain-src-icon.orange { background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.35); }
+        .brain-src-icon.blue   { background: rgba(14,165,233,0.15);  border: 1px solid rgba(14,165,233,0.35); }
+        .brain-src-icon.green  { background: rgba(34,197,94,0.15);   border: 1px solid rgba(34,197,94,0.35); }
+        .brain-src-row.r-orange { animation: src-pulse 3s ease-in-out infinite; }
+        .brain-src-row.r-blue   { animation: src-pulse 3s ease-in-out infinite 1s; }
+        .brain-src-row.r-green  { animation: src-pulse 3s ease-in-out infinite 2s; }
+        @keyframes src-pulse {
+            0%, 100% { opacity: 0.65; }
+            50% { opacity: 1; }
+        }
+        .brain-src-text {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+        .brain-src-text strong {
+            color: #e2e8f0;
+            font-weight: 600;
+            display: block;
+        }
+
+        /* CENTER: particles */
+        .brain-particles-wrap {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 16px;
+        }
+        .brain-particles-track {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 44px;
+        }
+        .dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            animation: flowDot linear infinite;
+        }
+        .dot.c-orange { background: #F97316; box-shadow: 0 0 8px #F97316; }
+        .dot.c-blue   { background: #0EA5E9; box-shadow: 0 0 8px #0EA5E9; }
+        .dot.c-green  { background: #22C55E; box-shadow: 0 0 8px #22C55E; }
+        @keyframes flowDot {
+            0%   { transform: translateX(0);     opacity: 0; }
+            8%   { opacity: 0.9; }
+            88%  { opacity: 0.9; }
+            100% { transform: translateX(260px); opacity: 0; }
+        }
+        .brain-tagline {
+            position: relative;
+            font-size: 0.95rem;
+            color: #94a3b8;
+            opacity: 0.8;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* RIGHT: message cards */
+        .brain-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .brain-card {
+            border-radius: 10px;
+            padding: 11px 13px;
+            border-left: 3px solid;
+            background: rgba(255,255,255,0.04);
+            opacity: 0;
+            transform: translateX(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .brain-card.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .brain-card.card-orange { border-color: #F97316; }
+        .brain-card.card-blue   { border-color: #0EA5E9; }
+        .brain-card.card-green  { border-color: #22C55E; }
+        .brain-card-role {
+            font-size: 0.63rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+        .card-orange .brain-card-role { color: #F97316; }
+        .card-blue   .brain-card-role { color: #0EA5E9; }
+        .card-green  .brain-card-role { color: #22C55E; }
+        .brain-card-text {
+            font-size: 0.77rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+        .brain-card-text strong { color: #e2e8f0; }
+
+        @media (max-width: 900px) {
+            .brain-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            .brain-particles-wrap { display: none; }
+            .brain-card { opacity: 1; transform: none; }
+        }
+
+        /* ===== SKILL TREE ===== */
+        .tree-section {
+            background: #ffffff;
+            padding: 100px 0;
+        }
+        .tree-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 48px;
+            align-items: start;
+            margin-top: 64px;
+        }
+        .tree-canvas {
+            position: relative;
+        }
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 0;
+            position: relative;
+        }
+        .tree-node {
+            border-radius: 12px;
+            padding: 14px 18px;
+            border: 2px solid;
+            min-width: 140px;
+            max-width: 160px;
+            text-align: center;
+            position: relative;
+            background: white;
+            transition: transform 0.2s;
+        }
+        .tree-node:hover { transform: translateY(-2px); }
+        .tree-node.mastered {
+            border-color: #22C55E;
+            background: rgba(34,197,94,0.06);
+        }
+        .tree-node.in-progress {
+            border-color: #f59e0b;
+            background: rgba(245,158,11,0.06);
+        }
+        .tree-node.locked {
+            border-color: #cbd5e1;
+            background: rgba(203,213,225,0.3);
+        }
+        .tree-node-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .tree-node.locked .tree-node-name { color: #94a3b8; }
+        .tree-node-badge {
+            font-size: 0.72rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .tree-node.mastered .tree-node-badge { color: #22C55E; }
+        .tree-node.in-progress .tree-node-badge { color: #f59e0b; }
+        .tree-node.locked .tree-node-badge { color: #94a3b8; }
+
+        /* Progress ring */
+        .progress-ring-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 4px;
+        }
+        .progress-ring-bg {
+            fill: none;
+            stroke: rgba(245,158,11,0.2);
+            stroke-width: 3;
+        }
+        .progress-ring-fill {
+            fill: none;
+            stroke: #f59e0b;
+            stroke-width: 3;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+
+        /* SVG connectors for tree */
+        .tree-svg-layer {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        /* Tree levels wrapper */
+        .tree-levels {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 20px 0;
+        }
+
+        /* Annotations */
+        .tree-annotations {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .tree-annotation {
+            border-radius: 12px;
+            padding: 16px 18px;
+            border-left: 3px solid;
+            background: var(--bg-soft);
+        }
+        .tree-annotation.green { border-color: #22C55E; }
+        .tree-annotation.amber { border-color: #f59e0b; }
+        .tree-annotation.slate { border-color: #94a3b8; }
+        .tree-annotation-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            margin-bottom: 6px;
+        }
+        .tree-annotation.green .tree-annotation-title { color: #16A34A; }
+        .tree-annotation.amber .tree-annotation-title { color: #d97706; }
+        .tree-annotation.slate .tree-annotation-title { color: #64748b; }
+        .tree-annotation p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        @media (max-width: 900px) {
+            .tree-layout {
+                grid-template-columns: 1fr;
+            }
+            .tree-annotations { display: none; }
+            .tree-node { min-width: 110px; max-width: 130px; padding: 10px 12px; }
+            .tree-node-name { font-size: 0.78rem; }
+            .tree-level { gap: 10px; }
+        }
+        @media (max-width: 480px) {
+            .tree-node { min-width: 90px; max-width: 110px; padding: 8px 10px; }
+            .tree-level { gap: 6px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- BANDEAU BETA -->
-<div class="beta-banner">B&ecirc;ta ouverte <span>— Tarif pr&eacute;f&eacute;rentiel pour les premiers parents</span></div>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="#" class="logo">precepteur<span>.</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="#probleme">Le problème</a>
+                <a href="#fonctionnement">Comment ca marche</a>
+                <a href="#ecosysteme">L'écosystème</a>
+                <a href="#parcours">Le parcours</a>
+                <a href="#fonctionnalites">Fonctionnalités</a>
+                <a href="#tarifs">Tarifs</a>
+                <a href="#faq">FAQ</a>
+                <a href="#essai" class="btn btn-primary nav-cta">Essai gratuit</a>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
 
-<!-- NAV -->
-<nav id="nv"><div class="ni"><a href="#" class="lo">precepteur<span>.</span>ai</a><div class="nl" id="nl"><a href="#probleme">Le probl&egrave;me</a><a href="#alternatives">Solutions</a><a href="#fonctionnement">Comment &ccedil;a marche</a><a href="#modes">Les modes</a><a href="#faq">FAQ</a><a href="register.html" class="btn bp nc">Essayer gratuitement</a></div><button class="mt" id="mb" aria-label="Menu"><span></span><span></span><span></span></button></div></nav>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero-inner">
+            <div class="hero-content">
+                <span class="label">Bêta ouverte — Tarif préférentiel pour les premiers parents</span>
+                <h1>Soutien scolaire<br><span class="text-gradient">nouvelle génération.</span></h1>
+                <p class="subtitle">
+                    Vous voulez le meilleur pour votre enfant. Maintenant, quelqu'un s'en occupe chaque soir. 3 exercices ciblés, un bilan pour les parents, un suivi qui s'adapte.
+                </p>
+                <div class="hero-actions">
+                    <a href="#essai" class="btn btn-primary btn-lg">Découvrir le précepteur</a>
+                    <a href="#fonctionnement" class="btn btn-outline btn-lg">Voir comment ca marche</a>
+                </div>
+                <div class="hero-stats">
+                    <div>
+                        <div class="hero-stat-value">15 min</div>
+                        <div class="hero-stat-label">par soir, pas plus</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-value">Adapté</div>
+                        <div class="hero-stat-label">au niveau de votre enfant</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-value">Chaque jour</div>
+                        <div class="hero-stat-label">un suivi quotidien</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-visual-phones">
+                    <!-- Left phone: eleve -->
+                    <div>
+                        <div class="phone phone-dark" id="phoneEleve">
+                            <div class="phone-screen">
+                                <div class="phone-header">
+                                    <div class="avatar">P</div>
+                                    <div class="name">Précepteur</div>
+                                    <div class="status">En ligne</div>
+                                </div>
+                                <div class="chat-messages">
+                                    <div class="chat-bubble bot" id="pMsg1">Salut ! Ce soir, on attaque les fractions. Simplifie 12/18.</div>
+                                    <div class="chat-bubble user" id="pMsg2">2/3 ?</div>
+                                    <div class="chat-bubble bot" id="pMsg3">Exact ! Tu as divisé par 6, bien vu.</div>
+                                    <div id="pBadgeWrap" style="padding-left:2px;">
+                                        <span class="chat-badge" id="pBadge">RÉUSSI</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<!-- HERO -->
-<section class="hero"><div class="ctr hg">
-<div class="hc">
-<span class="tag">Soutien scolaire nouvelle g&eacute;n&eacute;ration</span>
-<h1>Vous voulez le meilleur pour votre enfant.<br><span class="tg">Maintenant, quelqu'un s'en occupe chaque soir.</span></h1>
-<p class="sub">Un pr&eacute;cepteur qui conna&icirc;t votre enfant, qui d&eacute;tecte ses lacunes, et qui lui envoie chaque soir 3 exercices cibl&eacute;s. 15 minutes. Correction imm&eacute;diate. Et vous recevez le bilan.</p>
-<div class="ha"><a href="register.html" class="btn bp bl">D&eacute;couvrir le pr&eacute;cepteur</a><a href="#fonctionnement" class="btn bo bl">Comment &ccedil;a marche</a></div>
-<div class="hs"><div><div class="sv">15 min</div><div class="sl">par soir, pas plus</div></div><div><div class="sv">Adapt&eacute;</div><div class="sl">au niveau de votre enfant</div></div><div><div class="sv">Chaque jour</div><div class="sl">suivi quotidien</div></div></div>
-</div>
-<div class="pw"><div class="ph"><div class="ps">
-<div class="phd"><div class="pav">P</div><div class="pnm">Pr&eacute;cepteur AI</div><div class="pst">En ligne</div></div>
-<div class="ch">
-<div class="bb b">Salut Emma ! Ce soir, on attaque les fractions. Exercice 1 : simplifie 12/18.</div>
-<div class="bb u">Euh... 2/3 ?</div>
-<div class="bb b">Exact ! Tu as divis&eacute; par 6, bien vu. Exercice 2 : 3/4 + 2/3 = ?</div>
-<div class="bb b">Bonsoir Nathalie ! Emma a fini ses 3 exercices en 11 min. Les fractions : en progr&egrave;s, +15 points cette semaine. Elle bloque encore sur les additions avec d&eacute;nominateurs diff&eacute;rents, on insiste demain.</div>
-<div class="bb u">Super, merci !</div>
-</div>
-</div></div></div>
-</div></section>
+                    <!-- Right phone: parent -->
+                    <div>
+                        <div class="phone phone-light" id="phoneParent">
+                            <div class="phone-screen">
+                                <div class="phone-header">
+                                    <div class="avatar" style="background:linear-gradient(135deg,#10b981,#06b6d4);">P</div>
+                                    <div class="name">Précepteur</div>
+                                    <div class="status">Notification</div>
+                                </div>
+                                <div class="chat-messages">
+                                    <div class="chat-bubble bot" id="ppMsg1">Emma a fini ses 3 exercices en 11 min. Fractions bien comprises. Demain : additions de fractions.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="phone-progress-update" id="phoneProgressUpdate">Fractions : 72% → 85%</div>
+                    </div>
+                </div>            </div>
+        </div>
+    </section>
 
-<!-- LE VRAI PROBLEME -->
-<section class="sec sec-a" id="probleme"><div class="ctr tc">
-<span class="tag">Le vrai probl&egrave;me</span>
-<h2>Vous ne pouvez pas &ecirc;tre derri&egrave;re votre enfant tous les soirs. Et c'est normal.</h2>
-<p class="sub" style="margin:14px auto 0">Le jour du bulletin, c'est la panique. Vous prenez des d&eacute;cisions. Puis la vie reprend, le suivi s'effrite, et les lacunes s'accumulent en silence.</p>
-<div class="pg">
-<div class="pc rv"><div class="pi"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div><h3>Le bulletin trimestriel</h3><p>Vous d&eacute;couvrez les d&eacute;g&acirc;ts trois mois trop tard. "8 en maths ? Depuis quand ?" Mais les lacunes se sont accumul&eacute;es depuis des semaines, sans que personne ne vous pr&eacute;vienne.</p></div>
-<div class="pc rv"><div class="pi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3>Entre les bulletins</h3><p>Le suivi s'effrite en quelques jours. Vous avez d&eacute;cid&eacute; d'un planning, de v&eacute;rifier les devoirs. &Ccedil;a tient une semaine. Puis les soirs se remplissent, et quand vous demandez "c'est bon &agrave; l'&eacute;cole ?", la r&eacute;ponse est toujours "oui, oui".</p></div>
-<div class="pc rv"><div class="pi"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div><h3>L'impuissance</h3><p>Vous n'avez ni le temps de v&eacute;rifier chaque devoir, ni la m&eacute;thode pour proposer les bons exercices. Vous n'&ecirc;tes pas prof. Et votre enfant avance sans filet.</p></div>
-</div></div></section>
+    <!-- PROBLEM -->
+    <section class="section section-alt" id="probleme">
+        <div class="container text-center">
+            <span class="label">Le constat</span>
+            <h2>Pronote est un cauchemar pour les parents</h2>
+            <p class="subtitle" style="margin: 16px auto 0;">
+                Interface complexe, informations éparpillées, zéro proactivité.
+                Vous méritez mieux que de chercher les notes de votre enfant dans un labyrinthe.
+            </p>
+            <div class="problem-grid">
+                <div class="problem-card reveal">
+                    <div class="problem-icon">&#128553;</div>
+                    <h3>Interface incompréhensible</h3>
+                    <p>Menus imbriqués, 15 clics pour trouver une note. Conçu pour les profs, pas pour vous.</p>
+                    <div class="problem-rating">
+                        &#9733;&#9733;&#9734;&#9734;&#9734; 2.19/5 sur Google Play
+                    </div>
+                </div>
+                <div class="problem-card reveal">
+                    <div class="problem-icon">&#128564;</div>
+                    <h3>Aucune alerte proactive</h3>
+                    <p>Une mauvaise note ? Une absence ? Vous ne le savez que si vous pensez à vérifier. Trop tard.</p>
+                    <div class="problem-rating">
+                        &#9733;&#9734;&#9734;&#9734;&#9734; 1.3/5 sur Trustpilot
+                    </div>
+                </div>
+                <div class="problem-card reveal">
+                    <div class="problem-icon">&#129327;</div>
+                    <h3>Zéro conseil personnalisé</h3>
+                    <p>Pronote affiche des chiffres. Point. Pas de contexte, pas de tendance, pas de plan d'action.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- POURQUOI LES SOLUTIONS EXISTANTES NE MARCHENT PAS -->
-<section class="sec" id="alternatives"><div class="ctr tc">
-<span class="tag">Ce que vous avez d&eacute;j&agrave; essay&eacute;</span>
-<h2>Vous avez d&eacute;j&agrave; tout essay&eacute;.</h2>
-<p class="sub" style="margin:14px auto 0">Prof particulier, applications, Pronote, ChatGPT. Aucune de ces solutions ne r&egrave;gle le vrai probl&egrave;me : le suivi au quotidien.</p>
-<div class="alt-grid rv">
-<div class="alt-card">
-<div class="alt-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-<h3>Prof particulier</h3>
-<p>30-40 EUR de l'heure. Une heure par semaine. Pas de suivi entre les s&eacute;ances. Vous esp&eacute;rez que &ccedil;a suffise.</p>
-<div class="alt-verdict">6 jours sur 7 sans suivi</div>
-</div>
-<div class="alt-card">
-<div class="alt-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-<h3>Kartable / Wilgo</h3>
-<p>Du contenu g&eacute;n&eacute;rique. Votre enfant doit aller le chercher lui-m&ecirc;me. Devinez quoi : il n'y va pas.</p>
-<div class="alt-verdict">L'enfant doit se motiver seul</div>
-</div>
-<div class="alt-card">
-<div class="alt-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
-<h3>Pronote</h3>
-<p>Des chiffres. Pas de conseil. Pas d'accompagnement. Un outil fait pour les profs, pas pour vous.</p>
-<div class="alt-verdict">Z&eacute;ro conseil, z&eacute;ro action</div>
-</div>
-<div class="alt-card">
-<div class="alt-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-<h3>ChatGPT</h3>
-<p>Pas de m&eacute;moire. Pas de programme. Pas de suivi. Il oublie tout &agrave; chaque conversation.</p>
-<div class="alt-verdict">Repart de z&eacute;ro &agrave; chaque fois</div>
-</div>
-</div>
-</div></section>
+    <!-- HOW IT WORKS -->
+    <section class="section" id="fonctionnement">
+        <div class="container text-center">
+            <span class="label">Comment ca marche</span>
+            <h2>Parent, élève, tuteur — tout le monde est synchro</h2>
+            <p class="subtitle" style="margin: 16px auto 32px;">
+                Précepteur connecte les trois acteurs de la réussite scolaire. Chacun reçoit ce dont il a besoin, chaque soir.
+            </p>
+            <div class="simple-steps">
+                <div class="simple-step reveal">
+                    <div class="step-num">1</div>
+                    <h3>Inscrivez-vous en 2 min</h3>
+                    <p>Envoyez "Bonjour" sur Telegram. Choisissez votre rôle. Connectez Pronote.</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="simple-step reveal">
+                    <div class="step-num">2</div>
+                    <h3>L'élève progresse</h3>
+                    <p>Chaque soir, 3 exercices adaptés à son niveau. Le bot détecte les lacunes et construit le programme.</p>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="simple-step reveal">
+                    <div class="step-num">3</div>
+                    <h3>Vous êtes informés</h3>
+                    <p>Le parent reçoit le bilan. Le tuteur voit les exercices prévus et peut ajuster. Tout le monde avance ensemble.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- LA SOLUTION -->
-<section class="sec sec-a" id="fonctionnement"><div class="ctr tc">
-<span class="tag">La solution</span>
-<h2>Un pr&eacute;cepteur qui conna&icirc;t votre enfant et s'en occupe chaque jour.</h2>
-<p class="sub" style="margin:14px auto 0">En 5 minutes, c'est en place. Ce soir, votre enfant travaille.</p>
-<div class="sg">
-<div class="sp rv"><div class="sn">1</div><div class="sln"></div><h3>Il analyse le dossier</h3><p>Le pr&eacute;cepteur r&eacute;cup&egrave;re les notes via Pronote, ou discute directement avec votre enfant. En quelques minutes, il identifie les lacunes.</p></div>
-<div class="sp rv"><div class="sn">2</div><div class="sln"></div><h3>Il cr&eacute;e un programme</h3><p>Un parcours adapt&eacute; au niveau r&eacute;el de votre enfant. Pas un PDF g&eacute;n&eacute;rique. Si c'est les fractions qui bloquent, c'est l&agrave;-dessus qu'on travaille.</p></div>
-<div class="sp rv"><div class="sn">3</div><div class="sln"></div><h3>Chaque soir : 3 exercices, 15 minutes</h3><p>Des exercices cibl&eacute;s sur ses faiblesses r&eacute;elles. Correction imm&eacute;diate. S'il bloque, le pr&eacute;cepteur d&eacute;compose et r&eacute;explique.</p></div>
-<div class="sp rv"><div class="sn">4</div><h3>Chaque semaine : vous voyez la progression</h3><p>"Emma a progress&eacute; de 15 points en fractions cette semaine. Elle bloque encore sur les d&eacute;nominateurs, on insiste." Le programme s'ajuste.</p></div>
-</div></div></section>
+    <!-- ECOSYSTEME -->
+    <section class="brain-section" id="ecosysteme">
+        <div class="container">
+            <div style="text-align:center;margin-bottom:48px;">
+                <span class="label" style="background:rgba(249,115,22,0.15);color:#FB923C;">Comment ca fonctionne</span>
+                <h2 style="color:#fff;margin-top:16px;">3 acteurs, 1 Précepteur, tout le monde est synchro</h2>
+            </div>
 
-<!-- DEUX MODES -->
-<section class="sec" id="modes"><div class="ctr tc">
-<span class="tag">Deux approches</span>
-<h2>Votre enfant gal&egrave;re ? Il s'ennuie ? Le pr&eacute;cepteur s'adapte.</h2>
-<p class="sub" style="margin:14px auto 0">Pas le m&ecirc;me programme pour un &eacute;l&egrave;ve &agrave; 8/20 et un &eacute;l&egrave;ve &agrave; 16/20.</p>
-<div class="modes-grid rv">
-<div class="mode-card remediation">
-<div class="mode-badge">Remonter la pente</div>
-<h3>Emma a 8/20 en maths. En 4 semaines, elle passe &agrave; 12.</h3>
-<p>Le pr&eacute;cepteur identifie exactement o&ugrave; &ccedil;a bloque. Pas "les maths en g&eacute;n&eacute;ral". Non : les fractions avec d&eacute;nominateurs diff&eacute;rents. Il construit un plan semaine par semaine pour combler ce trou.</p>
-<div class="mode-example">
-<div class="mode-label">Emma, 4e — les fractions</div>
-<strong>Semaine 1 :</strong> Reprendre les bases. Simplifier une fraction, trouver un d&eacute;nominateur commun.<br>
-<strong>Semaine 2 :</strong> Additionner et soustraire des fractions. 3 exercices par soir.<br>
-<strong>Semaine 3 :</strong> Multiplier, diviser. Les probl&egrave;mes concrets arrivent.<br>
-<strong>Semaine 4 :</strong> Exercice type contr&ocirc;le. Emma le fait en 12 minutes, sans erreur.<br>
-<strong>R&eacute;sultat :</strong> Contr&ocirc;le suivant : 13/20.
-</div>
-<div class="mode-vision">Les bases solides aujourd'hui, c'est m&eacute;decine, ing&eacute;nieur ou grande &eacute;cole demain. Tout commence par des fondations construites maintenant.</div>
-</div>
-<div class="mode-card excellence">
-<div class="mode-badge">Aller plus loin</div>
-<h3>Lucas a 16/20 en fran&ccedil;ais. Il d&eacute;couvre la dissertation en avance.</h3>
-<p>Votre enfant est bon &eacute;l&egrave;ve. Mais le programme scolaire ne le pousse pas assez. Le pr&eacute;cepteur lui propose des exercices au-dessus de son niveau. Il pr&eacute;pare le terrain pour la suite.</p>
-<div class="mode-example">
-<div class="mode-label">Lucas, 3e — argumentation avanc&eacute;e</div>
-<strong>Semaine 1 :</strong> Lire un texte philosophique et en extraire la th&egrave;se. Pas au programme de 3e, mais Lucas est pr&ecirc;t.<br>
-<strong>Semaine 2 :</strong> Construire un plan en 3 parties sur un sujet de soci&eacute;t&eacute;.<br>
-<strong>Semaine 3 :</strong> R&eacute;diger une vraie dissertation de 2 pages. Le pr&eacute;cepteur corrige ligne par ligne.<br>
-<strong>Semaine 4 :</strong> Sujet type brevet avanc&eacute;. Lucas le finit en 45 min.<br>
-<strong>R&eacute;sultat :</strong> Mention Tr&egrave;s Bien au brevet. Une longueur d'avance pour la seconde.
-</div>
-<div class="mode-vision">Pr&eacute;pa, m&eacute;decine, grandes &eacute;coles — ou simplement une rigueur et des comp&eacute;tences qui serviront toute la vie.</div>
-</div>
-</div></div></section>
+            <div class="trio-grid reveal">
 
-<!-- PRONOTE -->
-<section class="sec sec-a" id="pronote"><div class="ctr tc">
-<span class="tag">Pronote</span>
-<h2>Avec ou sans Pronote, le suivi d&eacute;marre en 5 minutes.</h2>
-<div class="pronote-box rv" style="margin-top:36px">
-<div class="pronote-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-<div style="text-align:left">
-<h3>Avec Pronote : diagnostic instantan&eacute;</h3>
-<p>Connectez le compte Pronote. Le pr&eacute;cepteur importe les notes, les moyennes, les devoirs. Le programme d&eacute;marre automatiquement.</p>
-<p style="margin-top:16px"><strong>Sans Pronote : le pr&eacute;cepteur discute avec votre enfant</strong></p>
-<p>Quelques questions, quelques exercices de diagnostic. En 5 minutes, il cerne le niveau et les lacunes. Le programme d&eacute;marre exactement de la m&ecirc;me fa&ccedil;on.</p>
-<p style="margin-top:16px;color:var(--ts);font-size:.9rem">Dans les deux cas, le suivi quotidien est le m&ecirc;me : exercices chaque soir, bilan chaque semaine, programme ajust&eacute; en continu.</p>
-</div>
-</div>
-</div></section>
+                <!-- Parent -->
+                <div class="trio-actor">
+                    <div class="trio-circle" style="border-color:#F97316;color:#F97316;">P</div>
+                    <div class="trio-name" style="color:#F97316;">Le parent</div>
+                    <div class="trio-receives">
+                        <div class="trio-tag">Reçoit chaque soir</div>
+                        Bilan factuel : notes, devoirs, absences, action concrète pour le soir
+                    </div>
+                    <div class="trio-does">
+                        <div class="trio-tag">Peut faire</div>
+                        Poser des questions, demander un bilan complet, suivre la progression
+                    </div>
+                </div>
 
-<!-- SECURITE -->
-<section class="sec" id="securite"><div class="ctr tc">
-<span class="tag">S&eacute;curit&eacute;</span>
-<h2>Les donn&eacute;es de votre enfant sont sacr&eacute;es.</h2>
-<p class="sub" style="margin:14px auto 0">C'est un mineur. On traite ses donn&eacute;es comme on traiterait celles de nos propres enfants.</p>
-<div class="sec-grid">
-<div class="sec-card rv">
-<div class="sec-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-<h3>Tout est chiffr&eacute;</h3>
-<p>Les identifiants Pronote, les notes, les conversations : tout est chiffr&eacute;. Personne ne peut lire les donn&eacute;es de votre enfant.</p>
-</div>
-<div class="sec-card rv">
-<div class="sec-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-<h3>RGPD, droit fran&ccedil;ais</h3>
-<p>Protection renforc&eacute;e pour les mineurs. Consentement parental obligatoire. H&eacute;berg&eacute; en Europe. Aucune donn&eacute;e revendue.</p>
-</div>
-<div class="sec-card rv">
-<div class="sec-icon"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
-<h3>Suppression sur demande</h3>
-<p>Un email et c'est fait. Sous 48h, tout est effac&eacute; : notes, conversations, compte. Pas de formulaire en 12 &eacute;tapes.</p>
-</div>
-</div></div></section>
+                <!-- Center: Precepteur -->
+                <div class="trio-center">
+                    <div class="trio-hub">
+                        <div style="font-size:1.1rem;font-weight:800;color:#f5f5f4;">precepteur<span style="color:#F97316;">.</span></div>
+                        <div style="font-size:0.7rem;color:#a8a29e;margin-top:4px;">Connecté à Pronote</div>
+                        <div style="font-size:0.7rem;color:#a8a29e;">Mémoire long terme</div>
+                        <div style="font-size:0.7rem;color:#a8a29e;">IA adaptative</div>
+                    </div>
+                    <div class="trio-arrows">
+                        <svg viewBox="0 0 200 200" width="200" height="200" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;">
+                            <!-- arrows to/from each actor -->
+                            <line x1="100" y1="40" x2="30" y2="10" stroke="#F97316" stroke-width="1.5" opacity="0.4" stroke-dasharray="4 3"/>
+                            <line x1="100" y1="40" x2="170" y2="10" stroke="#0EA5E9" stroke-width="1.5" opacity="0.4" stroke-dasharray="4 3"/>
+                            <line x1="100" y1="160" x2="100" y2="190" stroke="#22C55E" stroke-width="1.5" opacity="0.4" stroke-dasharray="4 3"/>
+                        </svg>
+                    </div>
+                </div>
 
-<!-- BETA + CTA -->
-<section class="sec sec-a" id="beta-join"><div class="ctr tc">
-<span class="tag">B&ecirc;ta ouverte</span>
-<h2>B&ecirc;ta ouverte. Tarif pr&eacute;f&eacute;rentiel pour les premiers parents.</h2>
-<div class="beta-box rv">
-<h3>Rejoignez les premi&egrave;res familles</h3>
-<p>Le service est en b&ecirc;ta. Inscrivez-vous maintenant, votre enfant re&ccedil;oit ses premiers exercices ce soir. Les premiers parents b&eacute;n&eacute;ficient d'un tarif pr&eacute;f&eacute;rentiel &agrave; vie quand l'abonnement sera lanc&eacute;.</p>
-<a href="register.html" class="btn bp bl">S'inscrire &agrave; la b&ecirc;ta</a>
-</div>
-</div></section>
+                <!-- Eleve -->
+                <div class="trio-actor">
+                    <div class="trio-circle" style="border-color:#0EA5E9;color:#0EA5E9;">E</div>
+                    <div class="trio-name" style="color:#0EA5E9;">L'élève</div>
+                    <div class="trio-receives">
+                        <div class="trio-tag">Reçoit chaque soir</div>
+                        3 exercices adaptés, corrigés en direct, parcours qui s'ajuste
+                    </div>
+                    <div class="trio-does">
+                        <div class="trio-tag">Peut faire</div>
+                        Poser des questions sur ses cours, demander des explications, réviser
+                    </div>
+                </div>
 
-<!-- FAQ -->
-<section class="sec" id="faq"><div class="ctr tc">
-<span class="tag">Vos questions</span>
-<h2>Ce que les parents demandent</h2>
-<div class="fl">
-<div class="fqi"><button class="fq">C'est vraiment adapt&eacute; &agrave; mon enfant ou c'est les m&ecirc;mes exercices pour tout le monde ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">Chaque enfant a son propre programme. Si votre fille bloque sur les fractions, elle ne recevra pas d'exercices sur les &eacute;quations. Le pr&eacute;cepteur identifie ses lacunes pr&eacute;cises et construit un plan pour elle, pas pour "un &eacute;l&egrave;ve de 4e en g&eacute;n&eacute;ral".</div></div></div>
-<div class="fqi"><button class="fq">Mon enfant ne va pas tricher en demandant les r&eacute;ponses ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">Le pr&eacute;cepteur ne donne jamais la r&eacute;ponse directement. Si votre enfant bloque, il d&eacute;compose le probl&egrave;me &eacute;tape par &eacute;tape. Il guide, il explique, il donne des indices. Et s'il d&eacute;tecte que votre enfant r&eacute;pond au hasard, il le signale dans votre bilan.</div></div></div>
-<div class="fqi"><button class="fq">Et si mon enfant refuse de faire les exercices ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">15 minutes par soir, c'est court. Et les exercices sont cibl&eacute;s sur son niveau exact, donc il ne se retrouve jamais face &agrave; un mur. Soyons honn&ecirc;tes : le pr&eacute;cepteur ne remplace pas le parent. Si votre enfant refuse de s'asseoir, aucun outil ne peut forcer &ccedil;a. Mais une fois qu'il commence, le format court aide &agrave; cr&eacute;er l'habitude.</div></div></div>
-<div class="fqi"><button class="fq">15 minutes par soir, &ccedil;a suffit vraiment ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">Oui. 15 minutes cibl&eacute;es valent mieux que 2 heures &agrave; tourner en rond. Le pr&eacute;cepteur ne donne que des exercices sur les points faibles r&eacute;els. Pas de remplissage, pas de r&eacute;vision de ce qui est d&eacute;j&agrave; acquis. Et la r&eacute;gularit&eacute; quotidienne fait plus que les s&eacute;ances marathon du dimanche soir.</div></div></div>
-<div class="fqi"><button class="fq">&Ccedil;a marche pour le coll&egrave;ge et le lyc&eacute;e ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">De la 6e &agrave; la Terminale. Maths, fran&ccedil;ais, sciences, langues. Le niveau et le programme sont adapt&eacute;s automatiquement. Un &eacute;l&egrave;ve de 6e ne recevra pas les m&ecirc;mes exercices qu'un &eacute;l&egrave;ve de Premi&egrave;re.</div></div></div>
-<div class="fqi"><button class="fq">Combien &ccedil;a co&ucirc;te ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">On est en b&ecirc;ta. L'inscription est gratuite pour d&eacute;marrer. Les premiers parents b&eacute;n&eacute;ficieront d'un tarif pr&eacute;f&eacute;rentiel &agrave; vie quand l'abonnement sera lanc&eacute; (pr&eacute;vu &agrave; 5,99 EUR/mois — vingt fois moins qu'un prof particulier). Pas de carte bancaire demand&eacute;e pour l'instant.</div></div></div>
-</div></div></section>
+                <!-- Accompagnant (bottom, full width) -->
+                <div class="trio-actor trio-bottom">
+                    <div class="trio-circle" style="border-color:#22C55E;color:#22C55E;">A</div>
+                    <div class="trio-name" style="color:#22C55E;">L'accompagnant</div>
+                    <div class="trio-receives">
+                        <div class="trio-tag">Supervise entre les séances</div>
+                        Entre deux cours particuliers, il sait exactement où en est l'élève : exercices faits, taux de réussite, lacunes détectées
+                    </div>
+                    <div class="trio-does">
+                        <div class="trio-tag">Pilote le programme</div>
+                        Voit les exercices prévus avant l'élève, les modifie si besoin, ajuste les objectifs. Ses séances deviennent plus efficaces.
+                    </div>
+                </div>
 
-<!-- CTA FINAL -->
-<section class="cta" id="essai"><div class="ctr" style="position:relative;z-index:1">
-<h2>Ce soir, votre enfant fait ses premiers exercices.</h2>
-<p class="sub">Pas dans une semaine. Pas apr&egrave;s un rendez-vous. Ce soir. Inscrivez votre email, on s'occupe du reste.</p>
-<div id="cta-form">
-<form class="email-form" id="emailForm" onsubmit="return handleEmail(event)">
-<input type="email" id="ctaEmail" placeholder="Votre adresse email" required>
-<button type="submit">Inscrire mon enfant</button>
-</form>
-<p class="form-msg" id="formMsg"></p>
-</div>
-<p class="cs">30 secondes. Pas de carte bancaire. Pas d'engagement.</p>
-<p style="margin-top:12px;font-size:.85rem"><a href="tuteur.html" style="color:rgba(255,255,255,.55);text-decoration:underline;transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'">Tuteur ou accompagnant ? Inscrivez-vous ici</a></p>
-<a href="https://t.me/precepteur_ia_bot" target="_blank" class="tg-link"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>D&eacute;j&agrave; un compte ? Ouvrir le bot Telegram</a>
-</div></section>
+            </div>
+        </div>
+    </section>
 
-<!-- FOOTER -->
-<footer><div class="ctr">
-<div class="ftg">
-<div class="ftb"><div class="lo">precepteur<span>.</span>ai</div><p>Chaque soir, 3 exercices cibl&eacute;s. Chaque semaine, un bilan pour les parents. Fait en France.</p></div>
-<div class="ftc"><h4>Produit</h4><a href="#fonctionnement">Comment &ccedil;a marche</a><a href="#modes">Les modes</a><a href="#securite">S&eacute;curit&eacute;</a><a href="#faq">FAQ</a><a href="https://t.me/precepteur_ia_bot" target="_blank">Ouvrir Telegram</a><a href="tuteur.html">Vous &ecirc;tes tuteur ?</a></div>
-<div class="ftc"><h4>L&eacute;gal</h4><a href="privacy.html">Confidentialit&eacute;</a><a href="terms.html">CGU</a><a href="legal.html">Mentions l&eacute;gales</a></div>
-<div class="ftc"><h4>Contact</h4><a href="mailto:contact@precepteur.net">contact@precepteur.net</a></div>
-</div>
-<div class="ftm"><span>2026 Precepteur AI. Tous droits r&eacute;serv&eacute;s.</span><span>Fait avec soin en France</span></div>
-</div></footer>
+    <!-- SKILL TREE (L'arbre de competences) -->
+    <section class="tree-section section" id="parcours">
+        <div class="container text-center">
+            <span class="label">Chaque objectif a un chemin</span>
+            <h2>Emma veut faire médecine. Précepteur construit le chemin.</h2>
+            <p class="subtitle" style="margin: 16px auto 0;">
+                Du rêve à la réalité : Précepteur décompose chaque objectif en prérequis, identifie où l'élève bloque, et construit le programme pour débloquer chaque étape.
+            </p>
 
-<script>
-document.getElementById('mb').onclick=function(){document.getElementById('nl').classList.toggle('ac')};
-document.querySelectorAll('.nl a').forEach(function(a){a.onclick=function(){document.getElementById('nl').classList.remove('ac')}});
-document.querySelectorAll('.fq').forEach(function(b){b.onclick=function(){var i=this.parentElement,o=i.classList.contains('o');document.querySelectorAll('.fqi').forEach(function(x){x.classList.remove('o')});if(!o)i.classList.add('o')}});
-var rv=document.querySelectorAll('.rv');rv.forEach(function(el){new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('vi')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'}).observe(el)});
-window.onscroll=function(){document.getElementById('nv').classList.toggle('s',window.scrollY>20)};
+            <div class="tree-layout">
+                <!-- Tree visual -->
+                <div class="tree-canvas reveal">
 
-var SUPABASE_URL='https://cztnbuesyiawazidkobt.supabase.co';
-var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dG5idWVzeWlhd2F6aWRrb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDIwNjMsImV4cCI6MjA2ODA3ODA2M30.dpaIMncJ-5Ytql7i8DbBfbHt6lD5uQIuRXGa1vo-kQA';
+                    <!-- Legend -->
+                    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:32px; justify-content:center;">
+                        <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--text-secondary);">
+                            <span style="width:10px;height:10px;border-radius:50%;background:#22C55E;display:inline-block;"></span>
+                            Maîtrise
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--text-secondary);">
+                            <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
+                            En cours
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--text-secondary);">
+                            <span style="width:10px;height:10px;border-radius:50%;background:#cbd5e1;display:inline-block;"></span>
+                            Verrouillé
+                        </div>
+                    </div>
 
-function handleEmail(e){
-e.preventDefault();
-var email=document.getElementById('ctaEmail').value.trim();
-var msg=document.getElementById('formMsg');
-if(!email){msg.className='form-msg err';msg.textContent='Veuillez entrer votre email.';return false}
-msg.className='form-msg';msg.textContent='Envoi en cours...';
-fetch(SUPABASE_URL+'/rest/v1/registration_requests',{
-method:'POST',
-headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},
-body:JSON.stringify({email:email,parent_first_name:'(depuis landing)',phone:'(non renseigne)',status:'landing_email'})
-}).then(function(r){
-if(r.ok){
-msg.className='form-msg ok';
-msg.textContent='Inscription enregistr\u00e9e. Vous recevrez votre premier bilan tr\u00e8s vite.';
-document.getElementById('ctaEmail').value='';
-}else{
-r.text().then(function(t){
-if(t.indexOf('duplicate')>-1||t.indexOf('unique')>-1){
-msg.className='form-msg ok';msg.textContent='Vous \u00eates d\u00e9j\u00e0 inscrit. Nous vous contacterons bient\u00f4t.';
-}else{
-msg.className='form-msg err';msg.textContent='Erreur. Essayez register.html pour l\'inscription compl\u00e8te.';
-}
-});
-}
-}).catch(function(){
-msg.className='form-msg err';msg.textContent='Erreur r\u00e9seau. R\u00e9essayez ou allez sur register.html.';
-});
-return false;
-}
-</script>
+                    <div class="tree-levels" id="treeContainer">
+
+                        <!-- Level 5: Dream / Long-term goal -->
+                        <div class="tree-level" id="level5">
+                            <div class="tree-node locked" id="node-medecine" style="border-style:dashed;min-width:180px;">
+                                <div class="tree-node-name" style="font-size:1.05rem;">Médecine</div>
+                                <div class="tree-node-badge" style="font-size:0.75rem;margin-top:2px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><path d="M12 2l2.09 6.26L21 9.27l-5 4.87L17.18 22 12 18.27 6.82 22 8 14.14 3 9.27l6.91-1.01L12 2z"/></svg>
+                                    Son rêve — objectif long terme
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Level 4: Locked -->
+                        <div class="tree-level" id="level4">
+                            <div class="tree-node locked" id="node-eq2">
+                                <div class="tree-node-name">Équations 2nd degré</div>
+                                <div class="tree-node-badge">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                    Prérequis non validés
+                                </div>
+                            </div>
+                            <div class="tree-node locked" id="node-fonctions">
+                                <div class="tree-node-name">Fonctions</div>
+                                <div class="tree-node-badge">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                    Prérequis non validés
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Level 3: In Progress -->
+                        <div class="tree-level" id="level3">
+                            <div class="tree-node in-progress" id="node-eq1">
+                                <div class="tree-node-name">Équations 1er degré</div>
+                                <div class="progress-ring-wrap">
+                                    <svg width="32" height="32" viewBox="0 0 32 32">
+                                        <circle class="progress-ring-bg" cx="16" cy="16" r="13"/>
+                                        <circle class="progress-ring-fill" cx="16" cy="16" r="13"
+                                            stroke-dasharray="81.68"
+                                            stroke-dashoffset="22.05"/>
+                                    </svg>
+                                </div>
+                                <div class="tree-node-badge">72% maîtrise</div>
+                            </div>
+                            <div class="tree-node in-progress" id="node-puissances">
+                                <div class="tree-node-name">Puissances</div>
+                                <div class="progress-ring-wrap">
+                                    <svg width="32" height="32" viewBox="0 0 32 32">
+                                        <circle class="progress-ring-bg" cx="16" cy="16" r="13"/>
+                                        <circle class="progress-ring-fill" cx="16" cy="16" r="13"
+                                            stroke-dasharray="81.68"
+                                            stroke-dashoffset="44.92"/>
+                                    </svg>
+                                </div>
+                                <div class="tree-node-badge">45% maîtrise</div>
+                            </div>
+                        </div>
+
+                        <!-- Level 2: Mastered -->
+                        <div class="tree-level" id="level2">
+                            <div class="tree-node mastered" id="node-litteral">
+                                <div class="tree-node-name">Calcul littéral</div>
+                                <div class="tree-node-badge">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                                    Valide
+                                </div>
+                            </div>
+                            <div class="tree-node mastered" id="node-fractions">
+                                <div class="tree-node-name">Fractions</div>
+                                <div class="tree-node-badge">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                                    Valide
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Level 1: Mastered (bottom) -->
+                        <div class="tree-level" id="level1">
+                            <div class="tree-node mastered" id="node-entiers">
+                                <div class="tree-node-name">Entiers naturels</div>
+                                <div class="tree-node-badge">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                                    Valide
+                                </div>
+                            </div>
+                            <div class="tree-node mastered" id="node-tables">
+                                <div class="tree-node-name">Tables de multiplication</div>
+                                <div class="tree-node-badge">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                                    Valide
+                                </div>
+                            </div>
+                            <div class="tree-node mastered" id="node-priorites">
+                                <div class="tree-node-name">Priorités des opérations</div>
+                                <div class="tree-node-badge">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                                    Valide
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SVG connectors (drawn by JS) -->
+                        <svg id="treeSvg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;" aria-hidden="true"></svg>
+
+                    </div>
+                </div>
+
+                <!-- Annotations -->
+                <div class="tree-annotations reveal">
+                    <div class="tree-annotation slate" style="border-color:#F97316;">
+                        <div class="tree-annotation-title" style="color:#ea580c;">L'objectif</div>
+                        <p>Emma veut faire médecine. Précepteur part de cet objectif et remonte jusqu'aux fondations. Chaque compétence validée rapproche du rêve.</p>
+                    </div>
+                    <div class="tree-annotation amber">
+                        <div class="tree-annotation-title">Niveau "En cours" détecté</div>
+                        <p>Précepteur détecte que Emma bloque sur les puissances (45%). Il génère des exercices ciblés chaque jour jusqu'à ce que le seuil de 80% soit atteint.</p>
+                    </div>
+                    <div class="tree-annotation slate">
+                        <div class="tree-annotation-title">Niveau verrouillé</div>
+                        <p>Les équations du 2nd degré sont verrouillées tant que les prérequis ne sont pas validés. Précepteur ne surchargera pas Emma.</p>
+                    </div>
+                    <div class="tree-annotation green">
+                        <div class="tree-annotation-title">Bases solides</div>
+                        <p>Les bases sont validées. Emma les a maîtrisées en 2 semaines avec le bot. Ces acquis servent de fondation pour la suite.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="fonctionnalites">
+        <div class="container text-center">
+            <span class="label">Tout ce dont vous avez besoin</span>
+            <h2>Un assistant qui pense à tout</h2>
+            <p class="subtitle" style="margin: 16px auto 0;">
+                Précepteur ne se contente pas de vous montrer les notes. Il les analyse, les contextualise, et vous guide.
+            </p>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon purple">&#128202;</div>
+                    <div>
+                        <h3>Bilan quotidien intelligent</h3>
+                        <p>Chaque soir à 17h : notes du jour, moyenne, tendance, devoirs à venir. Un seul message clair.</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon cyan">&#9888;&#65039;</div>
+                    <div>
+                        <h3>Alertes instantanées</h3>
+                        <p>Note en dessous de la moyenne ? Absence non justifiée ? Vous êtes prévenu immédiatement.</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon green">&#128161;</div>
+                    <div>
+                        <h3>Conseils personnalisés</h3>
+                        <p>L'IA connaît le profil de votre enfant et propose des exercices, méthodes et ressources adaptées.</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon amber">&#128221;</div>
+                    <div>
+                        <h3>Suivi des devoirs</h3>
+                        <p>Liste des devoirs à rendre, par date, par matière. Plus jamais "j'ai pas de devoirs, maman".</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon rose">&#129504;</div>
+                    <div>
+                        <h3>Mémoire long terme</h3>
+                        <p>Précepteur se souvient des forces et faiblesses de votre enfant. Ses conseils s'affinent avec le temps.</p>
+                    </div>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon blue">&#128241;</div>
+                    <div>
+                        <h3>Sur Telegram</h3>
+                        <p>Pas d'app à télécharger. Ca arrive directement dans votre messagerie Telegram.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIAL PROOF -->
+    <section class="section" id="temoignages">
+        <div class="container text-center">
+            <span class="label">Ils l'utilisent déjà</span>
+            <h2>Ce que disent les parents bêta-testeurs</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="testimonial-text">
+                        "Je n'ouvrais Pronote qu'une fois par mois — trop compliqué. Maintenant, je suis informée CHAQUE SOIR en 30 secondes. Mon fils sait que je suis au courant, ça a changé son attitude."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SB</div>
+                        <div>
+                            <div class="testimonial-name">Sandrine B.</div>
+                            <div class="testimonial-role">Maman d'un élève de 4e, Boulogne</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="testimonial-text">
+                        "Le plus utile ? Les conseils concrets. Quand Précepteur me dit 'pour le contrôle de maths de jeudi, réviser les puissances 20 min ce soir', je sais exactement quoi faire."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">KM</div>
+                        <div>
+                            <div class="testimonial-name">Karim M.</div>
+                            <div class="testimonial-role">Papa de 2 enfants, Gennevilliers</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <p class="testimonial-text">
+                        "Mon fils me disait toujours 'j'ai pas de devoirs'. Depuis Précepteur, je reçois la vraie liste chaque soir. La tension a baissé à la maison."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">FL</div>
+                        <div>
+                            <div class="testimonial-name">Fatima L.</div>
+                            <div class="testimonial-role">Maman d'un élève de 3e, Nanterre</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section section-alt" id="tarifs">
+        <div class="container text-center">
+            <span class="label">Tarifs transparents</span>
+            <h2>On est en bêta. L'inscription est gratuite.</h2>
+            <p class="subtitle" style="margin: 16px auto 0;">
+                Les premiers parents bénéficieront d'un tarif préférentiel à vie.
+            </p>
+            <div style="max-width: 480px; margin: 48px auto 0;">
+                <div class="pricing-card featured reveal">
+                    <div class="pricing-name">Bêta gratuite</div>
+                    <div class="pricing-price">0 EUR</div>
+                    <div class="pricing-annual">Les premiers parents bénéficieront d'un tarif préférentiel à vie quand l'abonnement sera lancé (prévu à 5,99 EUR/mois — vingt fois moins qu'un prof particulier).</div>
+                    <ul class="pricing-features">
+                        <li><span class="pricing-check">&#10003;</span> Bilan quotidien complet</li>
+                        <li><span class="pricing-check">&#10003;</span> Alertes notes et absences</li>
+                        <li><span class="pricing-check">&#10003;</span> Conseils IA personnalisés</li>
+                        <li><span class="pricing-check">&#10003;</span> Chat illimité</li>
+                        <li><span class="pricing-check">&#10003;</span> Exercices adaptés chaque jour</li>
+                    </ul>
+                    <a href="#essai" class="btn btn-primary" style="width:100%;">S'inscrire gratuitement</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+        <div class="container text-center">
+            <span class="label">Questions fréquentes</span>
+            <h2>On répond à tout</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Comment Précepteur accède à Pronote ?
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Vous renseignez vos identifiants Pronote une seule fois. Précepteur se connecte de manière sécurisée via votre Espace Numérique de Travail (ENT). Vos identifiants sont chiffrés et jamais partagés. Vous pouvez aussi simplement envoyer une photo de l'écran Pronote, sans donner vos identifiants.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Mes données sont-elles en sécurité ?
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Absolument. Précepteur est conforme au RGPD et à la réglementation française sur les données des mineurs. Vos données sont hébergées en France, chiffrées au repos, et ne sont jamais revendues. Vous pouvez demander la suppression totale à tout moment.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Ca marche avec quel ENT / établissement ?
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Précepteur est compatible avec Pronote via les principaux ENT : MonLycee.net (Île-de-France), Mon ENT Occitanie, et d'autres. Si votre ENT n'est pas encore supporté, vous pouvez utiliser le mode photo : envoyez un screenshot de Pronote et l'IA analyse tout.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Mon enfant est au college, ca marche ?
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Oui ! Précepteur fonctionne pour les élèves du collège (6e à 3e) et du lycée (2nde à Terminale). Les conseils sont adaptés au niveau de votre enfant.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Puis-je annuler a tout moment ?
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Oui, sans engagement. Vous pouvez annuler votre abonnement à tout moment depuis Telegram en écrivant "annuler". Vos données sont supprimées sous 30 jours. L'inscription est gratuite et ne nécessite pas de carte bancaire.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        En quoi c'est different de Kartable ou Wilgo ?
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Kartable et Wilgo sont du soutien scolaire pour ÉLÈVES : l'enfant doit ouvrir une app et réviser. Précepteur, c'est un assistant pour PARENTS : vous recevez un bilan automatique, vous n'avez rien à faire. Et surtout, Précepteur est connecté à Pronote : il connaît les vraies notes et devoirs de votre enfant, pas du contenu générique.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUI SOMMES-NOUS -->
+    <section class="section" id="fondateur">
+        <div class="container">
+            <div class="founder-section reveal">
+                <div class="founder-photo">
+                    <div class="founder-avatar">CM</div>
+                </div>
+                <div class="founder-story">
+                    <span class="label">Le fondateur</span>
+                    <h2>Chaker</h2>
+                    <p>
+                        Scolarité en ZEP dans le 92, classes prépa, diplômé de l'École des Mines de Nancy. Après mes études, j'ai été accompagnateur scolaire à la mairie pendant 3 ans — des dizaines d'élèves suivis chaque semaine, du CM2 à la terminale.
+                    </p>
+                    <p>
+                        Ce que j'ai vu : des élèves capables, mais qui décrochent entre les séances. Le tuteur vient une fois par semaine. Entre-temps, les lacunes s'accumulent sans que personne ne s'en rende compte. Quand on les détecte, il est souvent trop tard.
+                    </p>
+                    <p>
+                        J'ai construit Précepteur pour ça. Un suivi quotidien par IA qui travaille avec l'élève chaque soir, détecte les blocages en temps réel, et informe le parent et le tuteur. L'objectif : que chaque séance avec le tuteur soit deux fois plus efficace.
+                    </p>
+                    <div class="founder-links">
+                        <a href="https://www.linkedin.com/in/chakerm/" target="_blank" class="founder-link">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            LinkedIn
+                        </a>
+                    </div>
+
+                    <div class="founder-cta">
+                        <h3>Discutons du meilleur pour votre enfant</h3>
+                        <a href="tel:+33664624258" class="btn btn-primary" style="margin-top:12px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                            06 64 62 42 58
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta-section" id="essai">
+        <div class="container">
+            <h2>Fini les mauvaises surprises au bulletin</h2>
+            <p class="subtitle">
+                Rejoignez les parents qui suivent la scolarité de leur enfant sans stress. Inscription gratuite. Tarif préférentiel à vie pour les premiers parents.
+            </p>
+            <a href="https://t.me/precepteur_ia_bot" target="_blank" class="btn btn-primary btn-lg">
+                S'inscrire gratuitement
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <p class="cta-guarantee">Aucune carte bancaire requise. Désinscription en un message.</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">precepteur<span>.</span></div>
+                    <p>Chaque soir, 3 exercices ciblés. Chaque semaine, un bilan pour les parents. Fait en France.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Produit</h4>
+                    <a href="#fonctionnement">Comment ca marche</a>
+                    <a href="#fonctionnalites">Fonctionnalités</a>
+                    <a href="#tarifs">Tarifs</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Légal</h4>
+                    <a href="/politique-confidentialite">Politique de confidentialité</a>
+                    <a href="/cgu">Conditions d'utilisation</a>
+                    <a href="/rgpd">RGPD & données</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <a href="mailto:contact@precepteur.net">contact@precepteur.net</a>
+                    <a href="https://t.me/precepteur_ia_bot" target="_blank">Telegram</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Précepteur. Tous droits réservés.</span>
+                <span>Fait avec soin en France</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.parentElement;
+                var isOpen = item.classList.contains('open');
+                // Close all
+                document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+                // Open clicked if was closed
+                if (!isOpen) item.classList.add('open');
+            });
+        });
+
+        // Scroll reveal
+        var reveals = document.querySelectorAll('.reveal');
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(function(el) { observer.observe(el); });
+
+        // Navbar scroll effect
+        var navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 20) {
+                navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.06)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        // Skill tree SVG connectors
+        function drawTreeConnectors() {
+            var svg = document.getElementById('treeSvg');
+            if (!svg) return;
+            var container = document.getElementById('treeContainer');
+            if (!container) return;
+
+            svg.innerHTML = '';
+
+            var connections = [
+                // level1 -> level2
+                { from: 'node-entiers',   to: 'node-litteral' },
+                { from: 'node-tables',    to: 'node-litteral' },
+                { from: 'node-tables',    to: 'node-fractions' },
+                { from: 'node-priorites', to: 'node-fractions' },
+                // level2 -> level3
+                { from: 'node-litteral',  to: 'node-eq1' },
+                { from: 'node-fractions', to: 'node-puissances' },
+                { from: 'node-priorites', to: 'node-puissances' },
+                // level3 -> level4
+                { from: 'node-eq1',       to: 'node-eq2' },
+                { from: 'node-puissances',to: 'node-eq2' },
+                { from: 'node-eq1',       to: 'node-fonctions' },
+                // level4 -> level5 (dream)
+                { from: 'node-eq2',       to: 'node-medecine' },
+                { from: 'node-fonctions', to: 'node-medecine' },
+            ];
+
+            var containerRect = container.getBoundingClientRect();
+
+            connections.forEach(function(conn) {
+                var fromEl = document.getElementById(conn.from);
+                var toEl   = document.getElementById(conn.to);
+                if (!fromEl || !toEl) return;
+
+                var fr = fromEl.getBoundingClientRect();
+                var tr = toEl.getBoundingClientRect();
+
+                var x1 = fr.left + fr.width / 2 - containerRect.left;
+                var y1 = fr.top - containerRect.top;
+                var x2 = tr.left + tr.width / 2 - containerRect.left;
+                var y2 = tr.top + tr.height - containerRect.top;
+
+                var fromNode = fromEl;
+                var isFromMastered = fromNode.classList.contains('mastered');
+                var isToLocked = toEl.classList.contains('locked');
+
+                var color = isToLocked ? '#cbd5e1' : (isFromMastered ? '#22C55E' : '#f59e0b');
+                var opacity = isToLocked ? '0.4' : '0.6';
+
+                var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                line.setAttribute('stroke', color);
+                line.setAttribute('stroke-width', '1.5');
+                line.setAttribute('stroke-dasharray', '5 3');
+                line.setAttribute('opacity', opacity);
+                svg.appendChild(line);
+            });
+        }
+
+        // Draw after fonts/layout settle
+        window.addEventListener('load', function() {
+            setTimeout(drawTreeConnectors, 200);
+        });
+        window.addEventListener('resize', drawTreeConnectors);
+
+        // ===== HERO ANIMATION — phones only =====
+        (function() {
+            var pMsg1          = document.getElementById('pMsg1');
+            var pMsg2          = document.getElementById('pMsg2');
+            var pMsg3          = document.getElementById('pMsg3');
+            var pBadge         = document.getElementById('pBadge');
+            var phoneParent    = document.getElementById('phoneParent');
+            var ppMsg1         = document.getElementById('ppMsg1');
+            var progressUpdate = document.getElementById('phoneProgressUpdate');
+
+            var phonesWrap = document.querySelector('.hero-visual-phones');
+
+            function show(el) { if (el) el.classList.add('visible'); }
+            function hide(el) { if (el) el.classList.remove('visible'); }
+
+            function resetPhones() {
+                if (phonesWrap) { phonesWrap.style.transition = ''; phonesWrap.style.opacity = ''; }
+                [pMsg1, pMsg2, pMsg3, pBadge, phoneParent, ppMsg1, progressUpdate].forEach(hide);
+            }
+
+            var timers = [];
+            function schedule(ms, fn) { timers.push(setTimeout(fn, ms)); }
+            function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+            function runCycle() {
+                clearTimers();
+                resetPhones();
+
+                // Phones animation — all ms from cycle start
+                schedule(800,   function() { show(pMsg1); });
+                schedule(2300,  function() { show(pMsg2); });
+                schedule(4300,  function() { show(pMsg3); });
+                schedule(5000,  function() { show(pBadge); });
+                schedule(6500,  function() { show(phoneParent); });
+                schedule(6900,  function() { show(ppMsg1); });
+                schedule(7700,  function() { show(progressUpdate); });
+
+                // 13000ms: fade out
+                schedule(13000, function() {
+                    if (phonesWrap) { phonesWrap.style.transition = 'opacity 1.2s ease'; phonesWrap.style.opacity = '0'; }
+                });
+
+                // 14200ms: restart
+                schedule(14200, function() { runCycle(); });
+            }
+
+            window.addEventListener('load', function() {
+                runCycle();
+            });
+        })();
+    </script>
+
+
+    <script>
+    // Brain particles
+    (function() {
+        var track = document.getElementById('particlesTrack');
+        if (!track) return;
+        var colors = ['c-orange','c-blue','c-green','c-orange','c-blue','c-green','c-orange','c-blue','c-green','c-orange','c-blue','c-green','c-orange','c-blue'];
+        var tops = [20,45,70,30,55,80,15,60,90,38,65,25,82,50];
+        var durations = [2.4,3.1,2.8,4.2,2.2,4.8,3.6,3.3,2.0,5.0,2.6,3.9,4.5,2.3];
+        var delays = [0,0.6,1.2,1.8,0.3,0.9,1.5,0.4,2.1,2.7,1.1,3.2,0.7,2.4];
+        colors.forEach(function(c, i) {
+            var d = document.createElement('div');
+            d.className = 'dot ' + c;
+            d.style.top = tops[i] + '%';
+            d.style.left = '0px';
+            d.style.animationDuration = durations[i] + 's';
+            d.style.animationDelay = delays[i] + 's';
+            track.appendChild(d);
+        });
+    })();
+
+    // Brain cards staggered reveal
+    (function() {
+        var cards = ['bcard1','bcard2','bcard3'];
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    cards.forEach(function(id, i) {
+                        setTimeout(function() {
+                            var el = document.getElementById(id);
+                            if (el) el.classList.add('visible');
+                        }, i * 500);
+                    });
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.3 });
+        var section = document.getElementById('ecosysteme');
+        if (section) observer.observe(section);
+    })();
+    </script>
 </body>
 </html>
