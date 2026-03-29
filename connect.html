@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connecter Pronote — Precepteur AI</title>
+<meta name="description" content="Connectez votre compte Pronote a Precepteur AI pour recevoir chaque soir le bilan scolaire de votre enfant.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234f46e5'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-weight='900' font-size='20' fill='white'%3EP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!--
+=== SQL A EXECUTER DANS SUPABASE ===
+
+CREATE TABLE IF NOT EXISTS pronote_registration_requests (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email TEXT,
+    telegram_username TEXT,
+    pronote_url TEXT NOT NULL,
+    ent_type TEXT,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE pronote_registration_requests ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow anonymous inserts" ON pronote_registration_requests FOR INSERT WITH CHECK (true);
+
+================================
+-->
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:#0f172a;background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+:root{--p:#4f46e5;--pl:#818cf8;--pd:#3730a3;--ac:#06b6d4;--al:#67e8f9;--ok:#10b981;--warn:#f59e0b;--bg:#f8fafc;--glass:rgba(255,255,255,0.7);--t:#0f172a;--ts:#475569;--tm:#94a3b8;--b:#e2e8f0;--r:16px;--sh:0 4px 20px rgba(0,0,0,.08);--mx:1200px}
+.ctr{max-width:var(--mx);margin:0 auto;padding:0 24px}
+.tg{background:linear-gradient(135deg,var(--p),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.12;letter-spacing:-.02em}
+h2{font-size:clamp(1.4rem,3vw,1.8rem);font-weight:700;line-height:1.2}
+.sub{font-size:clamp(1rem,2vw,1.1rem);color:var(--ts);line-height:1.7;max-width:560px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-size:1rem;font-weight:600;padding:14px 32px;border-radius:12px;border:none;cursor:pointer;transition:all .2s}
+.bp{background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.35)}.bp:hover{background:var(--pd);transform:translateY(-2px);box-shadow:0 6px 20px rgba(79,70,229,.45)}
+.bp:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--b);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ni{max-width:var(--mx);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px}
+.lo{font-size:1.4rem;font-weight:900;letter-spacing:-.03em}.lo span{color:var(--p)}
+.nb{font-size:.9rem;font-weight:500;color:var(--ts);transition:color .2s}.nb:hover{color:var(--p)}
+
+.page{padding:120px 0 80px;min-height:calc(100vh - 200px)}
+.page-header{text-align:center;margin-bottom:48px}
+.page-header h1{margin-bottom:12px}
+.page-header .sub{margin:0 auto}
+
+.form-wrap{max-width:520px;margin:0 auto;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--b);border-radius:20px;padding:40px 36px;box-shadow:var(--sh)}
+
+.field{margin-bottom:24px}
+.field label{display:block;font-size:.9rem;font-weight:600;margin-bottom:6px;color:var(--t)}
+.field .hint{font-size:.78rem;color:var(--tm);margin-bottom:8px;line-height:1.5}
+.field input,.field select{width:100%;padding:14px 16px;border:2px solid var(--b);border-radius:12px;font-family:inherit;font-size:.95rem;color:var(--t);background:#fff;outline:none;transition:border-color .2s}
+.field input:focus,.field select:focus{border-color:var(--p)}
+.field input::placeholder{color:var(--tm)}
+.field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:44px}
+
+.submit-btn{width:100%;padding:16px;font-size:1.05rem;border-radius:14px}
+
+.msg{display:none;text-align:center;padding:24px;border-radius:14px;margin-top:20px;font-size:.95rem;line-height:1.6}
+.msg-ok{background:rgba(16,185,129,.08);color:#065f46;border:1px solid rgba(16,185,129,.2)}
+.msg-err{background:rgba(239,68,68,.08);color:#991b1b;border:1px solid rgba(239,68,68,.2)}
+
+.security{max-width:520px;margin:36px auto 0;padding:24px 28px;background:var(--bg);border-radius:14px;border:1px solid var(--b);display:flex;gap:16px;align-items:flex-start}
+.security svg{width:24px;height:24px;min-width:24px;stroke:var(--ok);fill:none;stroke-width:2;margin-top:2px}
+.security p{font-size:.88rem;color:var(--ts);line-height:1.6}
+.security strong{color:var(--t)}
+
+footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
+.ftg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+.ftb p{color:var(--ts);font-size:.88rem;margin-top:10px;max-width:260px}
+.ftc h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tm);margin-bottom:14px}
+.ftc a{display:block;color:var(--ts);font-size:.88rem;padding:5px 0;cursor:pointer}.ftc a:hover{color:var(--p)}
+.ftm{padding-top:20px;border-top:1px solid var(--b);display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--tm)}
+
+@media(max-width:768px){
+.form-wrap{padding:28px 20px;border-radius:16px}
+.ftg{grid-template-columns:1fr}
+.ftm{flex-direction:column;gap:10px;text-align:center}
+.security{flex-direction:column;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<nav><div class="ni">
+<a href="index.html" class="lo">precepteur<span>.</span>ai</a>
+<a href="index.html" class="nb">Retour a l'accueil</a>
+</div></nav>
+
+<section class="page"><div class="ctr">
+<div class="page-header">
+<h1>Connecter <span class="tg">Pronote</span></h1>
+<p class="sub">Entrez vos identifiants Pronote pour recevoir chaque soir le bilan scolaire de votre enfant.</p>
+</div>
+
+<div class="form-wrap">
+<form id="pronote-form">
+
+<div class="field">
+<label for="f-email">Email ou pseudo Telegram</label>
+<div class="hint">Pour vous identifier et vous envoyer la confirmation.</div>
+<input type="text" id="f-email" placeholder="votre@email.com ou @pseudo_telegram" required>
+</div>
+
+<div class="field">
+<label for="f-url">URL Pronote</label>
+<div class="hint">Copiez l'URL depuis votre navigateur quand vous etes sur Pronote.</div>
+<input type="url" id="f-url" placeholder="https://pronote.college-example.fr" required>
+</div>
+
+<div class="field">
+<label for="f-ent">ENT (Espace Numerique de Travail)</label>
+<select id="f-ent" required>
+<option value="" disabled selected>Choisissez votre ENT</option>
+<option value="ile_de_france">MonLycee.net (Ile-de-France)</option>
+<option value="occitanie">Mon ENT Occitanie</option>
+<option value="none">Aucun (connexion directe)</option>
+<option value="other">Autre</option>
+</select>
+</div>
+
+<div class="field">
+<label for="f-user">Identifiant Pronote</label>
+<input type="text" id="f-user" placeholder="Votre identifiant" required>
+</div>
+
+<div class="field">
+<label for="f-pass">Mot de passe Pronote</label>
+<input type="password" id="f-pass" placeholder="Votre mot de passe" required>
+</div>
+
+<button type="submit" class="btn bp submit-btn" id="submit-btn">Connecter Pronote</button>
+</form>
+
+<div class="msg msg-ok" id="msg-ok">
+<strong>Demande envoyee.</strong><br>
+Vos identifiants ont ete transmis de maniere securisee. Vous recevrez votre premier bilan scolaire des ce soir a 17h.
+</div>
+<div class="msg msg-err" id="msg-err">
+Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:contact@precepteur.net" style="color:var(--p)">contact@precepteur.net</a>.
+</div>
+</div>
+
+<div class="security">
+<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+<p><strong>Securite de vos donnees.</strong> Vos identifiants sont chiffres et stockes de maniere securisee. Ils ne sont utilises que pour recuperer les notes et devoirs de votre enfant. Conforme au RGPD. Suppression sur simple demande.</p>
+</div>
+
+</div></section>
+
+<footer><div class="ctr">
+<div class="ftg">
+<div class="ftb"><div class="lo">precepteur<span>.</span>ai</div><p>Le coach scolaire IA qui informe les parents chaque soir. Fait en France, pour les familles francaises.</p></div>
+<div class="ftc"><h4>Produit</h4><a href="index.html#fonctionnement">Comment ca marche</a><a href="index.html#fonctionnalites">Fonctionnalites</a><a href="index.html#tarifs">Tarifs</a><a href="index.html#faq">FAQ</a></div>
+<div class="ftc"><h4>Legal</h4><a href="privacy.html">Confidentialite</a><a href="terms.html">CGU</a><a href="legal.html">Mentions legales</a></div>
+<div class="ftc"><h4>Contact</h4><a href="mailto:contact@precepteur.net">contact@precepteur.net</a></div>
+</div>
+<div class="ftm"><span>2026 Precepteur AI. Tous droits reserves.</span><span>Fait avec soin en France</span></div>
+</div></footer>
+
+<script>
+var API_URL='https://precepteur-ai.onrender.com';
+
+document.getElementById('pronote-form').onsubmit=function(e){
+e.preventDefault();
+var btn=document.getElementById('submit-btn');
+var email=document.getElementById('f-email').value.trim();
+var url=document.getElementById('f-url').value.trim();
+var ent=document.getElementById('f-ent').value;
+var user=document.getElementById('f-user').value;
+var pass=document.getElementById('f-pass').value;
+
+btn.textContent='Verification en cours...';
+btn.disabled=true;
+
+var isTelegram=email.startsWith('@');
+var payload={
+pronote_url:url,
+ent_type:ent,
+username:user,
+password:pass,
+registration_id:Math.random().toString(36).substr(2,8),
+parent_first_name:'',
+parent_email:isTelegram?'':email
+};
+if(isTelegram){payload.telegram_username=email}
+
+fetch(API_URL+'/api/pronote/register',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify(payload)
+}).then(function(r){return r.json()}).then(function(data){
+if(data.ok){
+document.getElementById('pronote-form').style.display='none';
+var msgOk=document.getElementById('msg-ok');
+var children=data.children||[];
+var childInfo=children.length>0?children.map(function(c){return c.name+(c.class_name?' ('+c.class_name+')':'')}).join(', '):'';
+msgOk.innerHTML='<strong>Connexion Pronote reussie !</strong>'+
+(childInfo?'<p style="margin-top:8px">Enfant(s) trouve(s) : '+childInfo+'</p>':'')+
+'<p style="margin-top:12px">Ouvrez Telegram pour recevoir votre premier bilan ce soir a 17h :</p>'+
+'<a href="https://t.me/precepteur_ia_bot?start='+data.registration_id+'" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;padding:18px 36px;background:#2AABEE;color:#fff;border-radius:14px;font-weight:700;font-size:1.1rem;text-decoration:none;box-shadow:0 4px 14px rgba(42,171,238,.35);width:100%;max-width:360px">'+
+'<svg viewBox=\'0 0 24 24\' width=\'22\' height=\'22\' fill=\'#fff\'><path d=\'M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z\'/></svg>'+
+'Ouvrir Telegram et demarrer</a>'+
+'<p style="margin-top:12px;font-size:.82rem;color:#94a3b8"><a href="https://precepteur.net/#faq" style="color:#4f46e5;text-decoration:underline">Questions frequentes</a></p>';
+msgOk.style.display='block';
+}else{
+var errEl=document.getElementById('msg-err');
+errEl.textContent=data.error||'Une erreur est survenue. Verifiez vos identifiants.';
+errEl.style.display='block';
+btn.textContent='Connecter Pronote';
+btn.disabled=false;
+}
+}).catch(function(){
+document.getElementById('msg-err').style.display='block';
+btn.textContent='Connecter Pronote';
+btn.disabled=false;
+});
+};
+</script>
+</body>
+</html>
