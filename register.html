@@ -232,19 +232,25 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <strong style="color:var(--t)">Connexion securisee</strong> — Vos identifiants sont chiffres (AES-256) et ne sont jamais partages. Ils servent uniquement a recuperer les notes et devoirs de votre enfant.
 </div>
 <div class="field">
-<label for="f-purl">URL Pronote</label>
-<div class="hint">Copiez l'URL depuis votre navigateur quand vous etes sur Pronote.</div>
-<input type="url" id="f-purl" placeholder="https://pronote.college-example.fr">
-</div>
-<div class="field">
-<label for="f-pent">ENT (Espace Numerique de Travail)</label>
-<select id="f-pent">
+<label for="f-pent">Comment accedez-vous a Pronote ?</label>
+<select id="f-pent" onchange="onEntChange()">
 <option value="" selected>Choisissez votre ENT</option>
 <option value="ile_de_france">MonLycee.net (Ile-de-France)</option>
+<option value="monbureaunumerique">Mon Bureau Numerique (Grand Est)</option>
 <option value="occitanie">Mon ENT Occitanie</option>
-<option value="none">Aucun (connexion directe)</option>
-<option value="other">Autre</option>
+<option value="hdf">ENT Hauts-de-France</option>
+<option value="normandie">L'Educ de Normandie</option>
+<option value="bretagne">Toutatice (Bretagne)</option>
+<option value="paca">Atrium (PACA)</option>
+<option value="auvergne">ENT Auvergne-Rhone-Alpes</option>
+<option value="none">Connexion directe (sans ENT)</option>
+<option value="other">Autre / Je ne sais pas</option>
 </select>
+</div>
+<div class="field" id="field-purl" style="display:none">
+<label for="f-purl">URL Pronote de l'etablissement</label>
+<div class="hint">Uniquement si "Autre" ou "Connexion directe". Copiez l'URL depuis votre navigateur.</div>
+<input type="url" id="f-purl" placeholder="https://pronote.college-example.fr">
 </div>
 <div class="field">
 <label for="f-puser">Identifiant Pronote</label>
@@ -297,6 +303,17 @@ Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:
 
 <script>
 var API_URL='https://precepteur-ai.onrender.com';
+
+function onEntChange(){
+var ent=document.getElementById('f-pent').value;
+var urlField=document.getElementById('field-purl');
+if(ent==='none'||ent==='other'){
+urlField.style.display='block';
+}else{
+urlField.style.display='none';
+document.getElementById('f-purl').value='';
+}
+}
 
 function goToPhase2(){
 var pfirst=document.getElementById('f-pfirst');
