@@ -76,6 +76,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;background:va
 .security p{font-size:.88rem;color:var(--ts);line-height:1.6}
 .security strong{color:var(--t)}
 
+.search-results{border:1px solid var(--b);border-radius:8px;max-height:200px;overflow-y:auto;margin-top:4px;background:white}
+.search-results .result-item{padding:10px 14px;cursor:pointer;font-size:.88rem;border-bottom:1px solid #f1f5f9;transition:background .15s}
+.search-results .result-item:hover{background:#f8fafc}
+.search-results .result-item .city-name{font-weight:600;color:var(--t)}
+.search-results .result-item .city-context{font-size:.78rem;color:var(--tm)}
+.school-list{border:1px solid var(--b);border-radius:8px;max-height:300px;overflow-y:auto;margin-top:4px;background:white}
+.school-list .school-item{padding:12px 14px;cursor:pointer;border-bottom:1px solid #f1f5f9;transition:background .15s}
+.school-list .school-item:hover{background:#f0fdf4}
+.school-list .school-item .school-name{font-weight:600;font-size:.88rem;color:var(--t)}
+.school-list .school-item .school-url{font-size:.72rem;color:var(--tm);margin-top:2px}
+.school-list .school-item .school-cp{font-size:.72rem;color:var(--tm)}
+.search-field-wrap{position:relative}
+
 footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 .ftg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
 .ftb p{color:var(--ts);font-size:.88rem;margin-top:10px;max-width:260px}
@@ -101,7 +114,7 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <section class="page"><div class="ctr">
 <div class="page-header">
 <h1>Connecter <span class="tg">Pronote</span></h1>
-<p class="sub">Entrez vos identifiants Pronote pour recevoir chaque soir le bilan scolaire de votre enfant.</p>
+<p class="sub" id="page-subtitle">Entrez vos identifiants Pronote pour recevoir chaque soir le bilan scolaire de votre enfant.</p>
 </div>
 
 <div class="form-wrap">
@@ -113,20 +126,56 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <input type="text" id="f-email" placeholder="votre@email.com ou @pseudo_telegram" required>
 </div>
 
+<!-- Step 1: Search city -->
 <div class="field">
-<label for="f-url">URL Pronote</label>
-<div class="hint">Copiez l'URL depuis votre navigateur quand vous etes sur Pronote.</div>
-<input type="url" id="f-url" placeholder="https://pronote.college-example.fr" required>
+<label for="f-city">Ville de l'etablissement</label>
+<div class="hint">Tapez le nom de votre ville pour trouver automatiquement l'etablissement.</div>
+<input type="text" id="f-city" placeholder="Tapez le nom de votre ville..." autocomplete="off">
+<div class="search-results" id="city-results" style="display:none;"></div>
+</div>
+
+<!-- Step 2: School list (appears after city selection) -->
+<div id="school-section" style="display:none;">
+<div class="field">
+<label>Choisissez l'etablissement</label>
+<div class="search-field-wrap">
+<input type="text" id="f-school-search" placeholder="Filtrer..." autocomplete="off">
+</div>
+<div class="school-list" id="school-list"></div>
+<input type="hidden" id="f-url" value="">
+<input type="hidden" id="f-school-name" value="">
+</div>
+</div>
+
+<!-- Step 3: Selected school confirmation + credentials -->
+<div id="creds-section" style="display:none;">
+<div style="padding:12px 16px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:10px;margin-bottom:16px;">
+<strong id="selected-school-name" style="color:#166534;font-size:.9rem;"></strong>
+<div id="selected-school-url" style="font-size:.75rem;color:var(--tm);margin-top:2px;"></div>
+<a href="#" onclick="resetSchoolSelection();return false;" style="font-size:.75rem;color:var(--p);margin-top:4px;display:inline-block;">Changer d'etablissement</a>
 </div>
 
 <div class="field">
-<label for="f-ent">ENT (Espace Numerique de Travail)</label>
-<select id="f-ent" required>
-<option value="" disabled selected>Choisissez votre ENT</option>
+<label for="f-ent">Comment accedez-vous a Pronote ?</label>
+<select id="f-ent">
+<option value="" selected>Choisissez votre ENT</option>
 <option value="ile_de_france">MonLycee.net (Ile-de-France)</option>
-<option value="occitanie">Mon ENT Occitanie</option>
-<option value="none">Aucun (connexion directe)</option>
-<option value="other">Autre</option>
+<option value="monbureaunumerique">Mon Bureau Numerique (Grand Est)</option>
+<option value="occitanie_montpellier">ENT Occitanie</option>
+<option value="ent_hdf">ENT Hauts-de-France</option>
+<option value="l_normandie">L'Educ de Normandie</option>
+<option value="ac_rennes">Toutatice (Bretagne)</option>
+<option value="atrium_sud">Atrium (PACA)</option>
+<option value="ent_auvergnerhonealpe">ENT Auvergne-Rhone-Alpes</option>
+<option value="paris_classe_numerique">Paris Classe Numerique</option>
+<option value="val_doise">Val d'Oise</option>
+<option value="ent_94">Val-de-Marne</option>
+<option value="cas_seinesaintdenis_edu">Seine-Saint-Denis</option>
+<option value="ent_essonne">Essonne</option>
+<option value="ent_ecollege78">eCollege 78 (Yvelines)</option>
+<option value="ent77">ENT 77 (Seine-et-Marne)</option>
+<option value="none">Connexion directe (sans ENT)</option>
+<option value="other">Autre / Je ne sais pas</option>
 </select>
 </div>
 
@@ -141,12 +190,17 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 </div>
 
 <button type="submit" class="btn bp submit-btn" id="submit-btn">Connecter Pronote</button>
+</div>
+
 </form>
 
-<div class="msg msg-ok" id="msg-ok">
-<strong>Demande envoyee.</strong><br>
-Vos identifiants ont ete transmis de maniere securisee. Vous recevrez votre premier bilan scolaire des ce soir a 17h.
+<div id="success-msg" style="display:none;text-align:center;padding:40px;">
+<div style="font-size:2rem;margin-bottom:12px;">&#10003;</div>
+<h2>Pronote connecte !</h2>
+<p style="color:var(--ts);margin:12px 0;">Votre prochain bilan inclura les notes et devoirs.</p>
+<a href="https://t.me/precepteur_ia_bot" class="btn bp" style="margin-top:16px;">Retour au bot</a>
 </div>
+
 <div class="msg msg-err" id="msg-err">
 Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:contact@precepteur.net" style="color:var(--p)">contact@precepteur.net</a>.
 </div>
@@ -170,61 +224,180 @@ Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:
 </div></footer>
 
 <script>
-var API_URL='https://precepteur-ai.onrender.com';
+var API_URL = 'https://precepteur-ai.onrender.com';
 
-document.getElementById('pronote-form').onsubmit=function(e){
-e.preventDefault();
-var btn=document.getElementById('submit-btn');
-var email=document.getElementById('f-email').value.trim();
-var url=document.getElementById('f-url').value.trim();
-var ent=document.getElementById('f-ent').value;
-var user=document.getElementById('f-user').value;
-var pass=document.getElementById('f-pass').value;
-
-btn.textContent='Verification en cours...';
-btn.disabled=true;
-
-var isTelegram=email.startsWith('@');
-var payload={
-pronote_url:url,
-ent_type:ent,
-username:user,
-password:pass,
-registration_id:Math.random().toString(36).substr(2,8),
-parent_first_name:'',
-parent_email:isTelegram?'':email
-};
-if(isTelegram){payload.telegram_username=email}
-
-fetch(API_URL+'/api/pronote/register',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify(payload)
-}).then(function(r){return r.json()}).then(function(data){
-if(data.ok){
-document.getElementById('pronote-form').style.display='none';
-var msgOk=document.getElementById('msg-ok');
-var children=data.children||[];
-var childInfo=children.length>0?children.map(function(c){return c.name+(c.class_name?' ('+c.class_name+')':'')}).join(', '):'';
-msgOk.innerHTML='<strong>Connexion Pronote reussie !</strong>'+
-(childInfo?'<p style="margin-top:8px">Enfant(s) trouve(s) : '+childInfo+'</p>':'')+
-'<p style="margin-top:12px">Ouvrez Telegram pour recevoir votre premier bilan ce soir a 17h :</p>'+
-'<a href="https://t.me/precepteur_ia_bot?start='+data.registration_id+'" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;padding:18px 36px;background:#2AABEE;color:#fff;border-radius:14px;font-weight:700;font-size:1.1rem;text-decoration:none;box-shadow:0 4px 14px rgba(42,171,238,.35);width:100%;max-width:360px">'+
-'<svg viewBox=\'0 0 24 24\' width=\'22\' height=\'22\' fill=\'#fff\'><path d=\'M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z\'/></svg>'+
-'Ouvrir Telegram et demarrer</a>'+
-'<p style="margin-top:12px;font-size:.82rem;color:#94a3b8"><a href="https://precepteur.net/#faq" style="color:#4f46e5;text-decoration:underline">Questions frequentes</a></p>';
-msgOk.style.display='block';
-}else{
-var errEl=document.getElementById('msg-err');
-errEl.textContent=data.error||'Une erreur est survenue. Verifiez vos identifiants.';
-errEl.style.display='block';
-btn.textContent='Connecter Pronote';
-btn.disabled=false;
+// ===== READ REG ID FROM URL PARAM =====
+(function() {
+var urlParams = new URLSearchParams(window.location.search);
+var regId = urlParams.get('reg');
+if (regId) {
+window._registrationId = regId;
+var headerEl = document.getElementById('page-subtitle');
+if (headerEl) {
+headerEl.textContent = 'Connectez Pronote pour recevoir les vraies notes et devoirs de votre enfant.';
 }
-}).catch(function(){
-document.getElementById('msg-err').style.display='block';
-btn.textContent='Connecter Pronote';
-btn.disabled=false;
+}
+})();
+
+// ===== SCHOOL SEARCH =====
+var cityTimeout = null;
+var allSchools = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+var cityInput = document.getElementById('f-city');
+if (cityInput) {
+cityInput.addEventListener('input', function() {
+clearTimeout(cityTimeout);
+var q = this.value.trim();
+var results = document.getElementById('city-results');
+if (q.length < 2) { results.style.display = 'none'; return; }
+
+cityTimeout = setTimeout(function() {
+fetch('https://api-adresse.data.gouv.fr/search/?q=' + encodeURIComponent(q) + '&type=municipality&limit=6')
+.then(function(r) { return r.json(); })
+.then(function(data) {
+var features = data.features || [];
+if (features.length === 0) { results.style.display = 'none'; return; }
+results.innerHTML = '';
+features.forEach(function(f) {
+var props = f.properties;
+var coords = f.geometry.coordinates;
+var div = document.createElement('div');
+div.className = 'result-item';
+div.innerHTML = '<div class="city-name">' + props.city + '</div><div class="city-context">' + props.postcode + ' — ' + (props.context || '') + '</div>';
+div.onclick = function() {
+cityInput.value = props.city + ' (' + props.postcode + ')';
+results.style.display = 'none';
+loadSchools(coords[1], coords[0]);
+};
+results.appendChild(div);
+});
+results.style.display = 'block';
+})
+.catch(function() { results.style.display = 'none'; });
+}, 300);
+});
+}
+
+var schoolSearchInput = document.getElementById('f-school-search');
+if (schoolSearchInput) {
+schoolSearchInput.addEventListener('input', function() {
+var q = this.value.trim().toLowerCase();
+if (!q) { renderSchools(allSchools); return; }
+var filtered = allSchools.filter(function(s) {
+return s.nomEtab.toLowerCase().indexOf(q) >= 0 || (s.cp && s.cp.indexOf(q) >= 0);
+});
+renderSchools(filtered);
+});
+}
+});
+
+function loadSchools(lat, lng) {
+var schoolSection = document.getElementById('school-section');
+var schoolList = document.getElementById('school-list');
+schoolList.innerHTML = '<div style="padding:16px;text-align:center;color:var(--tm);font-size:.85rem;">Recherche des etablissements...</div>';
+schoolSection.style.display = 'block';
+document.getElementById('creds-section').style.display = 'none';
+
+fetch('https://www.index-education.com/swie/geoloc.php', {
+method: 'POST',
+headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+body: 'data=' + encodeURIComponent(JSON.stringify({nomFonction: 'geoLoc', lat: String(lat), long: String(lng)}))
+})
+.then(function(r) { return r.json(); })
+.then(function(schools) {
+allSchools = schools || [];
+renderSchools(allSchools);
+})
+.catch(function() {
+schoolList.innerHTML = '<div style="padding:16px;text-align:center;color:#ef4444;font-size:.85rem;">Erreur de recherche. Verifiez votre connexion ou reessayez.</div>';
+document.getElementById('creds-section').style.display = 'block';
+});
+}
+
+function renderSchools(schools) {
+var schoolList = document.getElementById('school-list');
+if (schools.length === 0) {
+schoolList.innerHTML = '<div style="padding:16px;text-align:center;color:var(--tm);font-size:.85rem;">Aucun etablissement trouve.</div>';
+return;
+}
+schoolList.innerHTML = '';
+schools.forEach(function(s) {
+var div = document.createElement('div');
+div.className = 'school-item';
+div.innerHTML = '<div class="school-name">' + s.nomEtab + '</div><div class="school-url">' + s.url + '</div>' + (s.cp ? '<div class="school-cp">' + s.cp + '</div>' : '');
+div.onclick = function() { selectSchool(s); };
+schoolList.appendChild(div);
+});
+}
+
+function selectSchool(school) {
+document.getElementById('f-url').value = school.url + '/parent.html';
+document.getElementById('f-school-name').value = school.nomEtab;
+document.getElementById('selected-school-name').textContent = school.nomEtab;
+document.getElementById('selected-school-url').textContent = school.url;
+document.getElementById('school-section').style.display = 'none';
+document.getElementById('creds-section').style.display = 'block';
+}
+
+function resetSchoolSelection() {
+document.getElementById('f-url').value = '';
+document.getElementById('f-school-name').value = '';
+document.getElementById('creds-section').style.display = 'none';
+document.getElementById('school-section').style.display = 'block';
+}
+
+// ===== FORM SUBMIT =====
+document.getElementById('pronote-form').onsubmit = function(e) {
+e.preventDefault();
+var btn = document.getElementById('submit-btn');
+var email = document.getElementById('f-email').value.trim();
+var url = document.getElementById('f-url').value.trim();
+var ent = document.getElementById('f-ent').value;
+var user = document.getElementById('f-user').value;
+var pass = document.getElementById('f-pass').value;
+
+if (!url) {
+document.getElementById('msg-err').textContent = 'Veuillez selectionner un etablissement.';
+document.getElementById('msg-err').style.display = 'block';
+return;
+}
+
+btn.textContent = 'Verification en cours...';
+btn.disabled = true;
+document.getElementById('msg-err').style.display = 'none';
+
+var isTelegram = email.startsWith('@');
+var payload = {
+pronote_url: url,
+ent_type: ent,
+username: user,
+password: pass,
+registration_id: window._registrationId || '',
+parent_first_name: '',
+parent_email: isTelegram ? '' : email
+};
+if (isTelegram) { payload.telegram_username = email; }
+
+fetch(API_URL + '/api/pronote/register', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(payload)
+}).then(function(r) { return r.json(); }).then(function(data) {
+if (data.ok) {
+document.getElementById('pronote-form').style.display = 'none';
+document.getElementById('success-msg').style.display = 'block';
+} else {
+var errEl = document.getElementById('msg-err');
+errEl.textContent = data.error || 'Une erreur est survenue. Verifiez vos identifiants.';
+errEl.style.display = 'block';
+btn.textContent = 'Connecter Pronote';
+btn.disabled = false;
+}
+}).catch(function() {
+document.getElementById('msg-err').style.display = 'block';
+btn.textContent = 'Connecter Pronote';
+btn.disabled = false;
 });
 };
 </script>

@@ -97,6 +97,21 @@ Ouvrir Telegram et demarrer
 <p class="next-step">Cliquez sur <strong>"Demarrer"</strong> dans Telegram pour activer le bot. Votre premier bilan arrivera ce soir a 17h.</p>
 <p class="next-step" style="margin-top:12px"><a href="https://precepteur.net/#faq" style="color:var(--p);text-decoration:underline">Questions frequentes</a></p>
 
+<div id="child-invite-section" style="display:none;margin-top:32px;padding:24px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;">
+    <h3 style="font-size:1.1rem;margin-bottom:8px;color:#166534;">Invitez votre enfant</h3>
+    <p style="font-size:.88rem;color:#475569;margin-bottom:14px;">Envoyez ce lien a votre enfant pour qu'il se connecte sur son telephone :</p>
+    <div style="display:flex;align-items:center;gap:8px;background:white;padding:10px 14px;border-radius:8px;border:1px solid #d1d5db;">
+        <input type="text" id="child-link-input" readonly style="flex:1;border:none;outline:none;font-size:.82rem;color:#374151;background:transparent;" value="">
+        <button onclick="copyChildLink()" style="padding:6px 14px;background:#166534;color:white;border:none;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;" id="copy-child-btn">Copier</button>
+    </div>
+    <p style="font-size:.78rem;color:#6b7280;margin-top:8px;">Envoyez-le par SMS, WhatsApp ou AirDrop.</p>
+</div>
+
+<div id="parent-child-section" style="display:none;margin-top:32px;padding:24px;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;">
+    <h3 style="font-size:1.1rem;margin-bottom:8px;color:#9a3412;">Mode parent-enfant</h3>
+    <p style="font-size:.88rem;color:#475569;">Chaque soir a 17h, vous recevrez 2 messages : un bilan pour vous, et des exercices pour votre enfant. Passez-lui le telephone quand les exercices arrivent.</p>
+</div>
+
 </div>
 </div></section>
 
@@ -116,6 +131,8 @@ var prenom=params.get('prenom');
 var pronote=params.get('pronote');
 var enfants=params.get('enfants');
 var tgLink=params.get('tg');
+var childLink=params.get('child_link');
+var role=params.get('role')||'parent';
 
 // Personnaliser le titre
 if(prenom){
@@ -143,10 +160,30 @@ box.textContent='Vous pourrez connecter Pronote plus tard directement depuis le 
 container.appendChild(box);
 }
 
+// Afficher le lien enfant si parent avec child_link
+if(childLink&&role==='parent'){
+document.getElementById('child-invite-section').style.display='block';
+document.getElementById('child-link-input').value=childLink;
+}
+
+// Afficher le message mode parent-enfant
+if(role==='parent_child'){
+document.getElementById('parent-child-section').style.display='block';
+}
+
 // Detecter desktop pour afficher l'aide d'installation Telegram
 var isMobile=/Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 if(!isMobile){
 document.getElementById('desktop-hint').style.display='flex';
+}
+
+function copyChildLink(){
+var input=document.getElementById('child-link-input');
+input.select();
+navigator.clipboard.writeText(input.value).then(function(){
+document.getElementById('copy-child-btn').textContent='Copie !';
+setTimeout(function(){document.getElementById('copy-child-btn').textContent='Copier';},2000);
+});
 }
 </script>
 </body>

@@ -190,6 +190,26 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <div class="error" id="err-phone">Veuillez entrer votre numero de telephone.</div>
 </div>
 
+<div class="field">
+<label>Votre enfant a-t-il son propre telephone ?</label>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
+  <label style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--b);border-radius:10px;cursor:pointer;transition:border-color .2s;" class="radio-opt" onclick="this.querySelector('input').checked=true;updatePhoneChoice();">
+    <input type="radio" name="child_has_phone" value="yes" checked style="margin-top:3px;">
+    <div>
+      <div style="font-weight:600;font-size:.9rem;">Oui, il a un telephone</div>
+      <div style="font-size:.78rem;color:var(--tm);">Il pourra faire ses exercices en autonomie sur son telephone</div>
+    </div>
+  </label>
+  <label style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--b);border-radius:10px;cursor:pointer;transition:border-color .2s;" class="radio-opt" onclick="this.querySelector('input').checked=true;updatePhoneChoice();">
+    <input type="radio" name="child_has_phone" value="no" style="margin-top:3px;">
+    <div>
+      <div style="font-weight:600;font-size:.9rem;">Non, pas encore</div>
+      <div style="font-size:.78rem;color:var(--tm);">Vous ferez les exercices ensemble sur votre telephone</div>
+    </div>
+  </label>
+</div>
+</div>
+
 <button type="button" class="btn bp submit-btn" id="btn-continue" onclick="goToPhase2()">Continuer</button>
 
 <div class="reassurance">
@@ -308,6 +328,10 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 
 <span class="info-why" onclick="toggleInfoBox('why-pronote')">Pourquoi ces informations ?</span>
 <div class="info-box" id="why-pronote">Precepteur se connecte a Pronote pour recuperer automatiquement les notes, devoirs et absences de votre enfant. Sans ces identifiants, le bot peut quand meme fonctionner, mais sans donnees en temps reel. Vous pourrez toujours les ajouter plus tard depuis le bot Telegram.</div>
+
+<div style="text-align:center;margin-top:12px;">
+<a href="#" onclick="skipPronote();return false;" style="font-size:.82rem;color:var(--tm);text-decoration:underline;">Passer, je connecterai Pronote plus tard</a>
+</div>
 </div>
 
 <!-- RGPD -->
@@ -458,6 +482,11 @@ document.getElementById('creds-section').style.display = 'none';
 document.getElementById('school-section').style.display = 'block';
 }
 
+function updatePhoneChoice() {
+var noPhone = document.querySelector('input[name="child_has_phone"][value="no"]').checked;
+window._childHasPhone = !noPhone;
+}
+
 function goToPhase2(){
 var pfirst=document.getElementById('f-pfirst');
 var email=document.getElementById('f-email');
@@ -490,6 +519,17 @@ document.getElementById('phase-1').classList.remove('active');
 document.getElementById('phase-2').classList.add('active');
 document.getElementById('prog-2').classList.add('active');
 window.scrollTo({top:0,behavior:'smooth'});
+
+// If no phone → auto-open child section and make first name required
+var noPhone = document.querySelector('input[name="child_has_phone"][value="no"]');
+if (noPhone && noPhone.checked) {
+    var childToggle = document.getElementById('toggle-child');
+    if (childToggle && !childToggle.classList.contains('open')) {
+        toggleSection('child');
+    }
+    var cfirst = document.getElementById('f-cfirst');
+    if (cfirst) cfirst.required = true;
+}
 }
 
 function toggleSection(name){
@@ -510,6 +550,20 @@ var box=document.getElementById(id);
 box.classList.toggle('open');
 }
 
+function skipPronote() {
+var section = document.getElementById('section-pronote');
+if (section) section.classList.remove('open');
+var toggle = document.getElementById('toggle-pronote');
+if (toggle) toggle.classList.remove('open');
+// Clear pronote fields
+var purl = document.getElementById('f-purl');
+if (purl) purl.value = '';
+var puser = document.getElementById('f-puser');
+if (puser) puser.value = '';
+var ppass = document.getElementById('f-ppass');
+if (ppass) ppass.value = '';
+}
+
 // Form submit
 document.getElementById('register-form').onsubmit=function(e){
 e.preventDefault();
@@ -518,6 +572,9 @@ btn.textContent='Envoi en cours...';
 btn.disabled=true;
 
 var hasPronote=!!document.getElementById('f-purl').value.trim();
+
+var childHasPhoneChecked = document.querySelector('input[name="child_has_phone"]:checked');
+var childHasPhoneVal = childHasPhoneChecked ? childHasPhoneChecked.value : 'yes';
 
 var payload={
 parent_first_name:document.getElementById('f-pfirst').value.trim(),
@@ -535,7 +592,9 @@ pronote_ent:hasPronote?document.getElementById('f-pent').value||null:null,
 pronote_username:hasPronote?document.getElementById('f-puser').value||null:null,
 pronote_password:hasPronote?document.getElementById('f-ppass').value||null:null,
 tutor_type:'default',
-tutor_contact:null
+tutor_contact:null,
+role:childHasPhoneVal === 'no' ? 'parent_child' : 'parent',
+child_has_phone:childHasPhoneVal === 'yes'
 };
 
 fetch(API_URL+'/api/register',{
@@ -552,6 +611,8 @@ if(data.children&&data.children.length>0){
 params.set('enfants',data.children.map(function(c){return c.name}).join(','));
 }
 if(data.telegram_link)params.set('tg',data.telegram_link);
+if(data.child_link)params.set('child_link',data.child_link);
+params.set('role',childHasPhoneVal === 'no' ? 'parent_child' : 'parent');
 window.location.href='confirmation.html?'+params.toString();
 }else{
 var errEl=document.getElementById('msg-err');
