@@ -125,6 +125,19 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 .ftc a{display:block;color:var(--ts);font-size:.88rem;padding:5px 0;cursor:pointer}.ftc a:hover{color:var(--p)}
 .ftm{padding-top:20px;border-top:1px solid var(--b);display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--tm)}
 
+.search-results{border:1px solid var(--b);border-radius:8px;max-height:200px;overflow-y:auto;margin-top:4px;background:white}
+.search-results .result-item{padding:10px 14px;cursor:pointer;font-size:.88rem;border-bottom:1px solid #f1f5f9;transition:background .15s}
+.search-results .result-item:hover{background:#f8fafc}
+.search-results .result-item .city-name{font-weight:600;color:var(--t)}
+.search-results .result-item .city-context{font-size:.78rem;color:var(--tm)}
+.school-list{border:1px solid var(--b);border-radius:8px;max-height:300px;overflow-y:auto;margin-top:4px;background:white}
+.school-list .school-item{padding:12px 14px;cursor:pointer;border-bottom:1px solid #f1f5f9;transition:background .15s}
+.school-list .school-item:hover{background:#f0fdf4}
+.school-list .school-item .school-name{font-weight:600;font-size:.88rem;color:var(--t)}
+.school-list .school-item .school-url{font-size:.72rem;color:var(--tm);margin-top:2px}
+.school-list .school-item .school-cp{font-size:.72rem;color:var(--tm)}
+.search-field-wrap{position:relative}
+
 @media(max-width:768px){
 .form-wrap{padding:28px 20px;border-radius:16px}
 .row{grid-template-columns:1fr}
@@ -229,28 +242,59 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 </button>
 <div class="section-content" id="section-pronote">
 <div style="padding:12px 16px;background:rgba(79,70,229,.04);border:1px solid rgba(79,70,229,.12);border-radius:10px;margin-bottom:16px;font-size:.85rem;color:var(--ts);line-height:1.6">
-<strong style="color:var(--t)">Connexion securisee</strong> — Vos identifiants sont chiffres (AES-256) et ne sont jamais partages. Ils servent uniquement a recuperer les notes et devoirs de votre enfant.
+<strong style="color:var(--t)">Connexion securisee</strong> — Vos identifiants sont chiffres (AES-256) et ne sont jamais partages.
 </div>
+
+<!-- Step 1: Search city -->
+<div class="field">
+<label for="f-city">Ville de l'etablissement</label>
+<input type="text" id="f-city" placeholder="Tapez le nom de votre ville..." autocomplete="off">
+<div class="search-results" id="city-results" style="display:none;"></div>
+</div>
+
+<!-- Step 2: School list (appears after city selection) -->
+<div id="school-section" style="display:none;">
+<div class="field">
+<label>Choisissez l'etablissement</label>
+<div class="search-field-wrap">
+<input type="text" id="f-school-search" placeholder="Filtrer..." autocomplete="off">
+</div>
+<div class="school-list" id="school-list"></div>
+<input type="hidden" id="f-purl" value="">
+<input type="hidden" id="f-school-name" value="">
+</div>
+</div>
+
+<!-- Step 3: Selected school confirmation + credentials -->
+<div id="creds-section" style="display:none;">
+<div style="padding:12px 16px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);border-radius:10px;margin-bottom:16px;">
+<strong id="selected-school-name" style="color:#166534;font-size:.9rem;"></strong>
+<div id="selected-school-url" style="font-size:.75rem;color:var(--tm);margin-top:2px;"></div>
+<a href="#" onclick="resetSchoolSelection();return false;" style="font-size:.75rem;color:var(--p);margin-top:4px;display:inline-block;">Changer d'etablissement</a>
+</div>
+
 <div class="field">
 <label for="f-pent">Comment accedez-vous a Pronote ?</label>
-<select id="f-pent" onchange="onEntChange()">
+<select id="f-pent">
 <option value="" selected>Choisissez votre ENT</option>
 <option value="ile_de_france">MonLycee.net (Ile-de-France)</option>
 <option value="monbureaunumerique">Mon Bureau Numerique (Grand Est)</option>
-<option value="occitanie">Mon ENT Occitanie</option>
-<option value="hdf">ENT Hauts-de-France</option>
-<option value="normandie">L'Educ de Normandie</option>
-<option value="bretagne">Toutatice (Bretagne)</option>
-<option value="paca">Atrium (PACA)</option>
-<option value="auvergne">ENT Auvergne-Rhone-Alpes</option>
+<option value="occitanie_montpellier">ENT Occitanie</option>
+<option value="ent_hdf">ENT Hauts-de-France</option>
+<option value="l_normandie">L'Educ de Normandie</option>
+<option value="ac_rennes">Toutatice (Bretagne)</option>
+<option value="atrium_sud">Atrium (PACA)</option>
+<option value="ent_auvergnerhonealpe">ENT Auvergne-Rhone-Alpes</option>
+<option value="paris_classe_numerique">Paris Classe Numerique</option>
+<option value="val_doise">Val d'Oise</option>
+<option value="ent_94">Val-de-Marne</option>
+<option value="cas_seinesaintdenis_edu">Seine-Saint-Denis</option>
+<option value="ent_essonne">Essonne</option>
+<option value="ent_ecollege78">eCollege 78 (Yvelines)</option>
+<option value="ent77">ENT 77 (Seine-et-Marne)</option>
 <option value="none">Connexion directe (sans ENT)</option>
 <option value="other">Autre / Je ne sais pas</option>
 </select>
-</div>
-<div class="field" id="field-purl" style="display:none">
-<label for="f-purl">URL Pronote de l'etablissement</label>
-<div class="hint">Uniquement si "Autre" ou "Connexion directe". Copiez l'URL depuis votre navigateur.</div>
-<input type="url" id="f-purl" placeholder="https://pronote.college-example.fr">
 </div>
 <div class="field">
 <label for="f-puser">Identifiant Pronote</label>
@@ -260,8 +304,10 @@ footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
 <label for="f-ppass">Mot de passe Pronote</label>
 <input type="password" id="f-ppass" placeholder="Votre mot de passe">
 </div>
+</div>
+
 <span class="info-why" onclick="toggleInfoBox('why-pronote')">Pourquoi ces informations ?</span>
-<div class="info-box" id="why-pronote">Precepteur AI se connecte a Pronote pour recuperer automatiquement les notes, devoirs et absences de votre enfant. Sans ces identifiants, le bot peut quand meme fonctionner, mais sans donnees en temps reel. Vous pourrez toujours les ajouter plus tard depuis le bot Telegram.</div>
+<div class="info-box" id="why-pronote">Precepteur se connecte a Pronote pour recuperer automatiquement les notes, devoirs et absences de votre enfant. Sans ces identifiants, le bot peut quand meme fonctionner, mais sans donnees en temps reel. Vous pourrez toujours les ajouter plus tard depuis le bot Telegram.</div>
 </div>
 
 <!-- RGPD -->
@@ -304,15 +350,112 @@ Une erreur est survenue. Veuillez reessayer ou nous contacter a <a href="mailto:
 <script>
 var API_URL='https://precepteur-ai.onrender.com';
 
-function onEntChange(){
-var ent=document.getElementById('f-pent').value;
-var urlField=document.getElementById('field-purl');
-if(ent==='none'||ent==='other'){
-urlField.style.display='block';
-}else{
-urlField.style.display='none';
-document.getElementById('f-purl').value='';
+// ===== SCHOOL SEARCH =====
+var cityTimeout = null;
+var allSchools = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+var cityInput = document.getElementById('f-city');
+if (cityInput) {
+cityInput.addEventListener('input', function() {
+clearTimeout(cityTimeout);
+var q = this.value.trim();
+var results = document.getElementById('city-results');
+if (q.length < 2) { results.style.display = 'none'; return; }
+
+cityTimeout = setTimeout(function() {
+fetch('https://api-adresse.data.gouv.fr/search/?q=' + encodeURIComponent(q) + '&type=municipality&limit=6')
+.then(function(r) { return r.json(); })
+.then(function(data) {
+var features = data.features || [];
+if (features.length === 0) { results.style.display = 'none'; return; }
+results.innerHTML = '';
+features.forEach(function(f) {
+var props = f.properties;
+var coords = f.geometry.coordinates;
+var div = document.createElement('div');
+div.className = 'result-item';
+div.innerHTML = '<div class="city-name">' + props.city + '</div><div class="city-context">' + props.postcode + ' — ' + (props.context || '') + '</div>';
+div.onclick = function() {
+cityInput.value = props.city + ' (' + props.postcode + ')';
+results.style.display = 'none';
+loadSchools(coords[1], coords[0]);
+};
+results.appendChild(div);
+});
+results.style.display = 'block';
+})
+.catch(function() { results.style.display = 'none'; });
+}, 300);
+});
 }
+
+var schoolSearchInput = document.getElementById('f-school-search');
+if (schoolSearchInput) {
+schoolSearchInput.addEventListener('input', function() {
+var q = this.value.trim().toLowerCase();
+if (!q) { renderSchools(allSchools); return; }
+var filtered = allSchools.filter(function(s) {
+return s.nomEtab.toLowerCase().indexOf(q) >= 0 || (s.cp && s.cp.indexOf(q) >= 0);
+});
+renderSchools(filtered);
+});
+}
+});
+
+function loadSchools(lat, lng) {
+var schoolSection = document.getElementById('school-section');
+var schoolList = document.getElementById('school-list');
+schoolList.innerHTML = '<div style="padding:16px;text-align:center;color:var(--tm);font-size:.85rem;">Recherche des etablissements...</div>';
+schoolSection.style.display = 'block';
+document.getElementById('creds-section').style.display = 'none';
+
+fetch('https://www.index-education.com/swie/geoloc.php', {
+method: 'POST',
+headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+body: 'data=' + encodeURIComponent(JSON.stringify({nomFonction: 'geoLoc', lat: String(lat), long: String(lng)}))
+})
+.then(function(r) { return r.json(); })
+.then(function(schools) {
+allSchools = schools || [];
+renderSchools(allSchools);
+})
+.catch(function() {
+schoolList.innerHTML = '<div style="padding:16px;text-align:center;color:#ef4444;font-size:.85rem;">Erreur de recherche. Verifiez votre connexion ou reessayez.</div>';
+document.getElementById('creds-section').style.display = 'block';
+});
+}
+
+function renderSchools(schools) {
+var schoolList = document.getElementById('school-list');
+if (schools.length === 0) {
+schoolList.innerHTML = '<div style="padding:16px;text-align:center;color:var(--tm);font-size:.85rem;">Aucun etablissement trouve.</div>';
+return;
+}
+schoolList.innerHTML = '';
+schools.forEach(function(s) {
+var div = document.createElement('div');
+div.className = 'school-item';
+div.innerHTML = '<div class="school-name">' + s.nomEtab + '</div><div class="school-url">' + s.url + '</div>' + (s.cp ? '<div class="school-cp">' + s.cp + '</div>' : '');
+div.onclick = function() { selectSchool(s); };
+schoolList.appendChild(div);
+});
+}
+
+function selectSchool(school) {
+document.getElementById('f-purl').value = school.url + '/parent.html';
+document.getElementById('f-school-name').value = school.nomEtab;
+document.getElementById('selected-school-name').textContent = school.nomEtab;
+document.getElementById('selected-school-url').textContent = school.url;
+document.getElementById('school-section').style.display = 'none';
+document.getElementById('creds-section').style.display = 'block';
+}
+
+function resetSchoolSelection() {
+document.getElementById('f-purl').value = '';
+document.getElementById('f-school-name').value = '';
+document.getElementById('creds-section').style.display = 'none';
+document.getElementById('school-section').style.display = 'block';
 }
 
 function goToPhase2(){
