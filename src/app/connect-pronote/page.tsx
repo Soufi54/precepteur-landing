@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
   GraduationCap,
   Lock,
@@ -19,32 +19,96 @@ import {
   CheckCircle,
   AlertCircle,
   BookOpen,
-  FileText,
-  Clock,
   XIcon,
   Menu,
   Flag,
 } from "lucide-react";
 
+const API_URL = "https://precepteur-ai.onrender.com";
+
+interface ChildInfo {
+  name: string;
+  class_name: string;
+}
+
 export default function ConnectPronotePage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}>
+      <ConnectPronoteContent />
+    </Suspense>
+  );
+}
+
+function ConnectPronoteContent() {
+  const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
   const [pronoteUrl, setPronoteUrl] = useState("");
+  const [entType, setEntType] = useState("ile_de_france");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [connecting, setConnecting] = useState(false);
-  const [connected, setConnected] = useState(false);
+  const [error, setError] = useState("");
+  const [children, setChildren] = useState<ChildInfo[]>([]);
+  const [registrationId, setRegistrationId] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const reg = searchParams.get("reg");
+    if (reg) {
+      setRegistrationId(reg);
+    } else {
+      setRegistrationId(crypto.randomUUID().replace(/-/g, "").slice(0, 8));
+    }
+  }, [searchParams]);
 
   const handleConnect = async (e: React.FormEvent) => {
     e.preventDefault();
     setConnecting(true);
-    // Simulate connection test
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setConnecting(false);
-    setConnected(true);
-    setStep(3);
+    setError("");
+
+    try {
+      const res = await fetch(`${API_URL}/api/pronote/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pronote_url: pronoteUrl,
+          ent_type: entType || "ile_de_france",
+          username,
+          password,
+          registration_id: registrationId,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.ok) {
+        setChildren(data.children || []);
+        setStep(3);
+      } else {
+        setError(data.error || "Connexion echouee. Verifiez vos identifiants.");
+      }
+    } catch {
+      setError("Impossible de contacter le serveur. Reessayez dans quelques instants.");
+    } finally {
+      setConnecting(false);
+    }
   };
+
+  const ENT_OPTIONS = [
+    { value: "ile_de_france", label: "Ile-de-France (MonLycee / MonCollege)" },
+    { value: "ent77", label: "Seine-et-Marne (ENT77)" },
+    { value: "ent91", label: "Essonne (ENT91)" },
+    { value: "ac_lyon", label: "Academie de Lyon" },
+    { value: "ac_rennes", label: "Academie de Rennes" },
+    { value: "ac_reims", label: "Academie de Reims" },
+    { value: "ac_orleans_tours", label: "Academie Orleans-Tours" },
+    { value: "val_doise", label: "Val d'Oise" },
+    { value: "e_lyco", label: "e-lyco (Pays de la Loire)" },
+    { value: "laclasse_lyon", label: "laclasse.com (Lyon)" },
+    { value: "occitanie_montpellier", label: "Occitanie (Montpellier)" },
+    { value: "", label: "Connexion directe (sans ENT)" },
+  ];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -119,7 +183,6 @@ export default function ConnectPronotePage() {
                 </p>
               </div>
 
-              {/* What we access */}
               <Card className="mb-6">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -161,7 +224,6 @@ export default function ConnectPronotePage() {
                 </CardContent>
               </Card>
 
-              {/* What we DON'T do */}
               <Card className="mb-6 border-primary/20">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
@@ -191,7 +253,6 @@ export default function ConnectPronotePage() {
                 </CardContent>
               </Card>
 
-              {/* Security info */}
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="text-center p-4 rounded-xl bg-secondary/50">
                   <Lock className="h-6 w-6 text-primary mx-auto mb-2" />
@@ -248,6 +309,23 @@ export default function ConnectPronotePage() {
 
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">
+                        Espace Numerique de Travail (ENT)
+                      </label>
+                      <select
+                        value={entType}
+                        onChange={(e) => setEntType(e.target.value)}
+                        className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      >
+                        {ENT_OPTIONS.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-2">
                         Identifiant parent
                       </label>
                       <Input
@@ -283,6 +361,13 @@ export default function ConnectPronotePage() {
                       </div>
                     </div>
 
+                    {error && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                        <AlertCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
+                        <p className="text-sm text-red-700">{error}</p>
+                      </div>
+                    )}
+
                     <div className="bg-secondary/50 rounded-lg p-4 flex items-start gap-3">
                       <Lock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                       <p className="text-sm text-muted-foreground">
@@ -295,7 +380,7 @@ export default function ConnectPronotePage() {
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => setStep(1)}
+                        onClick={() => { setStep(1); setError(""); }}
                         className="gap-2"
                       >
                         <ArrowLeft className="h-4 w-4" />
@@ -340,52 +425,44 @@ export default function ConnectPronotePage() {
                 </p>
               </div>
 
-              {/* Mock data found */}
               <Card className="mb-8 text-left">
                 <CardContent className="pt-6">
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between py-3 border-b">
-                      <div className="flex items-center gap-3">
-                        <GraduationCap className="h-5 w-5 text-primary" />
-                        <span className="font-medium">Etablissement</span>
+                    {children.map((child, i) => (
+                      <div key={i} className="flex items-center justify-between py-3 border-b last:border-b-0">
+                        <div className="flex items-center gap-3">
+                          <BookOpen className="h-5 w-5 text-primary" />
+                          <span className="font-medium">Enfant</span>
+                        </div>
+                        <span className="text-muted-foreground">
+                          {child.name}{child.class_name ? ` — ${child.class_name}` : ""}
+                        </span>
                       </div>
-                      <span className="text-muted-foreground">College Jean Moulin</span>
-                    </div>
-                    <div className="flex items-center justify-between py-3 border-b">
-                      <div className="flex items-center gap-3">
-                        <BookOpen className="h-5 w-5 text-primary" />
-                        <span className="font-medium">Enfant(s) detecte(s)</span>
+                    ))}
+                    {children.length === 0 && (
+                      <div className="flex items-center justify-between py-3">
+                        <div className="flex items-center gap-3">
+                          <BookOpen className="h-5 w-5 text-primary" />
+                          <span className="font-medium">Connexion</span>
+                        </div>
+                        <span className="text-muted-foreground">Verifiee avec succes</span>
                       </div>
-                      <span className="text-muted-foreground">Yasmine D. — 4eme B</span>
-                    </div>
-                    <div className="flex items-center justify-between py-3 border-b">
-                      <div className="flex items-center gap-3">
-                        <FileText className="h-5 w-5 text-primary" />
-                        <span className="font-medium">Notes disponibles</span>
-                      </div>
-                      <span className="text-muted-foreground">47 notes ce trimestre</span>
-                    </div>
-                    <div className="flex items-center justify-between py-3">
-                      <div className="flex items-center gap-3">
-                        <Clock className="h-5 w-5 text-primary" />
-                        <span className="font-medium">Prochain bilan</span>
-                      </div>
-                      <span className="text-primary font-medium">Ce soir a 19h</span>
-                    </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
 
               <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  Les donnees Pronote seront synchronisees automatiquement chaque jour.
+                  Vous recevrez votre premier bilan ce soir.
+                </p>
                 <Link href="/#inscription">
-                  <Button className="w-full gap-2 h-12 text-base">
-                    Finaliser mon inscription
+                  <Button className="w-full gap-2 h-12 text-base mt-4">
+                    Retour a l&apos;accueil
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
-                <p className="text-sm text-muted-foreground">
-                  Plus qu&apos;une etape : choisissez Telegram ou WhatsApp pour recevoir vos bilans.
-                </p>
               </div>
             </div>
           )}
