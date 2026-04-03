@@ -1384,6 +1384,18 @@ export default function Home() {
           <p className="mt-4 text-sm text-primary-foreground/60">
             7 jours gratuits. Aucune carte bancaire requise. Annulation en un clic.
           </p>
+          <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/inscription-tuteur">
+              <Button variant="outline" className="bg-transparent border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground w-full sm:w-auto">
+                Je suis accompagnant / tuteur
+              </Button>
+            </Link>
+            <Link href="/inscription-eleve">
+              <Button variant="outline" className="bg-transparent border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground w-full sm:w-auto">
+                Je suis eleve
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
