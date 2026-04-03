@@ -1,2218 +1,248 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Précepteur — Soutien scolaire nouvelle génération</title>
-    <meta name="description" content="Chaque soir, 3 exercices ciblés pour votre enfant. Un bilan pour les parents. Un suivi IA qui s'adapte. Directement sur Telegram.">
-    <meta name="keywords" content="suivi scolaire, pronote, parents, IA, coach scolaire, notes, devoirs, Telegram, alertes notes enfant">
-    <link rel="canonical" href="https://precepteur.net">
-    <!-- Open Graph -->
-    <meta property="og:title" content="Précepteur — Votre coach scolaire IA">
-    <meta property="og:description" content="Chaque soir, un bilan personnalisé de la journée scolaire de votre enfant. Sans ouvrir Pronote.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://precepteur.net">
-    <meta property="og:locale" content="fr_FR">
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        /* ===== RESET & BASE ===== */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; font-size: 16px; }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #1a1a2e;
-            background: #FFFBF5;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-        img { max-width: 100%; display: block; }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
-
-        /* ===== VARIABLES ===== */
-        :root {
-            --primary: #F97316;
-            --primary-light: #FB923C;
-            --primary-dark: #EA580C;
-            --accent: #0EA5E9;
-            --accent-light: #38BDF8;
-            --success: #22C55E;
-            --warning: #FDE68A;
-            --bg-soft: #FFF7ED;
-            --bg-card: #ffffff;
-            --text-primary: #1C1917;
-            --text-secondary: #57534E;
-            --text-muted: #A8A29E;
-            --border: #E7E5E4;
-            --radius: 16px;
-            --radius-sm: 10px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
-            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
-            --max-width: 1200px;
-        }
-
-        /* ===== UTILITIES ===== */
-        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
-        .section { padding: 100px 0; }
-        .section-alt { background: var(--bg-soft); }
-        .text-center { text-align: center; }
-        .text-gradient {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* ===== TYPOGRAPHY ===== */
-        h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; }
-        h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; }
-        h3 { font-size: 1.3rem; font-weight: 700; line-height: 1.3; }
-        .subtitle { font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--text-secondary); line-height: 1.7; max-width: 640px; }
-        .label {
-            display: inline-block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--primary);
-            background: rgba(249, 115, 22, 0.08);
-            padding: 6px 14px;
-            border-radius: 100px;
-            margin-bottom: 16px;
-        }
-
-        /* ===== BUTTONS ===== */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 600;
-            padding: 14px 32px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
-        }
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
-        }
-        .btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--border);
-        }
-        .btn-outline:hover {
-            border-color: var(--primary);
-            background: rgba(249, 115, 22, 0.04);
-        }
-        .btn-lg { padding: 18px 40px; font-size: 1.1rem; border-radius: 14px; }
-
-        /* ===== NAVBAR ===== */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            padding: 0 24px;
-        }
-        .navbar-inner {
-            max-width: var(--max-width);
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 72px;
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-        }
-        .logo span { color: var(--primary); }
-        .nav-links { display: flex; gap: 32px; align-items: center; }
-        .nav-links a {
-            font-size: 0.95rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: color 0.2s;
-        }
-        .nav-links a:hover { color: var(--primary); }
-        .nav-cta { margin-left: 16px; }
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-        }
-        .mobile-menu-btn span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: var(--text-primary);
-            margin: 6px 0;
-            transition: all 0.3s;
-        }
-
-        /* ===== HERO ===== */
-        .hero {
-            padding: 140px 0 100px;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -200px;
-            right: -200px;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -100px;
-            left: -100px;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(14, 165, 233, 0.06) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .hero-inner {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        .hero-content { max-width: 560px; }
-        .hero h1 { margin-bottom: 24px; }
-        .hero .subtitle { margin-bottom: 40px; }
-        .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
-        .hero-stats {
-            display: flex;
-            gap: 40px;
-            margin-top: 48px;
-            padding-top: 32px;
-            border-top: 1px solid var(--border);
-        }
-        .hero-stat-value { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
-        .hero-stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
-
-        /* ===== HERO VISUAL ===== */
-        .hero-visual {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-        }
-
-        /* Two phones */
-        .hero-visual-phones {
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            justify-content: center;
-            padding: 8px 0;
-        }
-        .phone {
-            max-width: 200px; width: 100%;
-            flex-shrink: 0;
-            border-radius: 32px;
-            padding: 8px;
-        }
-        .phone-dark {
-            background: #0f172a;
-            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.08);
-        }
-        .phone-light {
-            background: #e2e8f0;
-            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,0,0,0.06);
-            opacity: 0;
-            transform: translateX(16px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .phone-light.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .phone-screen {
-            border-radius: 26px;
-            padding: 24px 14px;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-        }
-        .phone-dark .phone-screen { background: #1e293b; }
-        .phone-light .phone-screen { background: #ffffff; }
-        .phone-header {
-            text-align: center;
-            margin-bottom: 14px;
-        }
-        .phone-header .avatar {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 50%;
-            margin: 0 auto 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            color: white;
-            font-weight: 700;
-        }
-        .phone-header .name { font-weight: 600; font-size: 0.8rem; }
-        .phone-dark .phone-header .name { color: white; }
-        .phone-light .phone-header .name { color: var(--text-primary); }
-        .phone-header .status { font-size: 0.64rem; }
-        .phone-dark .phone-header .status { color: #22c55e; }
-        .phone-light .phone-header .status { color: #64748b; }
-        .chat-messages {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .chat-bubble {
-            max-width: 88%;
-            padding: 8px 11px;
-            border-radius: 13px;
-            font-size: 0.82rem;
-            line-height: 1.5;
-            opacity: 0;
-            transform: translateY(6px);
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-        .chat-bubble.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .phone-dark .chat-bubble.bot {
-            background: #334155;
-            color: #e2e8f0;
-            align-self: flex-start;
-            border-bottom-left-radius: 3px;
-        }
-        .phone-dark .chat-bubble.user {
-            background: var(--primary);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 3px;
-        }
-        .phone-light .chat-bubble.bot {
-            background: #f1f5f9;
-            color: var(--text-primary);
-            align-self: flex-start;
-            border-bottom-left-radius: 3px;
-        }
-        .chat-badge {
-            display: inline-block;
-            background: #22c55e;
-            color: white;
-            font-size: 0.63rem;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 100px;
-            margin-top: 5px;
-            opacity: 0;
-            transform: scale(0.6);
-            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .chat-badge.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-        .phone-label {
-            font-size: 0.63rem;
-            font-weight: 600;
-            color: #64748b;
-            text-align: center;
-            margin-top: 7px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-        .phone-progress-update {
-            font-size: 0.66rem;
-            color: #ea580c;
-            font-weight: 600;
-            text-align: center;
-            margin-top: 6px;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        .phone-progress-update.visible { opacity: 1; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Responsive hero */
-        @media (max-width: 1024px) {
-            .hero-visual { margin-top: 40px; }
-            .hero-visual-phones { flex-direction: column; align-items: center; }
-        }
-        @media (max-width: 768px) {
-            .phone-light { display: none; }
-            .phone { width: 240px; }
-        }
-
-        /* ===== PROBLEM SECTION ===== */
-        .problem-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 48px;
-        }
-        .problem-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px;
-            transition: all 0.2s;
-        }
-        .problem-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-4px);
-        }
-        .problem-icon {
-            width: 48px;
-            height: 48px;
-            background: #fef2f2;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            margin-bottom: 16px;
-        }
-        .problem-card h3 { margin-bottom: 8px; }
-        .problem-card p { color: var(--text-secondary); font-size: 0.95rem; }
-        .problem-rating {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            margin-top: 12px;
-            font-size: 0.85rem;
-            color: var(--warning);
-            font-weight: 600;
-        }
-
-        /* ===== HOW IT WORKS ===== */
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            margin-top: 56px;
-        }
-        .step {
-            text-align: center;
-            position: relative;
-        }
-        .step-number {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin: 0 auto 20px;
-        }
-        .step h3 { margin-bottom: 8px; }
-        .step p { color: var(--text-secondary); font-size: 0.95rem; }
-        .step-connector {
-            position: absolute;
-            top: 28px;
-            left: calc(50% + 40px);
-            width: calc(100% - 80px);
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
-            opacity: 0.3;
-        }
-
-        /* ===== FEATURES ===== */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-top: 48px;
-        }
-        .feature-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 36px;
-            display: flex;
-            gap: 20px;
-            transition: all 0.2s;
-        }
-        .feature-card:hover {
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary-light);
-        }
-        .feature-icon {
-            width: 52px;
-            height: 52px;
-            min-width: 52px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-        .feature-icon.purple { background: rgba(249, 115, 22, 0.1); }
-        .feature-icon.cyan { background: rgba(14, 165, 233, 0.1); }
-        .feature-icon.green { background: rgba(34, 197, 94, 0.1); }
-        .feature-icon.amber { background: rgba(245, 158, 11, 0.1); }
-        .feature-icon.rose { background: rgba(244, 63, 94, 0.1); }
-        .feature-icon.blue { background: rgba(59, 130, 246, 0.1); }
-        .feature-card h3 { margin-bottom: 6px; }
-        .feature-card p { color: var(--text-secondary); font-size: 0.92rem; }
-
-        /* ===== SOCIAL PROOF ===== */
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 48px;
-        }
-        .testimonial-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 32px;
-        }
-        .testimonial-stars { color: var(--warning); font-size: 1rem; margin-bottom: 16px; }
-        .testimonial-text {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            font-style: italic;
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
-        .testimonial-author { display: flex; align-items: center; gap: 12px; }
-        .testimonial-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-light), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 0.85rem;
-        }
-        .testimonial-name { font-weight: 600; font-size: 0.9rem; }
-        .testimonial-role { font-size: 0.8rem; color: var(--text-muted); }
-
-        /* ===== PRICING ===== */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 48px;
-            align-items: start;
-        }
-        .pricing-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 40px 32px;
-            text-align: center;
-            position: relative;
-            transition: all 0.2s;
-        }
-        .pricing-card:hover { box-shadow: var(--shadow-md); }
-        .pricing-card.featured {
-            border: 2px solid var(--primary);
-            box-shadow: var(--shadow-lg);
-            transform: scale(1.04);
-        }
-        .pricing-badge {
-            position: absolute;
-            top: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 6px 20px;
-            border-radius: 100px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .pricing-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-        .pricing-price {
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1;
-            margin: 16px 0 4px;
-        }
-        .pricing-price span { font-size: 1rem; font-weight: 500; color: var(--text-muted); }
-        .pricing-annual { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; }
-        .pricing-features { margin-bottom: 32px; }
-        .pricing-features li {
-            padding: 10px 0;
-            font-size: 0.92rem;
-            color: var(--text-secondary);
-            border-bottom: 1px solid var(--bg-soft);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .pricing-check {
-            color: var(--success);
-            font-weight: 700;
-        }
-
-        /* ===== FONDATEUR ===== */
-        .founder-section {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 48px;
-            align-items: start;
-            text-align: left;
-            max-width: 860px;
-            margin: 0 auto;
-        }
-        .founder-photo {
-            display: flex;
-            justify-content: center;
-            padding-top: 40px;
-        }
-        .founder-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 800;
-            color: white;
-            box-shadow: 0 8px 32px rgba(249,115,22,0.25);
-        }
-        .founder-story h2 {
-            font-size: clamp(1.4rem, 3vw, 1.8rem);
-            margin: 12px 0 20px;
-        }
-        .founder-story p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 16px;
-            font-size: 0.95rem;
-        }
-        .founder-links {
-            margin: 20px 0;
-        }
-        .founder-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--accent);
-            transition: color 0.2s;
-        }
-        .founder-link:hover { color: var(--primary); }
-        .founder-cta {
-            margin-top: 32px;
-            padding: 28px;
-            background: var(--bg-soft);
-            border-radius: var(--radius);
-            border: 1px solid var(--border);
-        }
-        .founder-cta h3 {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-        @media (max-width: 768px) {
-            .founder-section {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 24px;
-            }
-            .founder-photo { padding-top: 0; }
-            .founder-cta { text-align: center; }
-        }
-
-        /* ===== FAQ ===== */
-        .faq-list {
-            max-width: 760px;
-            margin: 48px auto 0;
-        }
-        .faq-item {
-            border-bottom: 1px solid var(--border);
-        }
-        .faq-question {
-            width: 100%;
-            background: none;
-            border: none;
-            font-family: inherit;
-            font-size: 1.05rem;
-            font-weight: 600;
-            text-align: left;
-            padding: 24px 0;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            color: var(--text-primary);
-        }
-        .faq-question:hover { color: var(--primary); }
-        .faq-chevron {
-            width: 24px;
-            height: 24px;
-            min-width: 24px;
-            transition: transform 0.3s;
-        }
-        .faq-item.open .faq-chevron { transform: rotate(180deg); }
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .faq-answer-inner {
-            padding: 0 0 24px;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-        .faq-item.open .faq-answer { max-height: 300px; }
-
-        /* ===== CTA FINAL ===== */
-        .cta-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, var(--primary-dark) 0%, #7C2D12 100%);
-            color: white;
-            text-align: center;
-        }
-        .cta-section h2 { color: white; margin-bottom: 16px; }
-        .cta-section .subtitle { color: rgba(255,255,255,0.75); margin: 0 auto 40px; }
-        .cta-section .btn-primary {
-            background: white;
-            color: var(--primary-dark);
-            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-        }
-        .cta-section .btn-primary:hover {
-            background: #f0f0ff;
-            transform: translateY(-2px);
-        }
-        .cta-guarantee {
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: rgba(255,255,255,0.6);
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            background: var(--bg-soft);
-            padding: 60px 0 32px;
-            border-top: 1px solid var(--border);
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        .footer-brand p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 12px; max-width: 280px; }
-        .footer-col h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 16px; }
-        .footer-col a { display: block; color: var(--text-secondary); font-size: 0.9rem; padding: 6px 0; }
-        .footer-col a:hover { color: var(--primary); }
-        .footer-bottom {
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .hero-inner { grid-template-columns: 1fr; text-align: center; }
-            .hero-content { max-width: 100%; }
-            .hero .subtitle { margin: 0 auto 40px; }
-            .hero-actions { justify-content: center; }
-            .hero-stats { justify-content: center; }
-            .hero-visual {
-            max-width: 100%;
-            overflow: hidden; margin-top: 40px; }
-            .problem-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
-            .features-grid { grid-template-columns: 1fr; }
-            .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
-            .pricing-card.featured { transform: none; }
-            .testimonials-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-        }
-        @media (max-width: 768px) {
-            .section { padding: 72px 0; }
-            .nav-links { display: none; }
-            .mobile-menu-btn { display: block; }
-            .nav-links.active {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 72px;
-                left: 0;
-                right: 0;
-                background: white;
-                padding: 24px;
-                border-bottom: 1px solid var(--border);
-                box-shadow: var(--shadow-md);
-            }
-            .nav-cta { margin-left: 0; }
-            .steps { grid-template-columns: 1fr; gap: 32px; }
-            .step-connector { display: none; }
-            .hero-stats { flex-wrap: wrap; gap: 24px; }
-            .footer-grid { grid-template-columns: 1fr; }
-            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
-        }
-        @media (max-width: 480px) {
-            .hero-actions { flex-direction: column; align-items: stretch; }
-            .btn-lg { text-align: center; justify-content: center; }
-        }
-
-        /* ===== ANIMATIONS ===== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ===== SIMPLE STEPS (Comment ca marche) ===== */
-        .simple-steps {
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            gap: 0;
-            margin-top: 48px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .simple-step {
-            flex: 1;
-            padding: 0 24px;
-            text-align: center;
-        }
-        .step-num {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-        }
-        .simple-step h3 {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-        }
-        .simple-step p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-        .step-arrow {
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            padding-top: 12px;
-            flex-shrink: 0;
-        }
-        @media (max-width: 768px) {
-            .simple-steps { flex-direction: column; gap: 32px; }
-            .step-arrow { display: none; }
-        }
-
-        /* ===== BRAIN / ECOSYSTEME ===== */
-        .brain-section {
-            background: #0b1120;
-            color: #f1f5f9;
-            padding: 100px 0;
-            position: relative;
-        }
-        .brain-section::before,
-        .brain-section::after {
-            content: '';
-            position: absolute;
-            left: 0; right: 0;
-            height: 80px;
-            pointer-events: none;
-            z-index: 2;
-        }
-        .brain-section::before {
-            top: 0;
-            background: linear-gradient(to bottom, #ffffff 0%, transparent 100%);
-        }
-        .brain-section::after {
-            bottom: 0;
-            background: linear-gradient(to top, #ffffff 0%, transparent 100%);
-        }
-        .brain-section .label {
-            color: #FB923C;
-            background: rgba(249,115,22,0.15);
-        }
-        .brain-section h2 { color: #f1f5f9; max-width: 680px; margin: 0 auto; }
-
-        /* Trio grid: 3 actors around precepteur */
-        .trio-grid {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            grid-template-rows: auto auto;
-            gap: 24px 40px;
-            max-width: 960px;
-            margin: 0 auto;
-        }
-        .trio-actor {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            text-align: center;
-        }
-        .trio-bottom {
-            grid-column: 1 / -1;
-            max-width: 340px;
-            margin: 0 auto;
-        }
-        .trio-circle {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            border: 2.5px solid;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            font-weight: 800;
-            background: rgba(255,255,255,0.04);
-            box-shadow: 0 0 20px rgba(255,255,255,0.06);
-        }
-        .trio-name {
-            font-size: 0.95rem;
-            font-weight: 700;
-        }
-        .trio-receives, .trio-does {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 10px;
-            padding: 14px 18px;
-            font-size: 0.82rem;
-            color: #d6d3d1;
-            line-height: 1.5;
-            width: 100%;
-            backdrop-filter: blur(4px);
-            transition: border-color 0.3s ease, background 0.3s ease;
-        }
-        .trio-receives:hover, .trio-does:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.15);
-        }
-        .trio-tag {
-            font-size: 0.68rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #a8a29e;
-            margin-bottom: 6px;
-        }
-        .trio-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .trio-hub {
-            background: rgba(249,115,22,0.08);
-            border: 2px solid rgba(249,115,22,0.3);
-            border-radius: 16px;
-            padding: 20px 24px;
-            text-align: center;
-        }
-        .trio-arrows { display: none; }
-        @media (max-width: 768px) {
-            .trio-grid {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-            .trio-bottom { max-width: 100%; }
-            .trio-center { order: -1; }
-        }
-
-        /* Flow section (input -> precepteur -> output) */
-        .flow-section {
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            gap: 32px;
-        }
-        .flow-col {
-            flex: 1;
-            max-width: 320px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .flow-label {
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            margin-bottom: 4px;
-        }
-        .flow-box {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 14px 16px;
-            font-size: 0.85rem;
-            color: #d6d3d1;
-            line-height: 1.5;
-        }
-        .flow-box strong { color: #f5f5f4; }
-        .flow-out { background: rgba(255,255,255,0.04); }
-        .flow-arrow {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 36px;
-            flex-shrink: 0;
-        }
-        @media (max-width: 768px) {
-            .flow-section { flex-direction: column; align-items: center; }
-            .flow-col { max-width: 100%; }
-            .flow-arrow svg { transform: rotate(90deg); }
-        }
-
-        /* 3-column grid */
-        .brain-grid {
-            display: grid;
-            grid-template-columns: 220px 1fr 300px;
-            align-items: center;
-            margin-top: 64px;
-            min-height: 240px;
-        }
-
-        /* LEFT: data sources */
-        .brain-sources {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-self: center;
-            gap: 24px;
-        }
-        .brain-src-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .brain-src-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 0.85rem;
-        }
-        .brain-src-icon.orange { background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.35); }
-        .brain-src-icon.blue   { background: rgba(14,165,233,0.15);  border: 1px solid rgba(14,165,233,0.35); }
-        .brain-src-icon.green  { background: rgba(34,197,94,0.15);   border: 1px solid rgba(34,197,94,0.35); }
-        .brain-src-row.r-orange { animation: src-pulse 3s ease-in-out infinite; }
-        .brain-src-row.r-blue   { animation: src-pulse 3s ease-in-out infinite 1s; }
-        .brain-src-row.r-green  { animation: src-pulse 3s ease-in-out infinite 2s; }
-        @keyframes src-pulse {
-            0%, 100% { opacity: 0.65; }
-            50% { opacity: 1; }
-        }
-        .brain-src-text {
-            font-size: 0.82rem;
-            color: #94a3b8;
-            line-height: 1.4;
-        }
-        .brain-src-text strong {
-            color: #e2e8f0;
-            font-weight: 600;
-            display: block;
-        }
-
-        /* CENTER: particles */
-        .brain-particles-wrap {
-            position: relative;
-            height: 240px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-            padding-bottom: 16px;
-        }
-        .brain-particles-track {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 44px;
-        }
-        .dot {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            animation: flowDot linear infinite;
-        }
-        .dot.c-orange { background: #F97316; box-shadow: 0 0 8px #F97316; }
-        .dot.c-blue   { background: #0EA5E9; box-shadow: 0 0 8px #0EA5E9; }
-        .dot.c-green  { background: #22C55E; box-shadow: 0 0 8px #22C55E; }
-        @keyframes flowDot {
-            0%   { transform: translateX(0);     opacity: 0; }
-            8%   { opacity: 0.9; }
-            88%  { opacity: 0.9; }
-            100% { transform: translateX(260px); opacity: 0; }
-        }
-        .brain-tagline {
-            position: relative;
-            font-size: 0.95rem;
-            color: #94a3b8;
-            opacity: 0.8;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            font-weight: 500;
-        }
-
-        /* RIGHT: message cards */
-        .brain-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .brain-card {
-            border-radius: 10px;
-            padding: 11px 13px;
-            border-left: 3px solid;
-            background: rgba(255,255,255,0.04);
-            opacity: 0;
-            transform: translateX(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        .brain-card.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        .brain-card.card-orange { border-color: #F97316; }
-        .brain-card.card-blue   { border-color: #0EA5E9; }
-        .brain-card.card-green  { border-color: #22C55E; }
-        .brain-card-role {
-            font-size: 0.63rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 4px;
-        }
-        .card-orange .brain-card-role { color: #F97316; }
-        .card-blue   .brain-card-role { color: #0EA5E9; }
-        .card-green  .brain-card-role { color: #22C55E; }
-        .brain-card-text {
-            font-size: 0.77rem;
-            color: #94a3b8;
-            line-height: 1.5;
-        }
-        .brain-card-text strong { color: #e2e8f0; }
-
-        @media (max-width: 900px) {
-            .brain-grid {
-                grid-template-columns: 1fr;
-                gap: 32px;
-            }
-            .brain-particles-wrap { display: none; }
-            .brain-card { opacity: 1; transform: none; }
-        }
-
-        /* ===== SKILL TREE ===== */
-        .tree-section {
-            background: #ffffff;
-            padding: 100px 0;
-        }
-        .tree-layout {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 48px;
-            align-items: start;
-            margin-top: 64px;
-        }
-        .tree-canvas {
-            position: relative;
-        }
-        .tree-level {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 0;
-            position: relative;
-        }
-        .tree-node {
-            border-radius: 12px;
-            padding: 14px 18px;
-            border: 2px solid;
-            min-width: 140px;
-            max-width: 160px;
-            text-align: center;
-            position: relative;
-            background: white;
-            transition: transform 0.2s;
-        }
-        .tree-node:hover { transform: translateY(-2px); }
-        .tree-node.mastered {
-            border-color: #22C55E;
-            background: rgba(34,197,94,0.06);
-        }
-        .tree-node.in-progress {
-            border-color: #f59e0b;
-            background: rgba(245,158,11,0.06);
-        }
-        .tree-node.locked {
-            border-color: #cbd5e1;
-            background: rgba(203,213,225,0.3);
-        }
-        .tree-node-name {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 6px;
-        }
-        .tree-node.locked .tree-node-name { color: #94a3b8; }
-        .tree-node-badge {
-            font-size: 0.72rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-        .tree-node.mastered .tree-node-badge { color: #22C55E; }
-        .tree-node.in-progress .tree-node-badge { color: #f59e0b; }
-        .tree-node.locked .tree-node-badge { color: #94a3b8; }
-
-        /* Progress ring */
-        .progress-ring-wrap {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            margin: 0 auto 4px;
-        }
-        .progress-ring-bg {
-            fill: none;
-            stroke: rgba(245,158,11,0.2);
-            stroke-width: 3;
-        }
-        .progress-ring-fill {
-            fill: none;
-            stroke: #f59e0b;
-            stroke-width: 3;
-            stroke-linecap: round;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-            transition: stroke-dashoffset 0.6s ease;
-        }
-
-        /* SVG connectors for tree */
-        .tree-svg-layer {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: visible;
-        }
-
-        /* Tree levels wrapper */
-        .tree-levels {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-            padding: 20px 0;
-        }
-
-        /* Annotations */
-        .tree-annotations {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-        .tree-annotation {
-            border-radius: 12px;
-            padding: 16px 18px;
-            border-left: 3px solid;
-            background: var(--bg-soft);
-        }
-        .tree-annotation.green { border-color: #22C55E; }
-        .tree-annotation.amber { border-color: #f59e0b; }
-        .tree-annotation.slate { border-color: #94a3b8; }
-        .tree-annotation-title {
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.07em;
-            margin-bottom: 6px;
-        }
-        .tree-annotation.green .tree-annotation-title { color: #16A34A; }
-        .tree-annotation.amber .tree-annotation-title { color: #d97706; }
-        .tree-annotation.slate .tree-annotation-title { color: #64748b; }
-        .tree-annotation p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        @media (max-width: 900px) {
-            .tree-layout {
-                grid-template-columns: 1fr;
-            }
-            .tree-annotations { display: none; }
-            .tree-node { min-width: 110px; max-width: 130px; padding: 10px 12px; }
-            .tree-node-name { font-size: 0.78rem; }
-            .tree-level { gap: 10px; }
-        }
-        @media (max-width: 480px) {
-            .tree-node { min-width: 90px; max-width: 110px; padding: 8px 10px; }
-            .tree-level { gap: 6px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precepteur AI — Le suivi scolaire intelligent pour les parents</title>
+<meta name="description" content="Chaque soir, recevez un bilan personnalise de la journee scolaire de votre enfant. Notes, devoirs, absences, conseils IA. Compatible Pronote. 7 jours gratuits.">
+<meta name="keywords" content="suivi scolaire, pronote, parents, IA, coach scolaire, notes, devoirs, WhatsApp, Telegram, alertes notes enfant">
+<meta property="og:title" content="Precepteur AI — Votre coach scolaire IA">
+<meta property="og:description" content="Chaque soir, un bilan personnalise de la journee scolaire de votre enfant. Sans ouvrir Pronote.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:#0f172a;background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+:root{--p:#4f46e5;--pl:#818cf8;--pd:#3730a3;--ac:#06b6d4;--al:#67e8f9;--ok:#10b981;--warn:#f59e0b;--bg:#f8fafc;--glass:rgba(255,255,255,0.7);--t:#0f172a;--ts:#475569;--tm:#94a3b8;--b:#e2e8f0;--r:16px;--sh:0 4px 20px rgba(0,0,0,.08);--mx:1200px}
+.ctr{max-width:var(--mx);margin:0 auto;padding:0 24px}
+.sec{padding:100px 0}.sec-a{background:var(--bg)}.tc{text-align:center}
+.tg{background:linear-gradient(135deg,var(--p),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.08;letter-spacing:-.03em}
+h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.12;letter-spacing:-.02em}
+h3{font-size:1.25rem;font-weight:700;line-height:1.3}
+.sub{font-size:clamp(1.05rem,2vw,1.2rem);color:var(--ts);line-height:1.7;max-width:600px}
+.tag{display:inline-block;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--p);background:rgba(79,70,229,.07);padding:6px 16px;border-radius:100px;margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-size:1rem;font-weight:600;padding:14px 32px;border-radius:12px;border:none;cursor:pointer;transition:all .2s}
+.bp{background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(79,70,229,.35)}.bp:hover{background:var(--pd);transform:translateY(-2px);box-shadow:0 6px 20px rgba(79,70,229,.45)}
+.bo{background:0 0;color:var(--p);border:2px solid var(--b)}.bo:hover{border-color:var(--p);background:rgba(79,70,229,.04)}
+.bl{padding:18px 40px;font-size:1.1rem;border-radius:14px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 24px;transition:all .3s}
+nav.s{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--b);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ni{max-width:var(--mx);margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px}
+.lo{font-size:1.4rem;font-weight:900;letter-spacing:-.03em}.lo span{color:var(--p)}
+.nl{display:flex;gap:28px;align-items:center}.nl a{font-size:.9rem;font-weight:500;color:var(--ts);transition:color .2s;cursor:pointer}.nl a:hover{color:var(--p)}
+.nc{margin-left:12px}
+.mt{display:none;background:0 0;border:none;cursor:pointer;padding:8px}.mt span{display:block;width:22px;height:2px;background:var(--t);margin:5px 0;transition:all .3s}
+.hero{padding:140px 0 100px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(79,70,229,.08),transparent 70%);border-radius:50%}
+.hero::after{content:'';position:absolute;bottom:-100px;left:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(6,182,212,.06),transparent 70%);border-radius:50%}
+.hg{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
+.hc{max-width:560px}.hc h1{margin-bottom:24px}.hc .sub{margin-bottom:36px}
+.ha{display:flex;gap:14px;flex-wrap:wrap}
+.hs{display:flex;gap:40px;margin-top:44px;padding-top:28px;border-top:1px solid var(--b)}
+.sv{font-size:1.7rem;font-weight:800;color:var(--p)}.sl{font-size:.82rem;color:var(--tm);margin-top:2px}
+.pw{display:flex;justify-content:center}
+.ph{width:290px;background:#0f172a;border-radius:36px;padding:10px;box-shadow:0 12px 40px rgba(0,0,0,.12)}
+.ps{background:#1e293b;border-radius:28px;padding:28px 16px;min-height:480px;display:flex;flex-direction:column}
+.phd{text-align:center;margin-bottom:20px}
+.pav{width:44px;height:44px;background:linear-gradient(135deg,var(--p),var(--ac));border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.1rem}
+.pnm{color:#fff;font-weight:600;font-size:.9rem}.pst{color:var(--ok);font-size:.7rem}
+.ch{flex:1;display:flex;flex-direction:column;gap:10px}
+.bb{max-width:82%;padding:10px 14px;border-radius:16px;font-size:.78rem;line-height:1.5;opacity:0;animation:bi .5s ease forwards}
+.bb.b{background:#334155;color:#e2e8f0;align-self:flex-start;border-bottom-left-radius:4px}
+.bb.u{background:var(--p);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.bb:nth-child(1){animation-delay:.3s}.bb:nth-child(2){animation-delay:.8s}.bb:nth-child(3){animation-delay:1.3s}.bb:nth-child(4){animation-delay:1.8s}
+@keyframes bi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.pc{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--b);border-radius:var(--r);padding:32px;transition:all .25s;cursor:default}
+.pc:hover{box-shadow:var(--sh);transform:translateY(-4px)}
+.pi{width:48px;height:48px;background:#fef2f2;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.pi svg{width:24px;height:24px;stroke:#ef4444;fill:none;stroke-width:2}
+.pc h3{margin-bottom:6px}.pc p{color:var(--ts);font-size:.92rem}
+.rt{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:.82rem;color:var(--warn);font-weight:600}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:56px}
+.sp{text-align:center;position:relative}
+.sn{width:56px;height:56px;background:linear-gradient(135deg,var(--p),var(--pl));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;margin:0 auto 18px}
+.sp h3{margin-bottom:6px}.sp p{color:var(--ts);font-size:.92rem}
+.sln{position:absolute;top:28px;left:calc(50% + 40px);width:calc(100% - 80px);height:2px;background:linear-gradient(90deg,var(--pl),var(--al));opacity:.25}
+.fg{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:48px}
+.fc{background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--b);border-radius:var(--r);padding:32px;display:flex;gap:18px;transition:all .25s;cursor:default}
+.fc:hover{box-shadow:var(--sh);border-color:var(--pl)}
+.fi{width:50px;height:50px;min-width:50px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+.fi svg{width:24px;height:24px;stroke-width:2;fill:none}
+.fi.v{background:rgba(79,70,229,.08)}.fi.v svg{stroke:var(--p)}
+.fi.c{background:rgba(6,182,212,.08)}.fi.c svg{stroke:var(--ac)}
+.fi.g{background:rgba(16,185,129,.08)}.fi.g svg{stroke:var(--ok)}
+.fi.w{background:rgba(245,158,11,.08)}.fi.w svg{stroke:var(--warn)}
+.fi.r{background:rgba(244,63,94,.08)}.fi.r svg{stroke:#f43f5e}
+.fi.bl{background:rgba(59,130,246,.08)}.fi.bl svg{stroke:#3b82f6}
+.fc h3{margin-bottom:4px}.fc p{color:var(--ts);font-size:.9rem}
+.tg2{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.tc2{background:#fff;border:1px solid var(--b);border-radius:var(--r);padding:30px}
+.st{color:var(--warn);font-size:.95rem;margin-bottom:14px;letter-spacing:2px}
+.tt{font-size:.92rem;color:var(--ts);font-style:italic;margin-bottom:18px;line-height:1.7}
+.ta{display:flex;align-items:center;gap:12px}
+.tv{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--pl),var(--ac));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.82rem}
+.tn{font-weight:600;font-size:.88rem}.tr{font-size:.78rem;color:var(--tm)}
+.prg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;align-items:start}
+.prc{background:#fff;border:1px solid var(--b);border-radius:var(--r);padding:36px 28px;text-align:center;position:relative;transition:all .25s}
+.prc:hover{box-shadow:var(--sh)}
+.prc.ft{border:2px solid var(--p);box-shadow:0 12px 40px rgba(0,0,0,.12),0 0 60px rgba(79,70,229,.15);transform:scale(1.03)}
+.pbd{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--p);color:#fff;font-size:.72rem;font-weight:600;padding:5px 18px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em}
+.prn{font-size:1.05rem;font-weight:700;margin-bottom:6px}
+.pra{font-size:2.8rem;font-weight:900;line-height:1;margin:14px 0 4px}.pra span{font-size:.95rem;font-weight:500;color:var(--tm)}
+.pry{font-size:.82rem;color:var(--tm);margin-bottom:22px}
+.prf{margin-bottom:28px}.prf li{padding:9px 0;font-size:.9rem;color:var(--ts);border-bottom:1px solid var(--bg);display:flex;align-items:center;gap:10px}
+.prf li::before{content:'';width:18px;height:18px;min-width:18px;background:rgba(16,185,129,.1);border-radius:50%}
+.ck{color:var(--ok);font-weight:700;font-size:.85rem}
+.fl{max-width:720px;margin:48px auto 0}
+.fqi{border-bottom:1px solid var(--b)}
+.fq{width:100%;background:0 0;border:none;font-family:inherit;font-size:1rem;font-weight:600;text-align:left;padding:22px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;color:var(--t);transition:color .2s}
+.fq:hover{color:var(--p)}
+.fq svg{width:20px;height:20px;min-width:20px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .3s}
+.fqi.o .fq svg{transform:rotate(180deg)}
+.fa{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.fai{padding:0 0 22px;color:var(--ts);font-size:.92rem;line-height:1.7}
+.fqi.o .fa{max-height:400px}
+.cta{padding:100px 0;background:linear-gradient(135deg,var(--pd),#1e1b4b);color:#fff;text-align:center;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(6,182,212,.15),transparent 70%);border-radius:50%}
+.cta h2{color:#fff;margin-bottom:14px}
+.cta .sub{color:rgba(255,255,255,.7);margin:0 auto 32px}
+.ef{display:flex;gap:12px;max-width:460px;margin:0 auto}
+.ei{flex:1;padding:16px 20px;border-radius:12px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-family:inherit;font-size:1rem;outline:none;transition:border-color .2s}
+.ei::placeholder{color:rgba(255,255,255,.5)}.ei:focus{border-color:var(--ac)}
+.cs{margin-top:14px;font-size:.82rem;color:rgba(255,255,255,.5)}
+.es{display:none;color:var(--al);font-weight:600;font-size:1.05rem;margin-top:12px}
+footer{background:var(--bg);padding:56px 0 28px;border-top:1px solid var(--b)}
+.ftg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:36px}
+.ftb p{color:var(--ts);font-size:.88rem;margin-top:10px;max-width:260px}
+.ftc h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tm);margin-bottom:14px}
+.ftc a{display:block;color:var(--ts);font-size:.88rem;padding:5px 0;cursor:pointer}.ftc a:hover{color:var(--p)}
+.ftm{padding-top:20px;border-top:1px solid var(--b);display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--tm)}
+.rv{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.22,1,.36,1)}.rv.vi{opacity:1;transform:translateY(0)}
+@media(max-width:1024px){.hg{grid-template-columns:1fr;text-align:center}.hc{max-width:100%}.hc .sub{margin:0 auto 36px}.ha{justify-content:center}.hs{justify-content:center}.pw{margin-top:36px}.pg,.fg,.prg,.tg2{grid-template-columns:1fr;max-width:500px;margin-left:auto;margin-right:auto}.prc.ft{transform:none}.ftg{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.sec{padding:72px 0}.nl{display:none}.nl.ac{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:#fff;padding:24px;border-bottom:1px solid var(--b);box-shadow:var(--sh)}.mt{display:block}.sg{grid-template-columns:1fr;gap:28px}.sln{display:none}.hs{flex-wrap:wrap;gap:20px}.ftg{grid-template-columns:1fr}.ftm{flex-direction:column;gap:10px;text-align:center}.ef{flex-direction:column}}
+@media(max-width:480px){.ha{flex-direction:column;align-items:stretch}.bl{text-align:center;justify-content:center}}
+@media(prefers-reduced-motion:reduce){.rv{transition:none;opacity:1;transform:none}.bb{animation:none;opacity:1}}
+</style>
 </head>
 <body>
+<nav id="nv"><div class="ni"><a href="#" class="lo">precepteur<span>.</span>ai</a><div class="nl" id="nl"><a href="#probleme">Le probleme</a><a href="#fonctionnement">Comment ca marche</a><a href="#fonctionnalites">Fonctionnalites</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a><a href="#essai" class="btn bp nc">Essai gratuit</a></div><button class="mt" id="mb" aria-label="Menu"><span></span><span></span><span></span></button></div></nav>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="navbar-inner">
-            <a href="#" class="logo">precepteur<span>.</span></a>
-            <div class="nav-links" id="navLinks">
-                <a href="#probleme">Le problème</a>
-                <a href="#fonctionnement">Comment ca marche</a>
-                <a href="#ecosysteme">L'écosystème</a>
-                <a href="#parcours">Le parcours</a>
-                <a href="#fonctionnalites">Fonctionnalités</a>
-                <a href="#tarifs">Tarifs</a>
-                <a href="#faq">FAQ</a>
-                <a href="#essai" class="btn btn-primary nav-cta">Essai gratuit</a>
-            </div>
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-                <span></span><span></span><span></span>
-            </button>
-        </div>
-    </nav>
+<section class="hero"><div class="ctr hg">
+<div class="hc">
+<span class="tag">Coach scolaire IA pour parents</span>
+<h1>Chaque soir, le bilan scolaire de votre enfant.<br><span class="tg">Sans ouvrir Pronote.</span></h1>
+<p class="sub">Notes, devoirs, absences, conseils personnalises — recevez tout directement sur WhatsApp ou Telegram. L'IA analyse et vous propose un plan d'action concret.</p>
+<div class="ha"><a href="#essai" class="btn bp bl">Essayer 7 jours gratuit</a><a href="#fonctionnement" class="btn bo bl">Comment ca marche</a></div>
+<div class="hs"><div><div class="sv">18M</div><div class="sl">Utilisateurs Pronote</div></div><div><div class="sv">2 min</div><div class="sl">Pour configurer</div></div><div><div class="sv">17h</div><div class="sl">Bilan chaque soir</div></div></div>
+</div>
+<div class="pw"><div class="ph"><div class="ps">
+<div class="phd"><div class="pav">P</div><div class="pnm">Precepteur AI</div><div class="pst">En ligne</div></div>
+<div class="ch">
+<div class="bb b">Bonsoir Nathalie ! Voici le bilan de Mathieu aujourd'hui :</div>
+<div class="bb b"><strong>Maths</strong> : 15/20 au controle (moy. classe : 11.5)<br><strong>Francais</strong> : devoir a rendre jeudi<br><strong>Aucune absence</strong></div>
+<div class="bb b">Mathieu progresse en maths ! Pour le devoir de francais, je vous suggere de l'aider a structurer son plan ce soir (20 min suffisent).</div>
+<div class="bb u">Merci ! Comment l'aider pour son plan ?</div>
+</div>
+</div></div></div>
+</div></section>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="container hero-inner">
-            <div class="hero-content">
-                <span class="label">Bêta ouverte — Tarif préférentiel pour les premiers parents</span>
-                <h1>Soutien scolaire<br><span class="text-gradient">nouvelle génération.</span></h1>
-                <p class="subtitle">
-                    Vous voulez le meilleur pour votre enfant. Maintenant, quelqu'un s'en occupe chaque soir. 3 exercices ciblés, un bilan pour les parents, un suivi qui s'adapte.
-                </p>
-                <div class="hero-actions">
-                    <a href="#essai" class="btn btn-primary btn-lg">Découvrir le précepteur</a>
-                    <a href="#fonctionnement" class="btn btn-outline btn-lg">Voir comment ca marche</a>
-                </div>
-                <div class="hero-stats">
-                    <div>
-                        <div class="hero-stat-value">15 min</div>
-                        <div class="hero-stat-label">par soir, pas plus</div>
-                    </div>
-                    <div>
-                        <div class="hero-stat-value">Adapté</div>
-                        <div class="hero-stat-label">au niveau de votre enfant</div>
-                    </div>
-                    <div>
-                        <div class="hero-stat-value">Chaque jour</div>
-                        <div class="hero-stat-label">un suivi quotidien</div>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="hero-visual-phones">
-                    <!-- Left phone: eleve -->
-                    <div>
-                        <div class="phone phone-dark" id="phoneEleve">
-                            <div class="phone-screen">
-                                <div class="phone-header">
-                                    <div class="avatar">P</div>
-                                    <div class="name">Précepteur</div>
-                                    <div class="status">En ligne</div>
-                                </div>
-                                <div class="chat-messages">
-                                    <div class="chat-bubble bot" id="pMsg1">Salut ! Ce soir, on attaque les fractions. Simplifie 12/18.</div>
-                                    <div class="chat-bubble user" id="pMsg2">2/3 ?</div>
-                                    <div class="chat-bubble bot" id="pMsg3">Exact ! Tu as divisé par 6, bien vu.</div>
-                                    <div id="pBadgeWrap" style="padding-left:2px;">
-                                        <span class="chat-badge" id="pBadge">RÉUSSI</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<section class="sec sec-a" id="probleme"><div class="ctr tc">
+<span class="tag">Le constat</span>
+<h2>Pronote est un cauchemar pour les parents</h2>
+<p class="sub" style="margin:14px auto 0">Interface complexe, informations eparpillees, zero proactivite. Vous meritez mieux.</p>
+<div class="pg">
+<div class="pc rv"><div class="pi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 15s1.5-2 4-2 4 2 4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div><h3>Interface incomprehensible</h3><p>Menus imbriques, 15 clics pour trouver une note. Concu pour les profs, pas pour vous.</p><div class="rt">&#9733;&#9733;&#9734;&#9734;&#9734; 2.19/5 Google Play</div></div>
+<div class="pc rv"><div class="pi"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><line x1="1" y1="1" x2="23" y2="23"/></svg></div><h3>Aucune alerte proactive</h3><p>Une mauvaise note ? Une absence ? Vous ne le savez que si vous pensez a verifier.</p><div class="rt">&#9733;&#9734;&#9734;&#9734;&#9734; 1.3/5 Trustpilot</div></div>
+<div class="pc rv"><div class="pi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><h3>Zero conseil personnalise</h3><p>Pronote affiche des chiffres. Point. Pas de contexte, pas de tendance, pas de plan d'action.</p></div>
+</div></div></section>
 
-                    <!-- Right phone: parent -->
-                    <div>
-                        <div class="phone phone-light" id="phoneParent">
-                            <div class="phone-screen">
-                                <div class="phone-header">
-                                    <div class="avatar" style="background:linear-gradient(135deg,#10b981,#06b6d4);">P</div>
-                                    <div class="name">Précepteur</div>
-                                    <div class="status">Notification</div>
-                                </div>
-                                <div class="chat-messages">
-                                    <div class="chat-bubble bot" id="ppMsg1">Emma a fini ses 3 exercices en 11 min. Fractions bien comprises. Demain : additions de fractions.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="phone-progress-update" id="phoneProgressUpdate">Fractions : 72% → 85%</div>
-                    </div>
-                </div>            </div>
-        </div>
-    </section>
+<section class="sec" id="fonctionnement"><div class="ctr tc">
+<span class="tag">Simple comme bonjour</span>
+<h2>3 etapes, 2 minutes</h2>
+<p class="sub" style="margin:14px auto 0">Si vous savez utiliser WhatsApp, vous savez utiliser Precepteur AI.</p>
+<div class="sg">
+<div class="sp rv"><div class="sn">1</div><div class="sln"></div><h3>Connectez votre compte</h3><p>Renseignez vos identifiants Pronote. Connexion securisee en 30 secondes.</p></div>
+<div class="sp rv"><div class="sn">2</div><div class="sln"></div><h3>Recevez votre bilan</h3><p>A 17h, un message resume la journee : notes, devoirs, absences, avec des conseils.</p></div>
+<div class="sp rv"><div class="sn">3</div><h3>Discutez avec l'IA</h3><p>Posez vos questions : "Comment aider Mathieu en maths ?", "Quels devoirs pour demain ?"</p></div>
+</div></div></section>
 
-    <!-- PROBLEM -->
-    <section class="section section-alt" id="probleme">
-        <div class="container text-center">
-            <span class="label">Le constat</span>
-            <h2>Pronote est un cauchemar pour les parents</h2>
-            <p class="subtitle" style="margin: 16px auto 0;">
-                Interface complexe, informations éparpillées, zéro proactivité.
-                Vous méritez mieux que de chercher les notes de votre enfant dans un labyrinthe.
-            </p>
-            <div class="problem-grid">
-                <div class="problem-card reveal">
-                    <div class="problem-icon">&#128553;</div>
-                    <h3>Interface incompréhensible</h3>
-                    <p>Menus imbriqués, 15 clics pour trouver une note. Conçu pour les profs, pas pour vous.</p>
-                    <div class="problem-rating">
-                        &#9733;&#9733;&#9734;&#9734;&#9734; 2.19/5 sur Google Play
-                    </div>
-                </div>
-                <div class="problem-card reveal">
-                    <div class="problem-icon">&#128564;</div>
-                    <h3>Aucune alerte proactive</h3>
-                    <p>Une mauvaise note ? Une absence ? Vous ne le savez que si vous pensez à vérifier. Trop tard.</p>
-                    <div class="problem-rating">
-                        &#9733;&#9734;&#9734;&#9734;&#9734; 1.3/5 sur Trustpilot
-                    </div>
-                </div>
-                <div class="problem-card reveal">
-                    <div class="problem-icon">&#129327;</div>
-                    <h3>Zéro conseil personnalisé</h3>
-                    <p>Pronote affiche des chiffres. Point. Pas de contexte, pas de tendance, pas de plan d'action.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="sec sec-a" id="fonctionnalites"><div class="ctr tc">
+<span class="tag">Tout ce dont vous avez besoin</span>
+<h2>Un assistant qui pense a tout</h2>
+<p class="sub" style="margin:14px auto 0">Il ne se contente pas de montrer les notes. Il les analyse, les contextualise, et vous guide.</p>
+<div class="fg">
+<div class="fc rv"><div class="fi v"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div><h3>Bilan quotidien intelligent</h3><p>Chaque soir a 17h : notes du jour, moyenne, tendance, devoirs a venir. Un seul message clair.</p></div></div>
+<div class="fc rv"><div class="fi c"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div><div><h3>Alertes instantanees</h3><p>Note en dessous de la moyenne ? Absence non justifiee ? Vous etes prevenu immediatement.</p></div></div>
+<div class="fc rv"><div class="fi g"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div><h3>Conseils personnalises</h3><p>L'IA connait le profil de votre enfant et propose des exercices, methodes et ressources adaptees.</p></div></div>
+<div class="fc rv"><div class="fi w"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div><h3>Suivi des devoirs</h3><p>Liste des devoirs a rendre, par date, par matiere. Plus jamais "j'ai pas de devoirs, maman".</p></div></div>
+<div class="fc rv"><div class="fi r"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><div><h3>Memoire long terme</h3><p>L'assistant se souvient des forces et faiblesses de votre enfant. Ses conseils s'affinent avec le temps.</p></div></div>
+<div class="fc rv"><div class="fi bl"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><div><h3>Sur WhatsApp ou Telegram</h3><p>Pas d'app a telecharger. Ca arrive directement dans votre messagerie preferee.</p></div></div>
+</div></div></section>
 
-    <!-- HOW IT WORKS -->
-    <section class="section" id="fonctionnement">
-        <div class="container text-center">
-            <span class="label">Comment ca marche</span>
-            <h2>Parent, élève, tuteur — tout le monde est synchro</h2>
-            <p class="subtitle" style="margin: 16px auto 32px;">
-                Précepteur connecte les trois acteurs de la réussite scolaire. Chacun reçoit ce dont il a besoin, chaque soir.
-            </p>
-            <div class="simple-steps">
-                <div class="simple-step reveal">
-                    <div class="step-num">1</div>
-                    <h3>Inscrivez-vous en 2 min</h3>
-                    <p>Envoyez "Bonjour" sur Telegram. Choisissez votre rôle. Connectez Pronote.</p>
-                </div>
-                <div class="step-arrow">→</div>
-                <div class="simple-step reveal">
-                    <div class="step-num">2</div>
-                    <h3>L'élève progresse</h3>
-                    <p>Chaque soir, 3 exercices adaptés à son niveau. Le bot détecte les lacunes et construit le programme.</p>
-                </div>
-                <div class="step-arrow">→</div>
-                <div class="simple-step reveal">
-                    <div class="step-num">3</div>
-                    <h3>Vous êtes informés</h3>
-                    <p>Le parent reçoit le bilan. Le tuteur voit les exercices prévus et peut ajuster. Tout le monde avance ensemble.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="sec" id="temoignages"><div class="ctr tc">
+<span class="tag">Ils l'utilisent deja</span>
+<h2>Ce que disent les parents</h2>
+<div class="tg2">
+<div class="tc2 rv"><div class="st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="tt">"Je n'ouvrais Pronote qu'une fois par mois. Maintenant, je suis informee CHAQUE SOIR en 30 secondes. Mon fils sait que je suis au courant, ca a change son attitude."</p><div class="ta"><div class="tv">SB</div><div><div class="tn">Sandrine B.</div><div class="tr">Maman d'un eleve de 4e, Boulogne</div></div></div></div>
+<div class="tc2 rv"><div class="st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="tt">"Le plus utile ? Les conseils concrets. Quand l'IA me dit 'pour le controle de maths de jeudi, reviser les puissances 20 min ce soir', je sais exactement quoi faire."</p><div class="ta"><div class="tv">KM</div><div><div class="tn">Karim M.</div><div class="tr">Papa de 2 enfants, Gennevilliers</div></div></div></div>
+<div class="tc2 rv"><div class="st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="tt">"Mon fils me disait toujours 'j'ai pas de devoirs'. Depuis Precepteur AI, je recois la vraie liste chaque soir. La tension a baisse a la maison."</p><div class="ta"><div class="tv">FL</div><div><div class="tn">Fatima L.</div><div class="tr">Maman d'un eleve de 3e, Nanterre</div></div></div></div>
+</div></div></section>
 
-    <!-- ECOSYSTEME -->
-    <section class="brain-section" id="ecosysteme">
-        <div class="container">
-            <div style="text-align:center;margin-bottom:48px;">
-                <span class="label" style="background:rgba(249,115,22,0.15);color:#FB923C;">Comment ca fonctionne</span>
-                <h2 style="color:#fff;margin-top:16px;">3 acteurs, 1 Précepteur, tout le monde est synchro</h2>
-            </div>
+<section class="sec sec-a" id="tarifs"><div class="ctr tc">
+<span class="tag">Tarifs transparents</span>
+<h2>Moins cher qu'un cahier de vacances</h2>
+<p class="sub" style="margin:14px auto 0">Les parents depensent en moyenne 1 500 EUR/an en soutien scolaire. Precepteur AI coute 20x moins.</p>
+<div class="prg">
+<div class="prc rv"><div class="prn">Decouverte</div><div class="pra">0 EUR</div><div class="pry">pendant 7 jours</div><ul class="prf"><li><span class="ck">&#10003;</span> Bilan quotidien complet</li><li><span class="ck">&#10003;</span> Alertes notes et absences</li><li><span class="ck">&#10003;</span> Conseils IA personnalises</li><li><span class="ck">&#10003;</span> Chat illimite</li><li><span class="ck">&#10003;</span> 1 enfant</li></ul><a href="#essai" class="btn bo" style="width:100%">Commencer l'essai</a></div>
+<div class="prc ft rv"><div class="pbd">Le plus populaire</div><div class="prn">Essentiel</div><div class="pra">5,99 EUR <span>/mois</span></div><div class="pry">ou 49,99 EUR/an (-30%)</div><ul class="prf"><li><span class="ck">&#10003;</span> Bilan quotidien complet</li><li><span class="ck">&#10003;</span> Alertes notes et absences</li><li><span class="ck">&#10003;</span> Conseils IA personnalises</li><li><span class="ck">&#10003;</span> Chat illimite</li><li><span class="ck">&#10003;</span> Aide aux devoirs IA</li><li><span class="ck">&#10003;</span> 1 enfant</li></ul><a href="#essai" class="btn bp" style="width:100%">Choisir Essentiel</a></div>
+<div class="prc rv"><div class="prn">Famille</div><div class="pra">8,99 EUR <span>/mois</span></div><div class="pry">ou 79,99 EUR/an (-26%)</div><ul class="prf"><li><span class="ck">&#10003;</span> Tout le plan Essentiel</li><li><span class="ck">&#10003;</span> Jusqu'a 3 enfants</li><li><span class="ck">&#10003;</span> Tableau de bord famille</li><li><span class="ck">&#10003;</span> Rapports hebdomadaires</li><li><span class="ck">&#10003;</span> Support prioritaire</li></ul><a href="#essai" class="btn bo" style="width:100%">Choisir Famille</a></div>
+</div></div></section>
 
-            <div class="trio-grid reveal">
+<section class="sec" id="faq"><div class="ctr tc">
+<span class="tag">Questions frequentes</span>
+<h2>On repond a tout</h2>
+<div class="fl">
+<div class="fqi"><button class="fq">Comment Precepteur AI accede a Pronote ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">Vous renseignez vos identifiants Pronote une seule fois. L'assistant se connecte de maniere securisee via votre ENT. Vos identifiants sont chiffres et jamais partages. Vous pouvez aussi envoyer une photo de l'ecran Pronote, sans donner vos identifiants.</div></div></div>
+<div class="fqi"><button class="fq">Mes donnees sont-elles en securite ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">Absolument. Conforme au RGPD et a la reglementation francaise sur les donnees des mineurs. Donnees chiffrees au repos, jamais revendues. Suppression totale sur demande.</div></div></div>
+<div class="fqi"><button class="fq">Ca marche avec quel ENT ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">Compatible avec Pronote via les principaux ENT : MonLycee.net (Ile-de-France), Mon ENT Occitanie, et d'autres. Si votre ENT n'est pas supporte, utilisez le mode photo.</div></div></div>
+<div class="fqi"><button class="fq">College et lycee ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">Oui ! Fonctionne du college (6e a 3e) au lycee (2nde a Terminale). Les conseils sont adaptes au niveau.</div></div></div>
+<div class="fqi"><button class="fq">Puis-je annuler a tout moment ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">Oui, sans engagement. L'essai gratuit de 7 jours ne necessite pas de carte bancaire. Vos donnees sont supprimees sous 30 jours apres annulation.</div></div></div>
+<div class="fqi"><button class="fq">En quoi c'est different de Kartable ou Wilgo ?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="fa"><div class="fai">Kartable et Wilgo sont du soutien scolaire pour ELEVES : l'enfant doit ouvrir une app. Precepteur AI est un assistant pour PARENTS : bilan automatique, zero effort. Et surtout, connecte a Pronote : vraies notes et devoirs, pas du contenu generique.</div></div></div>
+</div></div></section>
 
-                <!-- Parent -->
-                <div class="trio-actor">
-                    <div class="trio-circle" style="border-color:#F97316;color:#F97316;">P</div>
-                    <div class="trio-name" style="color:#F97316;">Le parent</div>
-                    <div class="trio-receives">
-                        <div class="trio-tag">Reçoit chaque soir</div>
-                        Bilan factuel : notes, devoirs, absences, action concrète pour le soir
-                    </div>
-                    <div class="trio-does">
-                        <div class="trio-tag">Peut faire</div>
-                        Poser des questions, demander un bilan complet, suivre la progression
-                    </div>
-                </div>
+<section class="cta" id="essai"><div class="ctr" style="position:relative;z-index:1">
+<h2>Fini les mauvaises surprises au bulletin</h2>
+<p class="sub">Rejoignez les parents qui suivent la scolarite de leur enfant sans stress. 7 jours d'essai gratuit, sans carte bancaire.</p>
+<form class="ef" id="ef"><input type="email" class="ei" placeholder="votre@email.com" required id="em" aria-label="Email"><button type="submit" class="btn bp bl" id="eb">S'inscrire</button></form>
+<p class="cs">Pas de carte bancaire requise. Annulation en un message.</p>
+<p class="es" id="ok">Merci ! Vous recevrez un lien d'acces tres bientot.</p>
+</div></section>
 
-                <!-- Center: Precepteur -->
-                <div class="trio-center">
-                    <div class="trio-hub">
-                        <div style="font-size:1.1rem;font-weight:800;color:#f5f5f4;">precepteur<span style="color:#F97316;">.</span></div>
-                        <div style="font-size:0.7rem;color:#a8a29e;margin-top:4px;">Connecté à Pronote</div>
-                        <div style="font-size:0.7rem;color:#a8a29e;">Mémoire long terme</div>
-                        <div style="font-size:0.7rem;color:#a8a29e;">IA adaptative</div>
-                    </div>
-                    <div class="trio-arrows">
-                        <svg viewBox="0 0 200 200" width="200" height="200" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;">
-                            <!-- arrows to/from each actor -->
-                            <line x1="100" y1="40" x2="30" y2="10" stroke="#F97316" stroke-width="1.5" opacity="0.4" stroke-dasharray="4 3"/>
-                            <line x1="100" y1="40" x2="170" y2="10" stroke="#0EA5E9" stroke-width="1.5" opacity="0.4" stroke-dasharray="4 3"/>
-                            <line x1="100" y1="160" x2="100" y2="190" stroke="#22C55E" stroke-width="1.5" opacity="0.4" stroke-dasharray="4 3"/>
-                        </svg>
-                    </div>
-                </div>
+<footer><div class="ctr">
+<div class="ftg">
+<div class="ftb"><div class="lo">precepteur<span>.</span>ai</div><p>Le coach scolaire IA qui informe les parents chaque soir. Fait en France, pour les familles francaises.</p></div>
+<div class="ftc"><h4>Produit</h4><a href="#fonctionnement">Comment ca marche</a><a href="#fonctionnalites">Fonctionnalites</a><a href="#tarifs">Tarifs</a><a href="#faq">FAQ</a></div>
+<div class="ftc"><h4>Legal</h4><a href="#">Confidentialite</a><a href="#">CGU</a><a href="#">Mentions legales</a></div>
+<div class="ftc"><h4>Contact</h4><a href="mailto:contact@precepteur-ai.com">contact@precepteur-ai.com</a></div>
+</div>
+<div class="ftm"><span>2026 Precepteur AI. Tous droits reserves.</span><span>Fait avec soin en France</span></div>
+</div></footer>
 
-                <!-- Eleve -->
-                <div class="trio-actor">
-                    <div class="trio-circle" style="border-color:#0EA5E9;color:#0EA5E9;">E</div>
-                    <div class="trio-name" style="color:#0EA5E9;">L'élève</div>
-                    <div class="trio-receives">
-                        <div class="trio-tag">Reçoit chaque soir</div>
-                        3 exercices adaptés, corrigés en direct, parcours qui s'ajuste
-                    </div>
-                    <div class="trio-does">
-                        <div class="trio-tag">Peut faire</div>
-                        Poser des questions sur ses cours, demander des explications, réviser
-                    </div>
-                </div>
-
-                <!-- Accompagnant (bottom, full width) -->
-                <div class="trio-actor trio-bottom">
-                    <div class="trio-circle" style="border-color:#22C55E;color:#22C55E;">A</div>
-                    <div class="trio-name" style="color:#22C55E;">L'accompagnant</div>
-                    <div class="trio-receives">
-                        <div class="trio-tag">Supervise entre les séances</div>
-                        Entre deux cours particuliers, il sait exactement où en est l'élève : exercices faits, taux de réussite, lacunes détectées
-                    </div>
-                    <div class="trio-does">
-                        <div class="trio-tag">Pilote le programme</div>
-                        Voit les exercices prévus avant l'élève, les modifie si besoin, ajuste les objectifs. Ses séances deviennent plus efficaces.
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- SKILL TREE (L'arbre de competences) -->
-    <section class="tree-section section" id="parcours">
-        <div class="container text-center">
-            <span class="label">Chaque objectif a un chemin</span>
-            <h2>Emma veut faire médecine. Précepteur construit le chemin.</h2>
-            <p class="subtitle" style="margin: 16px auto 0;">
-                Du rêve à la réalité : Précepteur décompose chaque objectif en prérequis, identifie où l'élève bloque, et construit le programme pour débloquer chaque étape.
-            </p>
-
-            <div class="tree-layout">
-                <!-- Tree visual -->
-                <div class="tree-canvas reveal">
-
-                    <!-- Legend -->
-                    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:32px; justify-content:center;">
-                        <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--text-secondary);">
-                            <span style="width:10px;height:10px;border-radius:50%;background:#22C55E;display:inline-block;"></span>
-                            Maîtrise
-                        </div>
-                        <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--text-secondary);">
-                            <span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block;"></span>
-                            En cours
-                        </div>
-                        <div style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--text-secondary);">
-                            <span style="width:10px;height:10px;border-radius:50%;background:#cbd5e1;display:inline-block;"></span>
-                            Verrouillé
-                        </div>
-                    </div>
-
-                    <div class="tree-levels" id="treeContainer">
-
-                        <!-- Level 5: Dream / Long-term goal -->
-                        <div class="tree-level" id="level5">
-                            <div class="tree-node locked" id="node-medecine" style="border-style:dashed;min-width:180px;">
-                                <div class="tree-node-name" style="font-size:1.05rem;">Médecine</div>
-                                <div class="tree-node-badge" style="font-size:0.75rem;margin-top:2px;">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><path d="M12 2l2.09 6.26L21 9.27l-5 4.87L17.18 22 12 18.27 6.82 22 8 14.14 3 9.27l6.91-1.01L12 2z"/></svg>
-                                    Son rêve — objectif long terme
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Level 4: Locked -->
-                        <div class="tree-level" id="level4">
-                            <div class="tree-node locked" id="node-eq2">
-                                <div class="tree-node-name">Équations 2nd degré</div>
-                                <div class="tree-node-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                    Prérequis non validés
-                                </div>
-                            </div>
-                            <div class="tree-node locked" id="node-fonctions">
-                                <div class="tree-node-name">Fonctions</div>
-                                <div class="tree-node-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                                    Prérequis non validés
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Level 3: In Progress -->
-                        <div class="tree-level" id="level3">
-                            <div class="tree-node in-progress" id="node-eq1">
-                                <div class="tree-node-name">Équations 1er degré</div>
-                                <div class="progress-ring-wrap">
-                                    <svg width="32" height="32" viewBox="0 0 32 32">
-                                        <circle class="progress-ring-bg" cx="16" cy="16" r="13"/>
-                                        <circle class="progress-ring-fill" cx="16" cy="16" r="13"
-                                            stroke-dasharray="81.68"
-                                            stroke-dashoffset="22.05"/>
-                                    </svg>
-                                </div>
-                                <div class="tree-node-badge">72% maîtrise</div>
-                            </div>
-                            <div class="tree-node in-progress" id="node-puissances">
-                                <div class="tree-node-name">Puissances</div>
-                                <div class="progress-ring-wrap">
-                                    <svg width="32" height="32" viewBox="0 0 32 32">
-                                        <circle class="progress-ring-bg" cx="16" cy="16" r="13"/>
-                                        <circle class="progress-ring-fill" cx="16" cy="16" r="13"
-                                            stroke-dasharray="81.68"
-                                            stroke-dashoffset="44.92"/>
-                                    </svg>
-                                </div>
-                                <div class="tree-node-badge">45% maîtrise</div>
-                            </div>
-                        </div>
-
-                        <!-- Level 2: Mastered -->
-                        <div class="tree-level" id="level2">
-                            <div class="tree-node mastered" id="node-litteral">
-                                <div class="tree-node-name">Calcul littéral</div>
-                                <div class="tree-node-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
-                                    Valide
-                                </div>
-                            </div>
-                            <div class="tree-node mastered" id="node-fractions">
-                                <div class="tree-node-name">Fractions</div>
-                                <div class="tree-node-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
-                                    Valide
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Level 1: Mastered (bottom) -->
-                        <div class="tree-level" id="level1">
-                            <div class="tree-node mastered" id="node-entiers">
-                                <div class="tree-node-name">Entiers naturels</div>
-                                <div class="tree-node-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
-                                    Valide
-                                </div>
-                            </div>
-                            <div class="tree-node mastered" id="node-tables">
-                                <div class="tree-node-name">Tables de multiplication</div>
-                                <div class="tree-node-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
-                                    Valide
-                                </div>
-                            </div>
-                            <div class="tree-node mastered" id="node-priorites">
-                                <div class="tree-node-name">Priorités des opérations</div>
-                                <div class="tree-node-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
-                                    Valide
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- SVG connectors (drawn by JS) -->
-                        <svg id="treeSvg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;" aria-hidden="true"></svg>
-
-                    </div>
-                </div>
-
-                <!-- Annotations -->
-                <div class="tree-annotations reveal">
-                    <div class="tree-annotation slate" style="border-color:#F97316;">
-                        <div class="tree-annotation-title" style="color:#ea580c;">L'objectif</div>
-                        <p>Emma veut faire médecine. Précepteur part de cet objectif et remonte jusqu'aux fondations. Chaque compétence validée rapproche du rêve.</p>
-                    </div>
-                    <div class="tree-annotation amber">
-                        <div class="tree-annotation-title">Niveau "En cours" détecté</div>
-                        <p>Précepteur détecte que Emma bloque sur les puissances (45%). Il génère des exercices ciblés chaque jour jusqu'à ce que le seuil de 80% soit atteint.</p>
-                    </div>
-                    <div class="tree-annotation slate">
-                        <div class="tree-annotation-title">Niveau verrouillé</div>
-                        <p>Les équations du 2nd degré sont verrouillées tant que les prérequis ne sont pas validés. Précepteur ne surchargera pas Emma.</p>
-                    </div>
-                    <div class="tree-annotation green">
-                        <div class="tree-annotation-title">Bases solides</div>
-                        <p>Les bases sont validées. Emma les a maîtrisées en 2 semaines avec le bot. Ces acquis servent de fondation pour la suite.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section class="section" id="fonctionnalites">
-        <div class="container text-center">
-            <span class="label">Tout ce dont vous avez besoin</span>
-            <h2>Un assistant qui pense à tout</h2>
-            <p class="subtitle" style="margin: 16px auto 0;">
-                Précepteur ne se contente pas de vous montrer les notes. Il les analyse, les contextualise, et vous guide.
-            </p>
-            <div class="features-grid">
-                <div class="feature-card reveal">
-                    <div class="feature-icon purple">&#128202;</div>
-                    <div>
-                        <h3>Bilan quotidien intelligent</h3>
-                        <p>Chaque soir à 17h : notes du jour, moyenne, tendance, devoirs à venir. Un seul message clair.</p>
-                    </div>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon cyan">&#9888;&#65039;</div>
-                    <div>
-                        <h3>Alertes instantanées</h3>
-                        <p>Note en dessous de la moyenne ? Absence non justifiée ? Vous êtes prévenu immédiatement.</p>
-                    </div>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon green">&#128161;</div>
-                    <div>
-                        <h3>Conseils personnalisés</h3>
-                        <p>L'IA connaît le profil de votre enfant et propose des exercices, méthodes et ressources adaptées.</p>
-                    </div>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon amber">&#128221;</div>
-                    <div>
-                        <h3>Suivi des devoirs</h3>
-                        <p>Liste des devoirs à rendre, par date, par matière. Plus jamais "j'ai pas de devoirs, maman".</p>
-                    </div>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon rose">&#129504;</div>
-                    <div>
-                        <h3>Mémoire long terme</h3>
-                        <p>Précepteur se souvient des forces et faiblesses de votre enfant. Ses conseils s'affinent avec le temps.</p>
-                    </div>
-                </div>
-                <div class="feature-card reveal">
-                    <div class="feature-icon blue">&#128241;</div>
-                    <div>
-                        <h3>Sur Telegram</h3>
-                        <p>Pas d'app à télécharger. Ca arrive directement dans votre messagerie Telegram.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SOCIAL PROOF -->
-    <section class="section" id="temoignages">
-        <div class="container text-center">
-            <span class="label">Ils l'utilisent déjà</span>
-            <h2>Ce que disent les parents bêta-testeurs</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial-card reveal">
-                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                    <p class="testimonial-text">
-                        "Je n'ouvrais Pronote qu'une fois par mois — trop compliqué. Maintenant, je suis informée CHAQUE SOIR en 30 secondes. Mon fils sait que je suis au courant, ça a changé son attitude."
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">SB</div>
-                        <div>
-                            <div class="testimonial-name">Sandrine B.</div>
-                            <div class="testimonial-role">Maman d'un élève de 4e, Boulogne</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card reveal">
-                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                    <p class="testimonial-text">
-                        "Le plus utile ? Les conseils concrets. Quand Précepteur me dit 'pour le contrôle de maths de jeudi, réviser les puissances 20 min ce soir', je sais exactement quoi faire."
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">KM</div>
-                        <div>
-                            <div class="testimonial-name">Karim M.</div>
-                            <div class="testimonial-role">Papa de 2 enfants, Gennevilliers</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card reveal">
-                    <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                    <p class="testimonial-text">
-                        "Mon fils me disait toujours 'j'ai pas de devoirs'. Depuis Précepteur, je reçois la vraie liste chaque soir. La tension a baissé à la maison."
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="testimonial-avatar">FL</div>
-                        <div>
-                            <div class="testimonial-name">Fatima L.</div>
-                            <div class="testimonial-role">Maman d'un élève de 3e, Nanterre</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PRICING -->
-    <section class="section section-alt" id="tarifs">
-        <div class="container text-center">
-            <span class="label">Tarifs transparents</span>
-            <h2>On est en bêta. L'inscription est gratuite.</h2>
-            <p class="subtitle" style="margin: 16px auto 0;">
-                Les premiers parents bénéficieront d'un tarif préférentiel à vie.
-            </p>
-            <div style="max-width: 480px; margin: 48px auto 0;">
-                <div class="pricing-card featured reveal">
-                    <div class="pricing-name">Bêta gratuite</div>
-                    <div class="pricing-price">0 EUR</div>
-                    <div class="pricing-annual">Les premiers parents bénéficieront d'un tarif préférentiel à vie quand l'abonnement sera lancé (prévu à 5,99 EUR/mois — vingt fois moins qu'un prof particulier).</div>
-                    <ul class="pricing-features">
-                        <li><span class="pricing-check">&#10003;</span> Bilan quotidien complet</li>
-                        <li><span class="pricing-check">&#10003;</span> Alertes notes et absences</li>
-                        <li><span class="pricing-check">&#10003;</span> Conseils IA personnalisés</li>
-                        <li><span class="pricing-check">&#10003;</span> Chat illimité</li>
-                        <li><span class="pricing-check">&#10003;</span> Exercices adaptés chaque jour</li>
-                    </ul>
-                    <a href="#essai" class="btn btn-primary" style="width:100%;">S'inscrire gratuitement</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="section" id="faq">
-        <div class="container text-center">
-            <span class="label">Questions fréquentes</span>
-            <h2>On répond à tout</h2>
-            <div class="faq-list">
-                <div class="faq-item">
-                    <button class="faq-question">
-                        Comment Précepteur accède à Pronote ?
-                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Vous renseignez vos identifiants Pronote une seule fois. Précepteur se connecte de manière sécurisée via votre Espace Numérique de Travail (ENT). Vos identifiants sont chiffrés et jamais partagés. Vous pouvez aussi simplement envoyer une photo de l'écran Pronote, sans donner vos identifiants.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        Mes données sont-elles en sécurité ?
-                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Absolument. Précepteur est conforme au RGPD et à la réglementation française sur les données des mineurs. Vos données sont hébergées en France, chiffrées au repos, et ne sont jamais revendues. Vous pouvez demander la suppression totale à tout moment.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        Ca marche avec quel ENT / établissement ?
-                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Précepteur est compatible avec Pronote via les principaux ENT : MonLycee.net (Île-de-France), Mon ENT Occitanie, et d'autres. Si votre ENT n'est pas encore supporté, vous pouvez utiliser le mode photo : envoyez un screenshot de Pronote et l'IA analyse tout.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        Mon enfant est au college, ca marche ?
-                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Oui ! Précepteur fonctionne pour les élèves du collège (6e à 3e) et du lycée (2nde à Terminale). Les conseils sont adaptés au niveau de votre enfant.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        Puis-je annuler a tout moment ?
-                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Oui, sans engagement. Vous pouvez annuler votre abonnement à tout moment depuis Telegram en écrivant "annuler". Vos données sont supprimées sous 30 jours. L'inscription est gratuite et ne nécessite pas de carte bancaire.
-                        </div>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        En quoi c'est different de Kartable ou Wilgo ?
-                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="faq-answer-inner">
-                            Kartable et Wilgo sont du soutien scolaire pour ÉLÈVES : l'enfant doit ouvrir une app et réviser. Précepteur, c'est un assistant pour PARENTS : vous recevez un bilan automatique, vous n'avez rien à faire. Et surtout, Précepteur est connecté à Pronote : il connaît les vraies notes et devoirs de votre enfant, pas du contenu générique.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- QUI SOMMES-NOUS -->
-    <section class="section" id="fondateur">
-        <div class="container">
-            <div class="founder-section reveal">
-                <div class="founder-photo">
-                    <div class="founder-avatar">CM</div>
-                </div>
-                <div class="founder-story">
-                    <span class="label">Le fondateur</span>
-                    <h2>Chaker</h2>
-                    <p>
-                        Scolarité en ZEP dans le 92, classes prépa, diplômé de l'École des Mines de Nancy. Après mes études, j'ai été accompagnateur scolaire à la mairie pendant 3 ans — des dizaines d'élèves suivis chaque semaine, du CM2 à la terminale.
-                    </p>
-                    <p>
-                        Ce que j'ai vu : des élèves capables, mais qui décrochent entre les séances. Le tuteur vient une fois par semaine. Entre-temps, les lacunes s'accumulent sans que personne ne s'en rende compte. Quand on les détecte, il est souvent trop tard.
-                    </p>
-                    <p>
-                        J'ai construit Précepteur pour ça. Un suivi quotidien par IA qui travaille avec l'élève chaque soir, détecte les blocages en temps réel, et informe le parent et le tuteur. L'objectif : que chaque séance avec le tuteur soit deux fois plus efficace.
-                    </p>
-                    <div class="founder-links">
-                        <a href="https://www.linkedin.com/in/chakerm/" target="_blank" class="founder-link">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                            LinkedIn
-                        </a>
-                    </div>
-
-                    <div class="founder-cta">
-                        <h3>Discutons du meilleur pour votre enfant</h3>
-                        <a href="tel:+33664624258" class="btn btn-primary" style="margin-top:12px;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
-                            06 64 62 42 58
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA FINAL -->
-    <section class="cta-section" id="essai">
-        <div class="container">
-            <h2>Fini les mauvaises surprises au bulletin</h2>
-            <p class="subtitle">
-                Rejoignez les parents qui suivent la scolarité de leur enfant sans stress. Inscription gratuite. Tarif préférentiel à vie pour les premiers parents.
-            </p>
-            <a href="https://t.me/precepteur_ia_bot" target="_blank" class="btn btn-primary btn-lg">
-                S'inscrire gratuitement
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-            <p class="cta-guarantee">Aucune carte bancaire requise. Désinscription en un message.</p>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="logo">precepteur<span>.</span></div>
-                    <p>Chaque soir, 3 exercices ciblés. Chaque semaine, un bilan pour les parents. Fait en France.</p>
-                </div>
-                <div class="footer-col">
-                    <h4>Produit</h4>
-                    <a href="#fonctionnement">Comment ca marche</a>
-                    <a href="#fonctionnalites">Fonctionnalités</a>
-                    <a href="#tarifs">Tarifs</a>
-                    <a href="#faq">FAQ</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Légal</h4>
-                    <a href="/politique-confidentialite">Politique de confidentialité</a>
-                    <a href="/cgu">Conditions d'utilisation</a>
-                    <a href="/rgpd">RGPD & données</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Contact</h4>
-                    <a href="mailto:contact@precepteur.net">contact@precepteur.net</a>
-                    <a href="https://t.me/precepteur_ia_bot" target="_blank">Telegram</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <span>&copy; 2026 Précepteur. Tous droits réservés.</span>
-                <span>Fait avec soin en France</span>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JAVASCRIPT -->
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            document.getElementById('navLinks').classList.toggle('active');
-        });
-
-        // Close mobile menu on link click
-        document.querySelectorAll('.nav-links a').forEach(function(link) {
-            link.addEventListener('click', function() {
-                document.getElementById('navLinks').classList.remove('active');
-            });
-        });
-
-        // FAQ accordion
-        document.querySelectorAll('.faq-question').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var item = this.parentElement;
-                var isOpen = item.classList.contains('open');
-                // Close all
-                document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
-                // Open clicked if was closed
-                if (!isOpen) item.classList.add('open');
-            });
-        });
-
-        // Scroll reveal
-        var reveals = document.querySelectorAll('.reveal');
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-        reveals.forEach(function(el) { observer.observe(el); });
-
-        // Navbar scroll effect
-        var navbar = document.querySelector('.navbar');
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 20) {
-                navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.06)';
-            } else {
-                navbar.style.boxShadow = 'none';
-            }
-        });
-
-        // Skill tree SVG connectors
-        function drawTreeConnectors() {
-            var svg = document.getElementById('treeSvg');
-            if (!svg) return;
-            var container = document.getElementById('treeContainer');
-            if (!container) return;
-
-            svg.innerHTML = '';
-
-            var connections = [
-                // level1 -> level2
-                { from: 'node-entiers',   to: 'node-litteral' },
-                { from: 'node-tables',    to: 'node-litteral' },
-                { from: 'node-tables',    to: 'node-fractions' },
-                { from: 'node-priorites', to: 'node-fractions' },
-                // level2 -> level3
-                { from: 'node-litteral',  to: 'node-eq1' },
-                { from: 'node-fractions', to: 'node-puissances' },
-                { from: 'node-priorites', to: 'node-puissances' },
-                // level3 -> level4
-                { from: 'node-eq1',       to: 'node-eq2' },
-                { from: 'node-puissances',to: 'node-eq2' },
-                { from: 'node-eq1',       to: 'node-fonctions' },
-                // level4 -> level5 (dream)
-                { from: 'node-eq2',       to: 'node-medecine' },
-                { from: 'node-fonctions', to: 'node-medecine' },
-            ];
-
-            var containerRect = container.getBoundingClientRect();
-
-            connections.forEach(function(conn) {
-                var fromEl = document.getElementById(conn.from);
-                var toEl   = document.getElementById(conn.to);
-                if (!fromEl || !toEl) return;
-
-                var fr = fromEl.getBoundingClientRect();
-                var tr = toEl.getBoundingClientRect();
-
-                var x1 = fr.left + fr.width / 2 - containerRect.left;
-                var y1 = fr.top - containerRect.top;
-                var x2 = tr.left + tr.width / 2 - containerRect.left;
-                var y2 = tr.top + tr.height - containerRect.top;
-
-                var fromNode = fromEl;
-                var isFromMastered = fromNode.classList.contains('mastered');
-                var isToLocked = toEl.classList.contains('locked');
-
-                var color = isToLocked ? '#cbd5e1' : (isFromMastered ? '#22C55E' : '#f59e0b');
-                var opacity = isToLocked ? '0.4' : '0.6';
-
-                var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', x1);
-                line.setAttribute('y1', y1);
-                line.setAttribute('x2', x2);
-                line.setAttribute('y2', y2);
-                line.setAttribute('stroke', color);
-                line.setAttribute('stroke-width', '1.5');
-                line.setAttribute('stroke-dasharray', '5 3');
-                line.setAttribute('opacity', opacity);
-                svg.appendChild(line);
-            });
-        }
-
-        // Draw after fonts/layout settle
-        window.addEventListener('load', function() {
-            setTimeout(drawTreeConnectors, 200);
-        });
-        window.addEventListener('resize', drawTreeConnectors);
-
-        // ===== HERO ANIMATION — phones only =====
-        (function() {
-            var pMsg1          = document.getElementById('pMsg1');
-            var pMsg2          = document.getElementById('pMsg2');
-            var pMsg3          = document.getElementById('pMsg3');
-            var pBadge         = document.getElementById('pBadge');
-            var phoneParent    = document.getElementById('phoneParent');
-            var ppMsg1         = document.getElementById('ppMsg1');
-            var progressUpdate = document.getElementById('phoneProgressUpdate');
-
-            var phonesWrap = document.querySelector('.hero-visual-phones');
-
-            function show(el) { if (el) el.classList.add('visible'); }
-            function hide(el) { if (el) el.classList.remove('visible'); }
-
-            function resetPhones() {
-                if (phonesWrap) { phonesWrap.style.transition = ''; phonesWrap.style.opacity = ''; }
-                [pMsg1, pMsg2, pMsg3, pBadge, phoneParent, ppMsg1, progressUpdate].forEach(hide);
-            }
-
-            var timers = [];
-            function schedule(ms, fn) { timers.push(setTimeout(fn, ms)); }
-            function clearTimers() { timers.forEach(clearTimeout); timers = []; }
-
-            function runCycle() {
-                clearTimers();
-                resetPhones();
-
-                // Phones animation — all ms from cycle start
-                schedule(800,   function() { show(pMsg1); });
-                schedule(2300,  function() { show(pMsg2); });
-                schedule(4300,  function() { show(pMsg3); });
-                schedule(5000,  function() { show(pBadge); });
-                schedule(6500,  function() { show(phoneParent); });
-                schedule(6900,  function() { show(ppMsg1); });
-                schedule(7700,  function() { show(progressUpdate); });
-
-                // 13000ms: fade out
-                schedule(13000, function() {
-                    if (phonesWrap) { phonesWrap.style.transition = 'opacity 1.2s ease'; phonesWrap.style.opacity = '0'; }
-                });
-
-                // 14200ms: restart
-                schedule(14200, function() { runCycle(); });
-            }
-
-            window.addEventListener('load', function() {
-                runCycle();
-            });
-        })();
-    </script>
-
-
-    <script>
-    // Brain particles
-    (function() {
-        var track = document.getElementById('particlesTrack');
-        if (!track) return;
-        var colors = ['c-orange','c-blue','c-green','c-orange','c-blue','c-green','c-orange','c-blue','c-green','c-orange','c-blue','c-green','c-orange','c-blue'];
-        var tops = [20,45,70,30,55,80,15,60,90,38,65,25,82,50];
-        var durations = [2.4,3.1,2.8,4.2,2.2,4.8,3.6,3.3,2.0,5.0,2.6,3.9,4.5,2.3];
-        var delays = [0,0.6,1.2,1.8,0.3,0.9,1.5,0.4,2.1,2.7,1.1,3.2,0.7,2.4];
-        colors.forEach(function(c, i) {
-            var d = document.createElement('div');
-            d.className = 'dot ' + c;
-            d.style.top = tops[i] + '%';
-            d.style.left = '0px';
-            d.style.animationDuration = durations[i] + 's';
-            d.style.animationDelay = delays[i] + 's';
-            track.appendChild(d);
-        });
-    })();
-
-    // Brain cards staggered reveal
-    (function() {
-        var cards = ['bcard1','bcard2','bcard3'];
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    cards.forEach(function(id, i) {
-                        setTimeout(function() {
-                            var el = document.getElementById(id);
-                            if (el) el.classList.add('visible');
-                        }, i * 500);
-                    });
-                    observer.disconnect();
-                }
-            });
-        }, { threshold: 0.3 });
-        var section = document.getElementById('ecosysteme');
-        if (section) observer.observe(section);
-    })();
-    </script>
+<script>
+document.getElementById('mb').onclick=function(){document.getElementById('nl').classList.toggle('ac')};
+document.querySelectorAll('.nl a').forEach(function(a){a.onclick=function(){document.getElementById('nl').classList.remove('ac')}});
+document.querySelectorAll('.fq').forEach(function(b){b.onclick=function(){var i=this.parentElement,o=i.classList.contains('o');document.querySelectorAll('.fqi').forEach(function(x){x.classList.remove('o')});if(!o)i.classList.add('o')}});
+var rv=document.querySelectorAll('.rv');new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('vi')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'}).observe&&rv.forEach(function(el){new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('vi')})},{threshold:.12,rootMargin:'0px 0px -40px 0px'}).observe(el)});
+window.onscroll=function(){document.getElementById('nv').classList.toggle('s',window.scrollY>20)};
+document.getElementById('ef').onsubmit=function(e){e.preventDefault();var m=document.getElementById('em').value,b=document.getElementById('eb');b.textContent='...';b.disabled=true;fetch('https://cztnbuesyiawazidkobt.supabase.co/rest/v1/email_subscribers',{method:'POST',headers:{'Content-Type':'application/json','apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dG5idWVzeWlhd2F6aWRrb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDIwNjMsImV4cCI6MjA2ODA3ODA2M30.dpaIMncJ-5Ytql7i8DbBfbHt6lD5uQIuRXGa1vo-kQA','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6dG5idWVzeWlhd2F6aWRrb2J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDIwNjMsImV4cCI6MjA2ODA3ODA2M30.dpaIMncJ-5Ytql7i8DbBfbHt6lD5uQIuRXGa1vo-kQA','Prefer':'return=minimal'},body:JSON.stringify({email:m,source:'landing'})}).finally(function(){document.getElementById('ef').style.display='none';document.getElementById('ok').style.display='block'})};
+</script>
 </body>
 </html>
