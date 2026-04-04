@@ -64,6 +64,7 @@ export default function InscriptionElevePage() {
 
 function InscriptionEleveContent() {
   const [step, setStep] = useState(1);
+  const [platform, setPlatform] = useState<"telegram" | "whatsapp">("telegram");
   const [prenom, setPrenom] = useState("");
   const [classLevel, setClassLevel] = useState("4eme");
   const [hasPronote, setHasPronote] = useState(false);
@@ -88,6 +89,7 @@ function InscriptionEleveContent() {
         child_has_phone: true,
         has_pronote: hasPronote,
         class_level: classLevel,
+        platform,
       };
 
       if (hasPronote && pronoteUrl && username && password) {
@@ -107,7 +109,7 @@ function InscriptionEleveContent() {
 
       if (data.ok) {
         setTelegramLink(data.telegram_link);
-        setStep(4);
+        setStep(5);
       } else {
         setError(data.error || "Une erreur est survenue. Reessaye.");
       }
@@ -118,7 +120,7 @@ function InscriptionEleveContent() {
     }
   };
 
-  const STEPS = ["Informations", "Pronote", "Confirmation"];
+  const STEPS = ["Plateforme", "Informations", "Pronote", "Confirmation"];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -160,18 +162,18 @@ function InscriptionEleveContent() {
         <div className="mx-auto max-w-2xl">
           {/* Progress steps */}
           <div className="flex items-center justify-center gap-4 mb-12">
-            {[1, 2, 3].map((s) => (
+            {[1, 2, 3, 4].map((s) => (
               <div key={s} className="flex items-center gap-2">
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
-                    step > s || step === 4
+                    step > s || step === 5
                       ? "bg-primary text-primary-foreground"
                       : step === s
                       ? "bg-primary text-primary-foreground"
                       : "bg-gray-200 text-gray-500"
                   }`}
                 >
-                  {step > s || step === 4 ? <Check className="h-4 w-4" /> : s}
+                  {step > s || step === 5 ? <Check className="h-4 w-4" /> : s}
                 </div>
                 <span
                   className={`text-sm hidden sm:inline ${
@@ -180,22 +182,77 @@ function InscriptionEleveContent() {
                 >
                   {STEPS[s - 1]}
                 </span>
-                {s < 3 && (
+                {s < 4 && (
                   <div className={`w-12 h-0.5 ${step > s ? "bg-primary" : "bg-gray-200"}`} />
                 )}
               </div>
             ))}
           </div>
 
-          {/* Step 1: Informations */}
+          {/* Step 1: Plateforme */}
           {step === 1 && (
+            <div>
+              <div className="text-center mb-8">
+                <h1 className="text-3xl font-bold text-foreground mb-3">
+                  Comment veux-tu utiliser Precepteur ?
+                </h1>
+                <p className="text-muted-foreground text-lg">
+                  Choisis ton application de messagerie.
+                </p>
+              </div>
+
+              <Card>
+                <CardContent className="pt-6 space-y-6">
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setPlatform("telegram")}
+                      className={`flex-1 rounded-lg border-2 p-5 text-sm font-medium transition-colors cursor-pointer ${
+                        platform === "telegram"
+                          ? "border-primary bg-primary/5 text-primary"
+                          : "border-gray-200 text-muted-foreground hover:border-gray-300"
+                      }`}
+                    >
+                      <div className="text-2xl mb-2">✈</div>
+                      <div className="font-semibold">Telegram</div>
+                      <div className="text-xs mt-1 text-muted-foreground">Recommande</div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPlatform("whatsapp")}
+                      className={`flex-1 rounded-lg border-2 p-5 text-sm font-medium transition-colors cursor-pointer ${
+                        platform === "whatsapp"
+                          ? "border-primary bg-primary/5 text-primary"
+                          : "border-gray-200 text-muted-foreground hover:border-gray-300"
+                      }`}
+                    >
+                      <div className="text-2xl mb-2">💬</div>
+                      <div className="font-semibold">WhatsApp</div>
+                      <div className="text-xs mt-1 text-muted-foreground">Sans installation</div>
+                    </button>
+                  </div>
+
+                  <Button
+                    onClick={() => setStep(2)}
+                    className="w-full gap-2 h-12 text-base"
+                  >
+                    Continuer
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Step 2: Informations */}
+          {step === 2 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
                   Inscription eleve
                 </h1>
                 <p className="text-muted-foreground text-lg">
-                  Recois chaque soir ton bilan personnalise sur Telegram.
+                  Recois chaque soir ton bilan personnalise.
                 </p>
               </div>
 
@@ -232,7 +289,7 @@ function InscriptionEleveContent() {
                   </div>
 
                   <Button
-                    onClick={() => setStep(2)}
+                    onClick={() => setStep(3)}
                     disabled={!prenom.trim()}
                     className="w-full gap-2 h-12 text-base"
                   >
@@ -244,8 +301,8 @@ function InscriptionEleveContent() {
             </div>
           )}
 
-          {/* Step 2: Pronote */}
-          {step === 2 && (
+          {/* Step 3: Pronote */}
+          {step === 3 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
@@ -377,14 +434,14 @@ function InscriptionEleveContent() {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => setStep(1)}
+                      onClick={() => setStep(2)}
                       className="gap-2"
                     >
                       <ArrowLeft className="h-4 w-4" />
                       Retour
                     </Button>
                     <Button
-                      onClick={() => setStep(3)}
+                      onClick={() => setStep(4)}
                       className="flex-1 gap-2 h-11 text-base"
                     >
                       Continuer
@@ -396,8 +453,8 @@ function InscriptionEleveContent() {
             </div>
           )}
 
-          {/* Step 3: Confirmation */}
-          {step === 3 && (
+          {/* Step 4: Confirmation */}
+          {step === 4 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
@@ -410,6 +467,10 @@ function InscriptionEleveContent() {
 
               <Card className="mb-6">
                 <CardContent className="pt-6 space-y-3">
+                  <div className="flex justify-between py-2 border-b">
+                    <span className="text-sm text-muted-foreground">Plateforme</span>
+                    <span className="text-sm font-medium">{platform === "whatsapp" ? "WhatsApp" : "Telegram"}</span>
+                  </div>
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-sm text-muted-foreground">Prenom</span>
                     <span className="text-sm font-medium">{prenom}</span>
@@ -438,7 +499,7 @@ function InscriptionEleveContent() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => { setStep(2); setError(""); }}
+                  onClick={() => { setStep(3); setError(""); }}
                   className="gap-2"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -465,8 +526,8 @@ function InscriptionEleveContent() {
             </div>
           )}
 
-          {/* Step 4: Success */}
-          {step === 4 && (
+          {/* Step 5: Success */}
+          {step === 5 && (
             <div className="text-center">
               <div className="mb-8">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
@@ -476,12 +537,19 @@ function InscriptionEleveContent() {
                   Inscription reussie !
                 </h1>
                 <p className="text-muted-foreground text-lg">
-                  Bienvenue sur Precepteur AI, {prenom}. Connecte-toi sur Telegram pour recevoir ton premier bilan ce soir.
+                  Bienvenue sur Precepteur AI, {prenom}. Connecte-toi pour recevoir ton premier bilan ce soir.
                 </p>
               </div>
 
               <div className="space-y-4">
-                {telegramLink ? (
+                {platform === "whatsapp" ? (
+                  <a href="https://wa.me/33664624258?text=Bonjour" target="_blank" rel="noopener noreferrer">
+                    <Button className="w-full gap-2 h-12 text-base">
+                      Ouvrir WhatsApp
+                      <ExternalLink className="h-4 w-4" />
+                    </Button>
+                  </a>
+                ) : telegramLink ? (
                   <a href={telegramLink} target="_blank" rel="noopener noreferrer">
                     <Button className="w-full gap-2 h-12 text-base">
                       Ouvrir Telegram
