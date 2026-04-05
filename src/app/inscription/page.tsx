@@ -105,8 +105,8 @@ function InscriptionParentContent() {
           // Bug 2: inverted — childHasPhone=false means parent_child (shared), true means parent (separate)
           role: childHasPhone === false ? "parent_child" : "parent",
           parent_first_name: prenom,
-          parent_email: emailVal,
-          parent_phone: telephone,
+          email: emailVal,
+          phone: telephone,
           child_has_phone: childHasPhone ?? false,
           has_pronote: connectPronote,
           pronote_url: connectPronote ? pronoteUrl : "",
