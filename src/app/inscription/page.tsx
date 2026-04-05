@@ -16,6 +16,8 @@ import {
   XIcon,
   Menu,
   ExternalLink,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 const API_URL = "https://precepteur-ai.onrender.com";
@@ -74,6 +76,7 @@ function InscriptionParentContent() {
   const [selectedSchool, setSelectedSchool] = useState<{nomEtab: string; url: string; cp?: string} | null>(null);
   const [schoolFilter, setSchoolFilter] = useState("");
   const [showManualUrl, setShowManualUrl] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Bug 5: Pronote test state
   const [pronoteTestLoading, setPronoteTestLoading] = useState(false);
@@ -555,13 +558,22 @@ function InscriptionParentContent() {
                         <label className="block text-sm font-medium text-foreground mb-2">
                           Mot de passe Pronote
                         </label>
+                        <div className="relative">
                         <Input
-                          type="password"
+                          type={showPassword ? "text" : "password"}
                           placeholder="Votre mot de passe"
                           value={pronotePassword}
                           onChange={(e) => { setPronotePassword(e.target.value); setPronoteTestError(""); setPronoteTestSuccess(false); }}
-                          className="h-11"
+                          className="h-11 pr-12"
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                        >
+                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        </button>
+                        </div>
                       </div>
 
                       {/* Bug 5: Pronote test result feedback */}
@@ -681,7 +693,7 @@ function InscriptionParentContent() {
                   </div>
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-sm text-muted-foreground">Pronote</span>
-                    <span className="text-sm font-medium">{connectPronote ? "Connecté" : "Plus tard"}</span>
+                    <span className="text-sm font-medium">{connectPronote && pronoteTestSuccess ? "Connecté" : connectPronote ? "En attente de vérification" : "Plus tard"}</span>
                   </div>
                   <div className="flex justify-between py-2">
                     <span className="text-sm text-muted-foreground">Plateforme</span>
