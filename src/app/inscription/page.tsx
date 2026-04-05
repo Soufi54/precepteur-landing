@@ -63,6 +63,8 @@ function InscriptionParentContent() {
   const [emailVal, setEmailVal] = useState("");
   const [telephone, setTelephone] = useState("");
   const [childHasPhone, setChildHasPhone] = useState<boolean | null>(null);
+  const [childFirstName, setChildFirstName] = useState("");
+  const [childClass, setChildClass] = useState("");
 
   // Step 2
   const [connectPronote, setConnectPronote] = useState(true);
@@ -110,6 +112,8 @@ function InscriptionParentContent() {
           parent_first_name: prenom,
           email: emailVal,
           phone: telephone,
+          child_first_name: childFirstName,
+          child_class: childClass,
           child_has_phone: childHasPhone ?? false,
           has_pronote: connectPronote,
           pronote_url: connectPronote ? pronoteUrl : "",
@@ -136,8 +140,8 @@ function InscriptionParentContent() {
     }
   };
 
-  const step1Valid = prenom.trim() && emailVal.trim() && telephone.trim() && childHasPhone !== null;
-  const step2Valid = !connectPronote || (pronoteUrl.trim() && pronoteUsername.trim() && pronotePassword.trim());
+  const step1Valid = prenom.trim() && emailVal.trim() && telephone.trim() && childHasPhone !== null && childFirstName.trim();
+  const step2Valid = !connectPronote || (pronoteUrl.trim() && pronoteUsername.trim() && pronotePassword.trim()) || pronoteTestError !== "";
 
   // Bug 5: Test Pronote connection before advancing from step 2
   async function handleStep2Continue() {
@@ -180,10 +184,12 @@ function InscriptionParentContent() {
       } else {
         setPronoteTestLoading(false);
         setPronoteTestError(data.error || "Connexion Pronote échouée. Vérifiez vos identifiants.");
+        setPronoteTestSuccess(false);
       }
     } catch {
       setPronoteTestLoading(false);
       setPronoteTestError("Impossible de tester la connexion Pronote. Vérifiez vos identifiants ou continuez sans.");
+      setPronoteTestSuccess(false);
     }
   }
 
@@ -390,6 +396,39 @@ function InscriptionParentContent() {
                         Vous recevrez les exercices et bilans sur le même compte.
                       </p>
                     )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Prénom de l&apos;enfant <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder="Prénom de votre enfant"
+                      value={childFirstName}
+                      onChange={(e) => setChildFirstName(e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Classe
+                    </label>
+                    <select
+                      value={childClass}
+                      onChange={(e) => setChildClass(e.target.value)}
+                      className="w-full h-11 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    >
+                      <option value="">Sélectionner une classe</option>
+                      <option value="6ème">6ème</option>
+                      <option value="5ème">5ème</option>
+                      <option value="4ème">4ème</option>
+                      <option value="3ème">3ème</option>
+                      <option value="2nde">2nde</option>
+                      <option value="1ère">1ère</option>
+                      <option value="Terminale">Terminale</option>
+                    </select>
                   </div>
 
                   <Button
@@ -615,6 +654,15 @@ function InscriptionParentContent() {
                               Continuer sans Pronote
                             </Button>
                           </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => { setPronoteTestError(""); setStep(3); }}
+                            className="w-full text-muted-foreground underline text-xs"
+                          >
+                            Continuer quand même (identifiants conservés, vérification ultérieure)
+                          </Button>
                         </div>
                       )}
                     </>
@@ -636,24 +684,21 @@ function InscriptionParentContent() {
                       <ArrowLeft className="h-4 w-4" />
                       Retour
                     </Button>
-                    {/* Bug 5: use handleStep2Continue instead of direct setStep(3) */}
-                    {!pronoteTestError && (
+                    {/* Step 2 continue button — visible unless test is loading */}
+                    {!pronoteTestLoading && (
                       <Button
                         onClick={handleStep2Continue}
                         disabled={!step2Valid || pronoteTestLoading}
                         className="flex-1 gap-2 h-11 text-base"
                       >
-                        {pronoteTestLoading ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Test en cours...
-                          </>
-                        ) : (
-                          <>
-                            Continuer
-                            <ArrowRight className="h-4 w-4" />
-                          </>
-                        )}
+                        Continuer
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    )}
+                    {pronoteTestLoading && (
+                      <Button disabled className="flex-1 gap-2 h-11 text-base">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Test en cours...
                       </Button>
                     )}
                   </div>
@@ -689,16 +734,18 @@ function InscriptionParentContent() {
                     <span className="text-sm font-medium">{telephone}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
+                    <span className="text-sm text-muted-foreground">Enfant</span>
+                    <span className="text-sm font-medium">{childFirstName}{childClass ? ` — ${childClass}` : ""}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b">
                     <span className="text-sm text-muted-foreground">Enfant avec téléphone</span>
                     <span className="text-sm font-medium">{childHasPhone ? "Oui" : "Non"}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="text-sm text-muted-foreground">Pronote</span>
-                    <span className="text-sm font-medium">{connectPronote && pronoteTestSuccess ? "Connecté" : connectPronote ? "En attente de vérification" : "Plus tard"}</span>
-                  </div>
                   <div className="flex justify-between py-2">
-                    <span className="text-sm text-muted-foreground">Plateforme</span>
-                    <span className="text-sm font-medium">WhatsApp</span>
+                    <span className="text-sm text-muted-foreground">Pronote</span>
+                    <span className="text-sm font-medium">
+                      {connectPronote && pronoteTestSuccess ? "Connecté" : connectPronote ? "En attente de vérification" : "Plus tard"}
+                    </span>
                   </div>
                 </CardContent>
               </Card>
@@ -752,10 +799,10 @@ function InscriptionParentContent() {
                   Inscription réussie !
                 </h1>
                 <p className="text-muted-foreground text-lg mb-2">
-                  Bienvenue sur Précepteur AI, {prenom}.
+                  Vous allez recevoir un message WhatsApp de Précepteur AI dans quelques secondes.
                 </p>
-                <p className="text-muted-foreground">
-                  Vous recevrez votre premier bilan ce soir à 19h.
+                <p className="text-muted-foreground text-sm">
+                  Si vous ne le recevez pas, ouvrez WhatsApp et envoyez &quot;Bonjour&quot; au 06 64 62 42 58.
                 </p>
               </div>
 
@@ -766,14 +813,10 @@ function InscriptionParentContent() {
                   rel="noopener noreferrer"
                 >
                   <Button className="w-full gap-2 h-14 text-lg font-semibold">
-                    Démarrer sur WhatsApp
+                    Ouvrir WhatsApp
                     <ExternalLink className="h-5 w-5" />
                   </Button>
                 </a>
-
-                <p className="text-sm text-muted-foreground">
-                  Vous recevrez votre premier bilan ce soir à 19h.
-                </p>
               </div>
             </div>
           )}
