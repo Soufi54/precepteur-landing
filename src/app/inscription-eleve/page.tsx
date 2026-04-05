@@ -138,8 +138,9 @@ function InscriptionEleveContent() {
 
       if (hasPronote && pronoteUrl && username && password) {
         body.pronote_url = pronoteUrl;
-        body.ent_type = entType || "ile_de_france";
+        body.pronote_ent = entType || "ile_de_france";
         body.pronote_username = username;
+        body.pronote_tested = pronoteTestStatus === "success";
         body.pronote_password = password;
       }
 
