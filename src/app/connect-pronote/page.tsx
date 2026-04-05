@@ -52,6 +52,12 @@ function ConnectPronoteContent() {
   const [children, setChildren] = useState<ChildInfo[]>([]);
   const [registrationId, setRegistrationId] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [cityQuery, setCityQuery] = useState("");
+  const [cityResults, setCityResults] = useState<Array<{name: string; context: string; lat: number; lng: number}>>([]);
+  const [schools, setSchools] = useState<Array<{nomEtab: string; url: string; cp?: string}>>([]);
+  const [selectedSchool, setSelectedSchool] = useState<{nomEtab: string; url: string; cp?: string} | null>(null);
+  const [schoolFilter, setSchoolFilter] = useState("");
+  const [showManualUrl, setShowManualUrl] = useState(false);
 
   useEffect(() => {
     const reg = searchParams.get("reg");
@@ -94,6 +100,36 @@ function ConnectPronoteContent() {
       setConnecting(false);
     }
   };
+
+  async function searchCity(q: string) {
+    if (q.length < 2) { setCityResults([]); return; }
+    try {
+      const res = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(q)}&type=municipality&limit=6`);
+      const data = await res.json();
+      setCityResults((data.features || []).map((f: { properties: { city?: string; name?: string; context?: string }; geometry: { coordinates: number[] } }) => ({
+        name: f.properties.city || f.properties.name || "",
+        context: f.properties.context || "",
+        lat: f.geometry.coordinates[1],
+        lng: f.geometry.coordinates[0],
+      })));
+    } catch { setCityResults([]); }
+  }
+
+  async function selectCity(city: {name: string; lat: number; lng: number}) {
+    setCityQuery(city.name);
+    setCityResults([]);
+    setSelectedSchool(null);
+    setSchoolFilter("");
+    try {
+      const res = await fetch("https://www.index-education.com/swie/geoloc.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "data=" + encodeURIComponent(JSON.stringify({nomFonction: "geoLoc", lat: String(city.lat), long: String(city.lng)})),
+      });
+      const data = await res.json();
+      setSchools(data || []);
+    } catch { setSchools([]); }
+  }
 
   const ENT_OPTIONS = [
     { value: "ile_de_france", label: "Ile-de-France (MonLycee / MonCollege)" },
@@ -292,20 +328,81 @@ function ConnectPronoteContent() {
                   <form onSubmit={handleConnect} className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">
-                        URL Pronote de l&apos;établissement
+                        Ville de l&apos;établissement
                       </label>
                       <Input
-                        type="url"
-                        placeholder="https://0123456A.index-education.net/pronote/"
-                        value={pronoteUrl}
-                        onChange={(e) => setPronoteUrl(e.target.value)}
-                        required
+                        type="text"
+                        placeholder="Tapez le nom de votre ville..."
+                        value={cityQuery}
+                        onChange={(e) => { setCityQuery(e.target.value); searchCity(e.target.value); }}
                         className="h-11"
                       />
-                      <p className="mt-1.5 text-xs text-muted-foreground">
-                        Vous trouverez cette adresse sur le site de l&apos;établissement ou dans vos emails de rentrée.
-                      </p>
+                      {cityResults.length > 0 && (
+                        <div className="border rounded-lg mt-1 max-h-48 overflow-y-auto bg-white">
+                          {cityResults.map((c, i) => (
+                            <div key={i} className="px-4 py-2.5 cursor-pointer hover:bg-secondary/50 border-b last:border-b-0"
+                                 onClick={() => selectCity(c)}>
+                              <div className="font-semibold text-sm">{c.name}</div>
+                              <div className="text-xs text-muted-foreground">{c.context}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
+
+                    {schools.length > 0 && !selectedSchool && (
+                      <div>
+                        <label className="block text-sm font-medium text-foreground mb-2">
+                          Choisissez l&apos;établissement
+                        </label>
+                        <Input
+                          type="text"
+                          placeholder="Filtrer..."
+                          value={schoolFilter}
+                          onChange={(e) => setSchoolFilter(e.target.value)}
+                          className="h-11 mb-1"
+                        />
+                        <div className="border rounded-lg max-h-64 overflow-y-auto bg-white">
+                          {schools.filter(s => !schoolFilter || s.nomEtab.toLowerCase().includes(schoolFilter.toLowerCase())).map((s, i) => (
+                            <div key={i} className="px-4 py-3 cursor-pointer hover:bg-green-50 border-b last:border-b-0"
+                                 onClick={() => { setSelectedSchool(s); setPronoteUrl(s.url); }}>
+                              <div className="font-semibold text-sm">{s.nomEtab}</div>
+                              <div className="text-xs text-muted-foreground">{s.url}</div>
+                              {s.cp && <div className="text-xs text-muted-foreground">{s.cp}</div>}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {selectedSchool && (
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div className="font-semibold text-green-800 text-sm">{selectedSchool.nomEtab}</div>
+                        <div className="text-xs text-muted-foreground mt-1">{selectedSchool.url}</div>
+                        <button type="button" className="text-xs text-primary mt-2 underline"
+                                onClick={() => { setSelectedSchool(null); setPronoteUrl(""); setSchools([]); setCityQuery(""); }}>
+                          Changer d&apos;établissement
+                        </button>
+                      </div>
+                    )}
+
+                    {!selectedSchool && (
+                      <div>
+                        <button type="button" className="text-xs text-muted-foreground underline mb-2"
+                                onClick={() => setShowManualUrl(!showManualUrl)}>
+                          Mon établissement n&apos;apparaît pas — entrer l&apos;URL manuellement
+                        </button>
+                        {showManualUrl && (
+                          <Input
+                            type="url"
+                            placeholder="https://0000000a.index-education.net/pronote/"
+                            value={pronoteUrl}
+                            onChange={(e) => setPronoteUrl(e.target.value)}
+                            className="h-11"
+                          />
+                        )}
+                      </div>
+                    )}
 
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">
