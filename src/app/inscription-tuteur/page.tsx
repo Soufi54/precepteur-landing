@@ -72,16 +72,16 @@ function InscriptionTuteurContent() {
         setTelegramLink(data.telegram_link);
         setStep(5);
       } else {
-        setError(data.error || "Une erreur est survenue. Reessayez.");
+        setError(data.error || "Une erreur est survenue. Réessayez.");
       }
     } catch {
-      setError("Impossible de contacter le serveur. Reessayez dans quelques instants.");
+      setError("Impossible de contacter le serveur. Réessayez dans quelques instants.");
     } finally {
       setLoading(false);
     }
   };
 
-  const STEPS = ["Plateforme", "Informations", "Eleves", "Confirmation"];
+  const STEPS = ["Plateforme", "Informations", "Élèves", "Confirmation"];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -90,7 +90,7 @@ function InscriptionTuteurContent() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
             <GraduationCap className="h-7 w-7 text-primary" />
-            <span className="text-xl font-bold text-primary">Precepteur AI</span>
+            <span className="text-xl font-bold text-primary">Précepteur AI</span>
           </Link>
           <nav className="hidden md:flex items-center gap-6">
             <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -155,7 +155,7 @@ function InscriptionTuteurContent() {
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
-                  Comment voulez-vous utiliser Precepteur ?
+                  Comment voulez-vous utiliser Précepteur ?
                 </h1>
                 <p className="text-muted-foreground text-lg">
                   Choisissez votre application de messagerie.
@@ -176,7 +176,7 @@ function InscriptionTuteurContent() {
                     >
                       <div className="text-2xl mb-2">✈</div>
                       <div className="font-semibold">Telegram</div>
-                      <div className="text-xs mt-1 text-muted-foreground">Recommande</div>
+                      <div className="text-xs mt-1 text-muted-foreground">Recommandé</div>
                     </button>
                     <button
                       type="button"
@@ -213,7 +213,7 @@ function InscriptionTuteurContent() {
                   Inscription tuteur / accompagnant
                 </h1>
                 <p className="text-muted-foreground text-lg">
-                  Suivez les progres de vos eleves en temps reel.
+                  Suivez les progrès de vos élèves en temps réel.
                 </p>
               </div>
 
@@ -263,10 +263,10 @@ function InscriptionTuteurContent() {
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
-                  Vos eleves
+                  Vos élèves
                 </h1>
                 <p className="text-muted-foreground">
-                  Avez-vous deja des eleves inscrits sur Precepteur AI ?
+                  Avez-vous déjà des élèves inscrits sur Précepteur AI ?
                 </p>
               </div>
 
@@ -312,7 +312,7 @@ function InscriptionTuteurContent() {
                         className="h-11"
                       />
                       <p className="mt-1.5 text-xs text-muted-foreground">
-                        Ce code vous est transmis par le parent de l&apos;eleve.
+                        Ce code vous est transmis par le parent de l&apos;élève.
                       </p>
                     </div>
                   )}
@@ -320,7 +320,7 @@ function InscriptionTuteurContent() {
                   {!hasEleves && (
                     <div className="bg-secondary/50 rounded-lg p-4">
                       <p className="text-sm text-muted-foreground">
-                        Vous pourrez inviter des parents et associer des eleves directement depuis votre espace apres inscription.
+                        Vous pourrez inviter des parents et associer des élèves directement depuis votre espace après inscription.
                       </p>
                     </div>
                   )}
@@ -356,7 +356,7 @@ function InscriptionTuteurContent() {
                   Confirmation
                 </h1>
                 <p className="text-muted-foreground">
-                  Verifiez vos informations avant de valider.
+                  Vérifiez vos informations avant de valider.
                 </p>
               </div>
 
@@ -375,7 +375,7 @@ function InscriptionTuteurContent() {
                     <span className="text-sm font-medium">{email}</span>
                   </div>
                   <div className="flex justify-between py-2">
-                    <span className="text-sm text-muted-foreground">Eleves existants</span>
+                    <span className="text-sm text-muted-foreground">Élèves existants</span>
                     <span className="text-sm font-medium">
                       {hasEleves ? (codeEleve ? `Oui (code: ${codeEleve})` : "Oui") : "Non"}
                     </span>
@@ -429,10 +429,10 @@ function InscriptionTuteurContent() {
                   <CheckCircle className="h-10 w-10 text-green-600" />
                 </div>
                 <h1 className="text-3xl font-bold text-foreground mb-3">
-                  Inscription reussie !
+                  Inscription réussie !
                 </h1>
                 <p className="text-muted-foreground text-lg">
-                  Bienvenue sur Precepteur AI. Connectez-vous maintenant pour acceder a votre espace tuteur.
+                  Bienvenue sur Précepteur AI. Connectez-vous maintenant pour accéder à votre espace tuteur.
                 </p>
               </div>
 
@@ -460,7 +460,7 @@ function InscriptionTuteurContent() {
                   </Link>
                 )}
                 <p className="text-sm text-muted-foreground">
-                  Un lien de confirmation a ete envoye a {email}.
+                  Un lien de confirmation a été envoyé à {email}.
                 </p>
               </div>
             </div>
@@ -471,13 +471,13 @@ function InscriptionTuteurContent() {
       {/* Footer */}
       <footer className="border-t bg-white px-4 py-8">
         <div className="mx-auto max-w-2xl text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Precepteur AI. Tous droits reserves.</p>
+          <p>&copy; {new Date().getFullYear()} Précepteur AI. Tous droits réservés.</p>
           <div className="mt-2 flex items-center justify-center gap-4">
             <Link href="/privacy" className="hover:text-primary transition-colors">Confidentialite</Link>
             <span>&middot;</span>
             <Link href="/terms" className="hover:text-primary transition-colors">CGU</Link>
             <span>&middot;</span>
-            <Link href="/legal" className="hover:text-primary transition-colors">Mentions legales</Link>
+            <Link href="/legal" className="hover:text-primary transition-colors">Mentions légales</Link>
           </div>
         </div>
       </footer>

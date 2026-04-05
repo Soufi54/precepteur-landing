@@ -86,10 +86,10 @@ function ConnectPronoteContent() {
         setChildren(data.children || []);
         setStep(3);
       } else {
-        setError(data.error || "Connexion echouee. Verifiez vos identifiants.");
+        setError(data.error || "Connexion échouée. Vérifiez vos identifiants.");
       }
     } catch {
-      setError("Impossible de contacter le serveur. Reessayez dans quelques instants.");
+      setError("Impossible de contacter le serveur. Réessayez dans quelques instants.");
     } finally {
       setConnecting(false);
     }
@@ -117,7 +117,7 @@ function ConnectPronoteContent() {
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
             <GraduationCap className="h-7 w-7 text-primary" />
-            <span className="text-xl font-bold text-primary">Precepteur AI</span>
+            <span className="text-xl font-bold text-primary">Précepteur AI</span>
           </Link>
           <nav className="hidden md:flex items-center gap-6">
             <Link href="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -162,7 +162,7 @@ function ConnectPronoteContent() {
                   {step > s ? <Check className="h-4 w-4" /> : s}
                 </div>
                 <span className={`text-sm hidden sm:inline ${step >= s ? "text-foreground" : "text-muted-foreground"}`}>
-                  {s === 1 ? "Informations" : s === 2 ? "Connexion" : "Termine"}
+                  {s === 1 ? "Informations" : s === 2 ? "Connexion" : "Terminé"}
                 </span>
                 {s < 3 && (
                   <div className={`w-12 h-0.5 ${step > s ? "bg-primary" : "bg-gray-200"}`} />
@@ -179,7 +179,7 @@ function ConnectPronoteContent() {
                   Connectez votre compte Pronote
                 </h1>
                 <p className="text-muted-foreground text-lg">
-                  En 2 minutes, commencez a recevoir vos bilans quotidiens.
+                  En 2 minutes, commencez à recevoir vos bilans quotidiens.
                 </p>
               </div>
 
@@ -203,14 +203,14 @@ function ConnectPronoteContent() {
                       <Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
                       <div>
                         <p className="font-medium text-foreground">Devoirs et cahier de textes</p>
-                        <p className="text-sm text-muted-foreground">Devoirs a rendre, dates limites, consignes</p>
+                        <p className="text-sm text-muted-foreground">Devoirs à rendre, dates limites, consignes</p>
                       </div>
                     </li>
                     <li className="flex items-start gap-3">
                       <Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
                       <div>
                         <p className="font-medium text-foreground">Absences et retards</p>
-                        <p className="text-sm text-muted-foreground">Absences justifiees et non justifiees, retards</p>
+                        <p className="text-sm text-muted-foreground">Absences justifiées et non justifiées, retards</p>
                       </div>
                     </li>
                     <li className="flex items-start gap-3">
@@ -235,11 +235,11 @@ function ConnectPronoteContent() {
                   <ul className="space-y-2 text-sm text-muted-foreground">
                     <li className="flex items-center gap-2">
                       <XIcon className="h-4 w-4 text-red-500 shrink-0" />
-                      Modifier des donnees sur Pronote
+                      Modifier des données sur Pronote
                     </li>
                     <li className="flex items-center gap-2">
                       <XIcon className="h-4 w-4 text-red-500 shrink-0" />
-                      Envoyer des messages a l&apos;etablissement
+                      Envoyer des messages à l&apos;établissement
                     </li>
                     <li className="flex items-center gap-2">
                       <XIcon className="h-4 w-4 text-red-500 shrink-0" />
@@ -247,7 +247,7 @@ function ConnectPronoteContent() {
                     </li>
                     <li className="flex items-center gap-2">
                       <XIcon className="h-4 w-4 text-red-500 shrink-0" />
-                      Vendre ou partager les donnees scolaires
+                      Vendre ou partager les données scolaires
                     </li>
                   </ul>
                 </CardContent>
@@ -260,7 +260,7 @@ function ConnectPronoteContent() {
                 </div>
                 <div className="text-center p-4 rounded-xl bg-secondary/50">
                   <Flag className="h-6 w-6 text-primary mx-auto mb-2" />
-                  <p className="text-xs font-medium text-foreground">Heberge en France</p>
+                  <p className="text-xs font-medium text-foreground">Hébergé en France</p>
                 </div>
                 <div className="text-center p-4 rounded-xl bg-secondary/50">
                   <Shield className="h-6 w-6 text-primary mx-auto mb-2" />
@@ -283,7 +283,7 @@ function ConnectPronoteContent() {
                   Vos identifiants Pronote
                 </h1>
                 <p className="text-muted-foreground">
-                  Ces informations sont chiffrees et securisees. Nous ne les voyons jamais en clair.
+                  Ces informations sont chiffrées et sécurisées. Nous ne les voyons jamais en clair.
                 </p>
               </div>
 
@@ -292,7 +292,7 @@ function ConnectPronoteContent() {
                   <form onSubmit={handleConnect} className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">
-                        URL Pronote de l&apos;etablissement
+                        URL Pronote de l&apos;établissement
                       </label>
                       <Input
                         type="url"
@@ -303,7 +303,7 @@ function ConnectPronoteContent() {
                         className="h-11"
                       />
                       <p className="mt-1.5 text-xs text-muted-foreground">
-                        Vous trouverez cette adresse sur le site de l&apos;etablissement ou dans vos emails de rentree.
+                        Vous trouverez cette adresse sur le site de l&apos;établissement ou dans vos emails de rentrée.
                       </p>
                     </div>
 
@@ -372,7 +372,7 @@ function ConnectPronoteContent() {
                       <Lock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                       <p className="text-sm text-muted-foreground">
                         Vos identifiants sont chiffres avec le standard <strong className="text-foreground">AES-256</strong> avant
-                        d&apos;etre stockes. Personne chez Precepteur AI ne peut les lire. Vous pouvez les supprimer a tout moment.
+                        d&apos;être stockés. Personne chez Précepteur AI ne peut les lire. Vous pouvez les supprimer à tout moment.
                       </p>
                     </div>
 
@@ -418,7 +418,7 @@ function ConnectPronoteContent() {
                   <CheckCircle className="h-10 w-10 text-green-600" />
                 </div>
                 <h1 className="text-3xl font-bold text-foreground mb-3">
-                  Connexion reussie !
+                  Connexion réussie !
                 </h1>
                 <p className="text-muted-foreground text-lg">
                   Votre compte Pronote est connecte. Voici ce que nous avons trouve :
@@ -445,7 +445,7 @@ function ConnectPronoteContent() {
                           <BookOpen className="h-5 w-5 text-primary" />
                           <span className="font-medium">Connexion</span>
                         </div>
-                        <span className="text-muted-foreground">Verifiee avec succes</span>
+                        <span className="text-muted-foreground">Vérifiée avec succès</span>
                       </div>
                     )}
                   </div>
@@ -454,7 +454,7 @@ function ConnectPronoteContent() {
 
               <div className="space-y-3">
                 <p className="text-sm text-muted-foreground">
-                  Les donnees Pronote seront synchronisees automatiquement chaque jour.
+                  Les données Pronote seront synchronisées automatiquement chaque jour.
                   Vous recevrez votre premier bilan ce soir.
                 </p>
                 <Link href="/#inscription">
@@ -472,13 +472,13 @@ function ConnectPronoteContent() {
       {/* Footer */}
       <footer className="border-t bg-white px-4 py-8">
         <div className="mx-auto max-w-2xl text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Precepteur AI. Tous droits reserves.</p>
+          <p>&copy; {new Date().getFullYear()} Précepteur AI. Tous droits réservés.</p>
           <div className="mt-2 flex items-center justify-center gap-4">
             <Link href="/privacy" className="hover:text-primary transition-colors">Confidentialite</Link>
             <span>&middot;</span>
             <Link href="/terms" className="hover:text-primary transition-colors">CGU</Link>
             <span>&middot;</span>
-            <Link href="/legal" className="hover:text-primary transition-colors">Mentions legales</Link>
+            <Link href="/legal" className="hover:text-primary transition-colors">Mentions légales</Link>
           </div>
         </div>
       </footer>

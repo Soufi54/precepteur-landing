@@ -330,7 +330,7 @@ function ExitIntentPopup() {
               </h3>
               <p className="text-muted-foreground text-sm">
                 Inscrivez-vous maintenant et recevez votre premier bilan scolaire
-                personnalise des ce soir. 100% gratuit pendant la beta.
+                personnalisé dès ce soir. 100% gratuit pendant la beta.
               </p>
             </div>
             <form onSubmit={handlePopupSubmit} className="space-y-3">
@@ -348,7 +348,7 @@ function ExitIntentPopup() {
               </Button>
             </form>
             <p className="mt-3 text-center text-xs text-muted-foreground">
-              Aucune carte bancaire requise. Desinscription en un clic.
+              Aucune carte bancaire requise. Désinscription en un clic.
             </p>
           </>
         )}
@@ -483,10 +483,10 @@ function EcosystemeSection() {
         <div className="text-center mb-12">
           <span className="inline-block text-xs font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-4"
                 style={{ background: "rgba(249,115,22,0.15)", color: "#FB923C" }}>
-            Comment ca fonctionne
+            Comment ça fonctionne
           </span>
           <h2 className="text-3xl font-bold md:text-4xl" style={{ color: "#f1f5f9" }}>
-            3 acteurs, 1 Precepteur, tout le monde est synchro
+            3 acteurs, 1 Précepteur, tout le monde est synchro
           </h2>
         </div>
 
@@ -501,7 +501,7 @@ function EcosystemeSection() {
             </div>
             <div className="text-sm font-bold" style={{ color: "#F97316" }}>Le parent</div>
             <EcosCard>
-              <EcosTag>Recoit chaque soir</EcosTag>
+              <EcosTag>Reçoit chaque soir</EcosTag>
               Bilan factuel : notes, devoirs, absences, action concrete pour le soir
             </EcosCard>
             <EcosCard>
@@ -529,9 +529,9 @@ function EcosystemeSection() {
                  style={{ borderColor: "#0EA5E9", color: "#0EA5E9", background: "rgba(255,255,255,0.04)" }}>
               E
             </div>
-            <div className="text-sm font-bold" style={{ color: "#0EA5E9" }}>L&apos;eleve</div>
+            <div className="text-sm font-bold" style={{ color: "#0EA5E9" }}>L&apos;élève</div>
             <EcosCard>
-              <EcosTag>Recoit chaque soir</EcosTag>
+              <EcosTag>Reçoit chaque soir</EcosTag>
               3 exercices adaptes, corriges en direct, parcours qui s&apos;ajuste
             </EcosCard>
             <EcosCard>
@@ -550,12 +550,12 @@ function EcosystemeSection() {
           </div>
           <div className="text-sm font-bold" style={{ color: "#22C55E" }}>L&apos;accompagnant</div>
           <EcosCard>
-            <EcosTag>Supervise entre les seances</EcosTag>
-            Entre deux cours particuliers, il sait exactement ou en est l&apos;eleve : exercices faits, taux de reussite, lacunes detectees
+            <EcosTag>Supervise entre les séances</EcosTag>
+            Entre deux cours particuliers, il sait exactement où en est l&apos;élève : exercices faits, taux de réussite, lacunes détectées
           </EcosCard>
           <EcosCard>
             <EcosTag>Pilote le programme</EcosTag>
-            Voit les exercices prevus avant l&apos;eleve, les modifie si besoin, ajuste les objectifs. Ses seances deviennent plus efficaces.
+            Voit les exercices prévus avant l&apos;élève, les modifie si besoin, ajuste les objectifs. Ses séances deviennent plus efficaces.
           </EcosCard>
         </div>
       </div>
@@ -662,10 +662,10 @@ function SkillTreeSection() {
             Chaque objectif a un chemin
           </span>
           <h2 className="text-3xl font-bold md:text-4xl mb-4">
-            Emma veut faire medecine. Precepteur construit le chemin.
+            Emma veut faire médecine. Précepteur construit le chemin.
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Du reve a la realite : Precepteur decompose chaque objectif en prerequis, identifie ou l&apos;eleve bloque, et construit le programme pour debloquer chaque etape.
+            Du rêve à la réalité : Précepteur décompose chaque objectif en prérequis, identifie où l&apos;élève bloque, et construit le programme pour débloquer chaque étape.
           </p>
         </div>
 
@@ -677,7 +677,7 @@ function SkillTreeSection() {
             <div className="flex gap-5 flex-wrap mb-8 justify-center">
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#22C55E] inline-block" />
-                Maitrise
+                Maîtrise
               </div>
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#f59e0b] inline-block" />
@@ -685,7 +685,7 @@ function SkillTreeSection() {
               </div>
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#cbd5e1] inline-block" />
-                Verrouille
+                Verrouillé
               </div>
             </div>
 
@@ -695,10 +695,10 @@ function SkillTreeSection() {
               {/* Level 5 — dream */}
               <div className="flex justify-center gap-4">
                 <TreeNode id="node-medecine" state="locked" style={{ minWidth: 180, borderStyle: "dashed" }}>
-                  <div className="text-base font-bold text-[#94a3b8]">Medecine</div>
+                  <div className="text-base font-bold text-[#94a3b8]">Médecine</div>
                   <div className="flex items-center justify-center gap-1 text-xs text-[#94a3b8] mt-1">
                     <Star className="w-3 h-3" />
-                    Son reve — objectif long terme
+                    Son rêve — objectif long terme
                   </div>
                 </TreeNode>
               </div>
@@ -709,14 +709,14 @@ function SkillTreeSection() {
                   <div className="text-sm font-bold text-[#94a3b8]">Equations 2nd degre</div>
                   <div className="flex items-center justify-center gap-1 text-xs text-[#94a3b8] mt-1">
                     <Lock className="w-3 h-3" />
-                    Prerequis non valides
+                    Prérequis non validés
                   </div>
                 </TreeNode>
                 <TreeNode id="node-fonctions" state="locked">
                   <div className="text-sm font-bold text-[#94a3b8]">Fonctions</div>
                   <div className="flex items-center justify-center gap-1 text-xs text-[#94a3b8] mt-1">
                     <Lock className="w-3 h-3" />
-                    Prerequis non valides
+                    Prérequis non validés
                   </div>
                 </TreeNode>
               </div>
@@ -726,19 +726,19 @@ function SkillTreeSection() {
                 <TreeNode id="node-eq1" state="in-progress">
                   <div className="text-sm font-bold text-foreground">Equations 1er degre</div>
                   <ProgressRing pct={72} />
-                  <div className="text-xs font-semibold text-[#f59e0b]">72% maitrise</div>
+                  <div className="text-xs font-semibold text-[#f59e0b]">72% maîtrise</div>
                 </TreeNode>
                 <TreeNode id="node-puissances" state="in-progress">
                   <div className="text-sm font-bold text-foreground">Puissances</div>
                   <ProgressRing pct={45} />
-                  <div className="text-xs font-semibold text-[#f59e0b]">45% maitrise</div>
+                  <div className="text-xs font-semibold text-[#f59e0b]">45% maîtrise</div>
                 </TreeNode>
               </div>
 
               {/* Level 2 — mastered */}
               <div className="flex justify-center gap-4">
                 <TreeNode id="node-litteral" state="mastered">
-                  <div className="text-sm font-bold text-foreground">Calcul litteral</div>
+                  <div className="text-sm font-bold text-foreground">Calcul littéral</div>
                   <div className="flex items-center justify-center gap-1 text-xs text-[#22C55E] mt-1">
                     <Check className="w-3 h-3" strokeWidth={3} />
                     Valide
@@ -770,7 +770,7 @@ function SkillTreeSection() {
                   </div>
                 </TreeNode>
                 <TreeNode id="node-priorites" state="mastered">
-                  <div className="text-sm font-bold text-foreground">Priorites des operations</div>
+                  <div className="text-sm font-bold text-foreground">Priorités des opérations</div>
                   <div className="flex items-center justify-center gap-1 text-xs text-[#22C55E] mt-1">
                     <Check className="w-3 h-3" strokeWidth={3} />
                     Valide
@@ -792,25 +792,25 @@ function SkillTreeSection() {
             <TreeAnnotation color="orange">
               <div className="text-xs font-bold uppercase tracking-wider text-[#ea580c] mb-1.5">L&apos;objectif</div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Emma veut faire medecine. Precepteur part de cet objectif et remonte jusqu&apos;aux fondations. Chaque competence validee rapproche du reve.
+                Emma veut faire médecine. Précepteur part de cet objectif et remonte jusqu&apos;aux fondations. Chaque compétence validée rapproche du rêve.
               </p>
             </TreeAnnotation>
             <TreeAnnotation color="amber">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#d97706] mb-1.5">Niveau &quot;En cours&quot; detecte</div>
+              <div className="text-xs font-bold uppercase tracking-wider text-[#d97706] mb-1.5">Niveau &quot;En cours&quot; détecté</div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Precepteur detecte que Emma bloque sur les puissances (45%). Il genere des exercices cibles chaque jour jusqu&apos;a ce que le seuil de 80% soit atteint.
+                Précepteur détecte que Emma bloque sur les puissances (45%). Il génère des exercices ciblés chaque jour jusqu&apos;à ce que le seuil de 80% soit atteint.
               </p>
             </TreeAnnotation>
             <TreeAnnotation color="slate">
-              <div className="text-xs font-bold uppercase tracking-wider text-[#64748b] mb-1.5">Niveau verrouille</div>
+              <div className="text-xs font-bold uppercase tracking-wider text-[#64748b] mb-1.5">Niveau verrouillé</div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Les equations du 2nd degre sont verrouillees tant que les prerequis ne sont pas valides. Precepteur ne surchargera pas Emma.
+                Les équations du 2nd degré sont verrouillées tant que les prérequis ne sont pas validés. Précepteur ne surchargera pas Emma.
               </p>
             </TreeAnnotation>
             <TreeAnnotation color="green">
               <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] mb-1.5">Bases solides</div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Les bases sont validees. Emma les a maitrisees en 2 semaines avec le bot. Ces acquis servent de fondation pour la suite.
+                Les bases sont validées. Emma les a maîtrisées en 2 semaines avec le bot. Ces acquis servent de fondation pour la suite.
               </p>
             </TreeAnnotation>
           </div>
@@ -903,15 +903,15 @@ function FounderSection() {
             </span>
             <h2 className="text-2xl font-bold md:text-3xl mb-5">Chaker</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Scolarite en ZEP dans le 92, classes prepa, diplome de l&apos;Ecole des Mines de Nancy.
-              Apres mes etudes, j&apos;ai ete accompagnateur scolaire a la mairie pendant 3 ans — des dizaines d&apos;eleves suivis chaque semaine, du CM2 a la terminale.
+              Scolarité en ZEP dans le 92, classes prépa, diplômé de l&apos;École des Mines de Nancy.
+              Après mes études, j&apos;ai été accompagnateur scolaire à la mairie pendant 3 ans — des dizaines d&apos;élèves suivis chaque semaine, du CM2 à la terminale.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Ce que j&apos;ai vu : des eleves capables, mais qui decrochent entre les seances. Le tuteur vient une fois par semaine.
-              Entre-temps, les lacunes s&apos;accumulent sans que personne ne s&apos;en rende compte. Quand on les detecte, il est souvent trop tard.
+              Ce que j&apos;ai vu : des élèves capables, mais qui décrochent entre les séances. Le tuteur vient une fois par semaine.
+              Entre-temps, les lacunes s&apos;accumulent sans que personne ne s&apos;en rende compte. Quand on les détecte, il est souvent trop tard.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              J&apos;ai construit Precepteur pour ca. Un suivi quotidien par IA qui travaille avec l&apos;eleve chaque soir, detecte les blocages en temps reel, et informe le parent et le tuteur.
+              J&apos;ai construit Précepteur pour ça. Un suivi quotidien par IA qui travaille avec l&apos;élève chaque soir, détecte les blocages en temps réel, et informe le parent et le tuteur.
               L&apos;objectif : que chaque seance avec le tuteur soit deux fois plus efficace.
             </p>
 
@@ -985,10 +985,10 @@ export default function Home() {
   }
 
   const navLinks = [
-    { label: "Fonctionnalites", href: "#fonctionnalites" },
-    { label: "Comment ca marche", href: "#comment-ca-marche" },
+    { label: "Fonctionnalités", href: "#fonctionnalites" },
+    { label: "Comment ça marche", href: "#comment-ca-marche" },
     { label: "Tarifs", href: "#tarifs" },
-    { label: "Temoignages", href: "#temoignages" },
+    { label: "Témoignages", href: "#temoignages" },
     { label: "FAQ", href: "#faq" },
     { label: "Blog", href: "/blog" },
   ];
@@ -1108,13 +1108,13 @@ export default function Home() {
                 Beta gratuite — Places limitees
               </Badge>
               <h1 className="mb-6 text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-[3.5rem]">
-                Suivez la scolarite de votre enfant{" "}
+                Suivez la scolarité de votre enfant{" "}
                 <span className="text-primary bg-gradient-to-r from-primary to-primary/70 bg-clip-text">
                   sans effort
                 </span>
               </h1>
               <p className="mb-8 text-lg text-muted-foreground md:text-xl leading-relaxed max-w-xl mx-auto lg:mx-0">
-                Chaque soir, recevez un bilan clair et personnalise sur
+                Chaque soir, recevez un bilan clair et personnalisé sur
                 Telegram ou WhatsApp : notes, devoirs, absences. Plus besoin de
                 naviguer dans Pronote.
               </p>
@@ -1131,13 +1131,13 @@ export default function Home() {
                     size="lg"
                     className="text-base px-8 py-6"
                   >
-                    Decouvrir comment ca marche
+                    Découvrir comment ça marche
                   </Button>
                 </a>
               </div>
               <p className="mt-4 text-sm text-muted-foreground flex items-center gap-2 justify-center lg:justify-start">
                 <Shield className="h-4 w-4" />
-                Aucune carte bancaire requise. Donnees chiffrees AES-256.
+                Aucune carte bancaire requise. Données chiffrées AES-256.
               </p>
             </div>
 
@@ -1165,7 +1165,7 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Lock className="h-4 w-4 text-primary" />
-              <span>Donnees securisees</span>
+              <span>Données sécurisées</span>
             </div>
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <Flag className="h-4 w-4 text-primary" />
@@ -1185,12 +1185,12 @@ export default function Home() {
       <section className="px-4 py-16 md:py-24">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-4 text-center text-3xl font-bold text-foreground md:text-4xl">
-            Le suivi scolaire ne devrait pas etre un casse-tete
+            Le suivi scolaire ne devrait pas être un casse-tête
           </h2>
           <p className="mb-12 text-center text-muted-foreground max-w-2xl mx-auto">
             Pronote contient toutes les informations, mais l&apos;interface est
-            pensee pour les etablissements, pas pour les parents.
-            Precepteur AI change la donne.
+            pensée pour les établissements, pas pour les parents.
+            Précepteur AI change la donne.
           </p>
           <div className="grid gap-8 md:grid-cols-2">
             <Card className="border-red-200 bg-red-50/50">
@@ -1222,7 +1222,7 @@ export default function Home() {
                   <CheckItem>Un bilan clair chaque soir sur Telegram ou WhatsApp</CheckItem>
                   <CheckItem>Alertes instantanees si note basse ou absence</CheckItem>
                   <CheckItem>Liste des devoirs avec dates limites</CheckItem>
-                  <CheckItem>Exercices personnalises generes par IA</CheckItem>
+                  <CheckItem>Exercices personnalisés générés par IA</CheckItem>
                   <CheckItem>Tout arrive directement dans votre messagerie</CheckItem>
                 </ul>
               </CardContent>
@@ -1240,56 +1240,56 @@ export default function Home() {
       >
         <div className="mx-auto max-w-6xl">
           <Badge variant="secondary" className="mx-auto mb-4 block w-fit text-sm border border-primary/20 bg-primary/5 text-primary">
-            Fonctionnalites
+            Fonctionnalités
           </Badge>
           <h2 className="mb-4 text-center text-3xl font-bold text-foreground md:text-4xl">
             Tout ce dont vous avez besoin, rien de superflu
           </h2>
           <p className="mb-12 text-center text-muted-foreground max-w-2xl mx-auto">
-            Precepteur AI transforme les donnees brutes de Pronote en informations
+            Précepteur AI transforme les données brutes de Pronote en informations
             claires et actionnables pour les parents.
           </p>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             <FeatureCard
               icon={Mail}
               title="Bilans quotidiens IA"
-              description="Chaque soir a 19h, un message clair resume la journee scolaire de votre enfant. Notes, devoirs, absences — zero effort de votre part."
+              description="Chaque soir à 19h, un message clair résume la journée scolaire de votre enfant. Notes, devoirs, absences — zéro effort de votre part."
               color="primary"
             />
             <FeatureCard
               icon={Bell}
-              title="Alertes notes instantanees"
-              description="Notification immediate quand une note significativement basse tombe. Ne decouvrez plus un 4/20 deux semaines apres."
+              title="Alertes notes instantanées"
+              description="Notification immédiate quand une note significativement basse tombe. Ne découvrez plus un 4/20 deux semaines après."
               color="red"
             />
             <FeatureCard
               icon={BookOpen}
               title="Rappels devoirs avec aide IA"
-              description="Liste des devoirs a rendre avec dates limites. L'IA peut expliquer les consignes et aider a demarrer les exercices."
+              description="Liste des devoirs à rendre avec dates limites. L'IA peut expliquer les consignes et aider à démarrer les exercices."
               color="orange"
             />
             <FeatureCard
               icon={Eye}
               title="Suivi absences et retards"
-              description="Alerte immediate en cas d'absence non justifiee ou de retard repete. Gardez le controle meme a distance."
+              description="Alerte immédiate en cas d'absence non justifiée ou de retard répété. Gardez le contrôle même à distance."
               color="yellow"
             />
             <FeatureCard
               icon={Brain}
-              title="Exercices personnalises IA"
-              description="Des exercices generes selon le niveau reel de votre enfant pour progresser la ou il en a le plus besoin."
+              title="Exercices personnalisés IA"
+              description="Des exercices générés selon le niveau réel de votre enfant pour progresser là où il en a le plus besoin."
               color="purple"
             />
             <FeatureCard
               icon={BarChart3}
               title="Rapports hebdomadaires"
-              description="Chaque dimanche, une synthese complete de la semaine avec tendances, evolution des moyennes et recommandations."
+              description="Chaque dimanche, une synthèse complète de la semaine avec tendances, évolution des moyennes et recommandations."
               color="blue"
             />
             <FeatureCard
               icon={Users}
               title="Multi-enfants"
-              description="Suivez tous vos enfants au meme endroit. Un bilan par enfant, des alertes individualisees, une vue d'ensemble familiale."
+              description="Suivez tous vos enfants au même endroit. Un bilan par enfant, des alertes individualisées, une vue d'ensemble familiale."
               color="green"
             />
           </div>
@@ -1305,10 +1305,10 @@ export default function Home() {
             Simple et rapide
           </Badge>
           <h2 className="mb-4 text-center text-3xl font-bold text-foreground md:text-4xl">
-            Pret en 2 minutes, sans rien installer
+            Prêt en 2 minutes, sans rien installer
           </h2>
           <p className="mb-16 text-center text-muted-foreground max-w-2xl mx-auto">
-            Trois etapes simples pour ne plus jamais rater une information
+            Trois étapes simples pour ne plus jamais rater une information
             scolaire importante.
           </p>
           <div className="grid gap-12 md:grid-cols-3">
@@ -1322,7 +1322,7 @@ export default function Home() {
                   Connectez Pronote
                 </h3>
                 <p className="text-muted-foreground leading-relaxed text-sm">
-                  Renseignez vos identifiants Pronote. Ils sont chiffres
+                  Renseignez vos identifiants Pronote. Ils sont chiffrés
                   en AES-256 et jamais stockes en clair. Acces en lecture seule.
                 </p>
               </div>
@@ -1337,8 +1337,8 @@ export default function Home() {
                   Recevez votre bilan
                 </h3>
                 <p className="text-muted-foreground leading-relaxed text-sm">
-                  Chaque soir a 19h, un message Telegram ou WhatsApp vous resume
-                  les notes, devoirs et evenements de la journee.
+                  Chaque soir à 19h, un message Telegram ou WhatsApp vous résume
+                  les notes, devoirs et événements de la journée.
                 </p>
               </div>
             </div>
@@ -1353,7 +1353,7 @@ export default function Home() {
                 </h3>
                 <p className="text-muted-foreground leading-relaxed text-sm">
                   Posez des questions au bot, obtenez des exercices
-                  adaptes, et suivez la progression semaine apres semaine.
+                  adaptés, et suivez la progression semaine après semaine.
                 </p>
               </div>
             </div>
@@ -1388,8 +1388,8 @@ export default function Home() {
             Votre assistant scolaire, toujours disponible
           </h2>
           <p className="mb-12 text-center text-muted-foreground max-w-2xl mx-auto">
-            Posez vos questions a tout moment. Precepteur AI vous
-            repond instantanement avec des donnees precises.
+            Posez vos questions à tout moment. Précepteur AI vous
+            répond instantanément avec des données précises.
           </p>
           <div className="mx-auto max-w-md">
             <PhoneMockup>
@@ -1413,11 +1413,11 @@ export default function Home() {
                 </div>
               </ChatBubbleBot>
               <ChatBubbleUser>
-                Elle a progresse en maths ce trimestre ?
+                Elle a progressé en maths ce trimestre ?
               </ChatBubbleUser>
               <ChatBubbleBot>
                 <p>
-                  Oui ! Yasmine est passee de 11.8 de moyenne au T1
+                  Oui ! Yasmine est passée de 11.8 de moyenne au T1
                   a 13.4 au T2. C&apos;est une belle progression de{" "}
                   <strong>+1.6 points</strong>.
                 </p>
@@ -1427,12 +1427,12 @@ export default function Home() {
                 </p>
               </ChatBubbleBot>
               <ChatBubbleUser>
-                Tu peux lui generer un exercice sur les fractions ?
+                Tu peux lui générer un exercice sur les fractions ?
               </ChatBubbleUser>
               <ChatBubbleBot>
                 <p className="mb-2">
                   <Brain className="inline h-3.5 w-3.5 mr-1 text-primary" />
-                  Voici un exercice adapte au niveau de Yasmine :
+                  Voici un exercice adapté au niveau de Yasmine :
                 </p>
                 <div className="bg-primary/5 rounded-lg p-2 text-xs">
                   <p className="font-medium mb-1">
@@ -1440,7 +1440,7 @@ export default function Home() {
                   </p>
                   <p>1) Simplifier 24/36</p>
                   <p>2) Calculer 3/4 + 2/5</p>
-                  <p>3) Resoudre : x/3 = 8/12</p>
+                  <p>3) Résoudre : x/3 = 8/12</p>
                 </div>
               </ChatBubbleBot>
             </PhoneMockup>
@@ -1480,21 +1480,21 @@ export default function Home() {
       <section id="temoignages" className="bg-secondary/30 px-4 py-16 md:py-24">
         <div className="mx-auto max-w-6xl">
           <Badge variant="secondary" className="mx-auto mb-4 block w-fit text-sm border border-primary/20 bg-primary/5 text-primary">
-            Temoignages
+            Témoignages
           </Badge>
           <h2 className="mb-4 text-center text-3xl font-bold text-foreground md:text-4xl">
             Ce que disent les parents
           </h2>
           <p className="mb-12 text-center text-muted-foreground">
-            Ils utilisent Precepteur AI depuis le lancement de la beta.
+            Ils utilisent Précepteur AI depuis le lancement de la beta.
           </p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <Card className="hover:shadow-md transition-shadow">
               <CardContent className="pt-6">
                 <StarRating />
                 <p className="mt-4 text-muted-foreground leading-relaxed italic">
-                  &laquo; Je n&apos;ouvre plus Pronote. Chaque soir je recois
-                  le resume de la journee de Yasmine sur Telegram.
+                  &laquo; Je n&apos;ouvre plus Pronote. Chaque soir je reçois
+                  le résumé de la journée de Yasmine sur Telegram.
                   C&apos;est devenu mon rituel du soir, en 30 secondes je sais
                   tout. &raquo;
                 </p>
@@ -1513,8 +1513,8 @@ export default function Home() {
                 <StarRating />
                 <p className="mt-4 text-muted-foreground leading-relaxed italic">
                   &laquo; Lucas avait une moyenne qui baissait en physique et je
-                  ne m&apos;en etais pas rendu compte. Grace a
-                  l&apos;alerte de Precepteur AI, on a pu reagir a
+                  ne m&apos;en étais pas rendu compte. Grâce à
+                  l&apos;alerte de Précepteur AI, on a pu réagir à
                   temps. Indispensable. &raquo;
                 </p>
                 <div className="mt-4 pt-4 border-t border-border">
@@ -1532,7 +1532,7 @@ export default function Home() {
                 <StarRating />
                 <p className="mt-4 text-muted-foreground leading-relaxed italic">
                   &laquo; Adam me disait toujours qu&apos;il n&apos;avait pas
-                  de devoirs. Maintenant je recois la liste chaque soir.
+                  de devoirs. Maintenant je reçois la liste chaque soir.
                   Fini les surprises la veille des controles ! &raquo;
                 </p>
                 <div className="mt-4 pt-4 border-t border-border">
@@ -1549,8 +1549,8 @@ export default function Home() {
               <CardContent className="pt-6">
                 <StarRating />
                 <p className="mt-4 text-muted-foreground leading-relaxed italic">
-                  &laquo; Avec trois enfants scolarises, je passais 30 minutes
-                  chaque soir sur Pronote. Maintenant je recois trois bilans
+                  &laquo; Avec trois enfants scolarisés, je passais 30 minutes
+                  chaque soir sur Pronote. Maintenant je reçois trois bilans
                   clairs, c&apos;est fait en 2 minutes. Un gain de temps enorme. &raquo;
                 </p>
                 <div className="mt-4 pt-4 border-t border-border">
@@ -1567,8 +1567,8 @@ export default function Home() {
               <CardContent className="pt-6">
                 <StarRating />
                 <p className="mt-4 text-muted-foreground leading-relaxed italic">
-                  &laquo; Les exercices generes par l&apos;IA sont vraiment bien
-                  adaptes. Ma fille a remonte sa moyenne de maths de 2 points
+                  &laquo; Les exercices générés par l&apos;IA sont vraiment bien
+                  adaptés. Ma fille a remonté sa moyenne de maths de 2 points
                   en un mois. Je recommande a tous les parents. &raquo;
                 </p>
                 <div className="mt-4 pt-4 border-t border-border">
@@ -1585,9 +1585,9 @@ export default function Home() {
               <CardContent className="pt-6">
                 <StarRating />
                 <p className="mt-4 text-muted-foreground leading-relaxed italic">
-                  &laquo; En tant que mere celibataire qui travaille en horaires
-                  decales, je ne pouvais pas verifier Pronote tous les soirs.
-                  Precepteur AI m&apos;envoie tout sur WhatsApp, c&apos;est parfait. &raquo;
+                  &laquo; En tant que mère célibataire qui travaille en horaires
+                  décalés, je ne pouvais pas vérifier Pronote tous les soirs.
+                  Précepteur AI m&apos;envoie tout sur WhatsApp, c&apos;est parfait. &raquo;
                 </p>
                 <div className="mt-4 pt-4 border-t border-border">
                   <p className="font-semibold text-foreground text-sm">
@@ -1650,7 +1650,7 @@ export default function Home() {
             <Card className="relative">
               <CardContent className="pt-8 pb-8">
                 <h3 className="text-lg font-semibold text-foreground mb-1">Essai gratuit</h3>
-                <p className="text-sm text-muted-foreground mb-6">Decouvrez sans engagement</p>
+                <p className="text-sm text-muted-foreground mb-6">Découvrez sans engagement</p>
                 <div className="mb-6">
                   <div className="text-4xl font-bold text-foreground">0 &euro;</div>
                   <div className="text-sm text-muted-foreground">pendant 7 jours</div>
@@ -1685,7 +1685,7 @@ export default function Home() {
                     {billingAnnual ? "4,79" : "5,99"} &euro;
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    par mois{billingAnnual ? ", facture annuellement" : ""}
+                    par mois{billingAnnual ? ", facturé annuellement" : ""}
                   </div>
                   {billingAnnual && (
                     <p className="text-xs text-green-600 mt-1">
@@ -1695,7 +1695,7 @@ export default function Home() {
                 </div>
                 <ul className="space-y-3 mb-8">
                   <CheckItem>Tout de l&apos;essai gratuit</CheckItem>
-                  <CheckItem>Exercices personnalises par IA</CheckItem>
+                  <CheckItem>Exercices personnalisés par IA</CheckItem>
                   <CheckItem>Rapports hebdomadaires</CheckItem>
                   <CheckItem>Questions illimitees au bot</CheckItem>
                   <CheckItem>Support prioritaire</CheckItem>
@@ -1719,7 +1719,7 @@ export default function Home() {
                     {billingAnnual ? "7,19" : "8,99"} &euro;
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    par mois{billingAnnual ? ", facture annuellement" : ""}
+                    par mois{billingAnnual ? ", facturé annuellement" : ""}
                   </div>
                   {billingAnnual && (
                     <p className="text-xs text-green-600 mt-1">
@@ -1745,8 +1745,8 @@ export default function Home() {
           </div>
 
           <p className="mt-8 text-center text-sm text-muted-foreground">
-            Tous les forfaits incluent 7 jours d&apos;essai gratuit. Annulation a tout moment.
-            Les beta-testeurs beneficient d&apos;un tarif preferentiel a vie.
+            Tous les forfaits incluent 7 jours d&apos;essai gratuit. Annulation à tout moment.
+            Les beta-testeurs bénéficient d&apos;un tarif préférentiel à vie.
           </p>
         </div>
       </section>
@@ -1765,7 +1765,7 @@ export default function Home() {
             FAQ
           </Badge>
           <h2 className="mb-4 text-center text-3xl font-bold text-foreground md:text-4xl">
-            Questions frequentes
+            Questions fréquentes
           </h2>
           <p className="mb-12 text-center text-muted-foreground">
             Tout ce que vous devez savoir avant de vous lancer.
@@ -1773,44 +1773,44 @@ export default function Home() {
           <div className="rounded-xl border bg-card">
             <div className="px-6">
               <FAQItem
-                question="C'est quoi exactement Precepteur AI ?"
-                answer="Precepteur AI est un assistant scolaire intelligent qui se connecte au compte Pronote de votre enfant et vous envoie chaque soir un bilan clair sur Telegram ou WhatsApp : notes du jour, devoirs a faire, absences, et des analyses de progression. Vous pouvez aussi poser des questions et demander des exercices personnalises."
+                question="C'est quoi exactement Précepteur AI ?"
+                answer="Précepteur AI est un assistant scolaire intelligent qui se connecte au compte Pronote de votre enfant et vous envoie chaque soir un bilan clair sur Telegram ou WhatsApp : notes du jour, devoirs à faire, absences, et des analyses de progression. Vous pouvez aussi poser des questions et demander des exercices personnalisés."
               />
               <FAQItem
-                question="Comment ca se connecte a Pronote ?"
-                answer="Vous renseignez les identifiants Pronote de votre enfant lors de l'inscription. Precepteur AI se connecte de maniere securisee a Pronote chaque jour pour recuperer les nouvelles informations. Vos identifiants sont chiffres en AES-256 et ne sont jamais stockes en clair."
+                question="Comment ça se connecte à Pronote ?"
+                answer="Vous renseignez les identifiants Pronote de votre enfant lors de l'inscription. Précepteur AI se connecte de manière sécurisée à Pronote chaque jour pour récupérer les nouvelles informations. Vos identifiants sont chiffrés en AES-256 et ne sont jamais stockés en clair."
               />
               <FAQItem
                 question="Mes donnees sont-elles securisees ?"
-                answer="Absolument. Vos identifiants sont chiffres avec le standard AES-256. Les donnees scolaires sont hebergees en France sur des serveurs securises. Nous ne vendons aucune donnee et sommes conformes au RGPD. Vous pouvez supprimer votre compte et toutes vos donnees a tout moment."
+                answer="Absolument. Vos identifiants sont chiffrés avec le standard AES-256. Les données scolaires sont hébergées en France sur des serveurs sécurisés. Nous ne vendons aucune donnée et sommes conformes au RGPD. Vous pouvez supprimer votre compte et toutes vos données à tout moment."
               />
               <FAQItem
-                question="Ca marche avec quel(s) etablissement(s) ?"
-                answer="Precepteur AI fonctionne avec tous les colleges et lycees qui utilisent Pronote en France. C'est le cas de la grande majorite des etablissements publics et prives. Si votre etablissement utilise un autre logiciel (comme Ecole Directe), nous y travaillons pour les prochains mois."
+                question="Ça marche avec quel(s) établissement(s) ?"
+                answer="Précepteur AI fonctionne avec tous les collèges et lycées qui utilisent Pronote en France. C'est le cas de la grande majorité des établissements publics et privés. Si votre établissement utilise un autre logiciel (comme École Directe), nous y travaillons pour les prochains mois."
               />
               <FAQItem
                 question="Et si mon etablissement n'utilise pas Pronote ?"
-                answer="Pour le moment, Precepteur AI est compatible uniquement avec Pronote, qui equipe plus de 80% des colleges et lycees en France. La compatibilite avec Ecole Directe est en cours de developpement et sera disponible prochainement. Inscrivez-vous a la liste d'attente et nous vous previendrons."
+                answer="Pour le moment, Précepteur AI est compatible uniquement avec Pronote, qui équipe plus de 80% des collèges et lycées en France. La compatibilité avec École Directe est en cours de développement et sera disponible prochainement. Inscrivez-vous à la liste d'attente et nous vous préviendrons."
               />
               <FAQItem
                 question="WhatsApp ou Telegram ?"
-                answer="Les deux ! Lors de l'inscription, vous choisissez votre messagerie preferee. Vous pouvez changer a tout moment. L'experience est identique sur les deux plateformes."
+                answer="Les deux ! Lors de l'inscription, vous choisissez votre messagerie préférée. Vous pouvez changer à tout moment. L'expérience est identique sur les deux plateformes."
               />
               <FAQItem
                 question="Comment annuler mon abonnement ?"
-                answer="Vous pouvez annuler a tout moment, en un clic, directement depuis le bot Telegram/WhatsApp ou par email. Aucun engagement, aucuns frais de resiliation. Vos donnees seront supprimees dans les 30 jours suivant l'annulation."
+                answer="Vous pouvez annuler à tout moment, en un clic, directement depuis le bot Telegram/WhatsApp ou par email. Aucun engagement, aucuns frais de résiliation. Vos données seront supprimées dans les 30 jours suivant l'annulation."
               />
               <FAQItem
                 question="C'est gratuit combien de temps ?"
-                answer="L'essai gratuit dure 7 jours, sans carte bancaire. Les beta-testeurs qui s'inscrivent maintenant beneficieront d'un tarif preferentiel a vie lorsque le service deviendra payant."
+                answer="L'essai gratuit dure 7 jours, sans carte bancaire. Les beta-testeurs qui s'inscrivent maintenant bénéficieront d'un tarif préférentiel à vie lorsque le service deviendra payant."
               />
               <FAQItem
-                question="Les donnees de mon enfant mineur sont-elles protegees ?"
-                answer="Oui. Nous traitons les donnees de mineurs avec une attention particuliere, conformement au RGPD et aux recommandations de la CNIL. Seules les donnees strictement necessaires au fonctionnement du service sont collectees. Aucune donnee n'est partagee avec des tiers ou utilisee a des fins publicitaires."
+                question="Les données de mon enfant mineur sont-elles protégées ?"
+                answer="Oui. Nous traitons les données de mineurs avec une attention particulière, conformément au RGPD et aux recommandations de la CNIL. Seules les données strictement nécessaires au fonctionnement du service sont collectées. Aucune donnée n'est partagée avec des tiers ou utilisée à des fins publicitaires."
               />
               <FAQItem
-                question="Qui est derriere Precepteur AI ?"
-                answer="Precepteur AI est developpe en France par une equipe de parents et d'ingenieurs passionnes par l'education. Nous croyons que chaque parent devrait pouvoir suivre la scolarite de son enfant sans effort, quel que soit son niveau technique."
+                question="Qui est derrière Précepteur AI ?"
+                answer="Précepteur AI est développé en France par une équipe de parents et d'ingénieurs passionnés par l'éducation. Nous croyons que chaque parent devrait pouvoir suivre la scolarité de son enfant sans effort, quel que soit son niveau technique."
               />
             </div>
           </div>
@@ -1903,8 +1903,8 @@ export default function Home() {
             Rejoignez la beta gratuite
           </h2>
           <p className="mb-8 text-primary-foreground/80 text-lg leading-relaxed">
-            Soyez parmi les premiers parents a tester Precepteur AI.
-            Inscrivez-vous et recevez votre premier bilan des ce soir.
+            Soyez parmi les premiers parents à tester Précepteur AI.
+            Inscrivez-vous et recevez votre premier bilan dès ce soir.
           </p>
           {submitted ? (
             <Card className="border-green-200 bg-green-50">
@@ -1914,7 +1914,7 @@ export default function Home() {
                   Merci pour votre inscription !
                 </p>
                 <p className="text-green-700 mt-1">
-                  Nous vous contacterons tres bientot pour configurer
+                  Nous vous contacterons très bientôt pour configurer
                   votre compte.
                 </p>
               </CardContent>
@@ -1963,7 +1963,7 @@ export default function Home() {
             </Link>
             <Link href="/inscription-eleve">
               <Button variant="outline" className="bg-transparent border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground w-full sm:w-auto">
-                Je suis eleve
+                Je suis élève
               </Button>
             </Link>
           </div>
@@ -1986,12 +1986,12 @@ export default function Home() {
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-sm mb-4">
                 L&apos;assistant scolaire intelligent qui aide les parents
-                a suivre la scolarite de leurs enfants sans effort.
+                à suivre la scolarité de leurs enfants sans effort.
               </p>
               {/* Footer email signup */}
               {footerSubmitted ? (
                 <p className="text-sm text-green-600 flex items-center gap-1">
-                  <Check className="h-4 w-4" /> Inscription confirmee !
+                  <Check className="h-4 w-4" /> Inscription confirmée !
                 </p>
               ) : (
                 <form
@@ -2023,12 +2023,12 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <a href="#fonctionnalites" className="hover:text-primary transition-colors">
-                    Fonctionnalites
+                    Fonctionnalités
                   </a>
                 </li>
                 <li>
                   <a href="#comment-ca-marche" className="hover:text-primary transition-colors">
-                    Comment ca marche
+                    Comment ça marche
                   </a>
                 </li>
                 <li>
@@ -2062,7 +2062,7 @@ export default function Home() {
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
                   <Link href="/legal" className="hover:text-primary transition-colors">
-                    Mentions legales
+                    Mentions légales
                   </Link>
                 </li>
                 <li>
@@ -2072,7 +2072,7 @@ export default function Home() {
                 </li>
                 <li>
                   <Link href="/terms" className="hover:text-primary transition-colors">
-                    Conditions generales
+                    Conditions générales
                   </Link>
                 </li>
                 <li>
@@ -2091,12 +2091,12 @@ export default function Home() {
           <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-xs text-muted-foreground">
               &copy; {new Date().getFullYear()} Precepteur AI. Tous droits
-              reserves.
+              réservés.
             </p>
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <div className="flex items-center gap-1.5">
                 <Flag className="h-3 w-3" />
-                <span>Concu et heberge en France</span>
+                <span>Conçu et hébergé en France</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Shield className="h-3 w-3" />
