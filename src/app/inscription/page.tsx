@@ -201,7 +201,7 @@ function InscriptionParentContent() {
     } catch { setCityResults([]); }
   }
 
-  async function selectCity(city: {name: string; lat: number; lng: number}) {
+  async function selectCity(city: {name: string; context: string; lat: number; lng: number}) {
     setCityQuery(city.name);
     setCityResults([]);
     setSelectedSchool(null);
@@ -212,19 +212,20 @@ function InscriptionParentContent() {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: "data=" + encodeURIComponent(JSON.stringify({nomFonction: "geoLoc", lat: String(city.lat), long: String(city.lng)})),
       });
-      // Bug 3: better error handling + logging for schools fetch
       if (!res.ok) {
-        console.error("schools fetch error:", res.status, res.statusText);
         setSchools([]);
         return;
       }
       const data = await res.json();
-      console.log("schools response:", data);
-      // API returns a flat array of objects with nomEtab, url, cp
       const list = Array.isArray(data) ? data : (data.results || data.etablissements || []);
-      setSchools(list);
-    } catch (err) {
-      console.error("schools fetch exception:", err);
+      // Filtrer par departement (2 premiers chiffres du context ou CP)
+      const dept = (city.context || "").match(/^(\d{2,3})/)?.[1] || "";
+      const filtered = dept
+        ? list.filter((s: {cp?: string}) => s.cp && s.cp.startsWith(dept.slice(0, 2)))
+        : list;
+      // Si le filtre est trop restrictif, montrer tout
+      setSchools(filtered.length > 0 ? filtered : list.slice(0, 50));
+    } catch {
       setSchools([]);
     }
   }
