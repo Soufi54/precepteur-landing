@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,7 +35,8 @@ const ENT_OPTIONS = [
   { value: "", label: "Connexion directe (sans ENT)" },
 ];
 
-const STEPS = ["Vos informations", "Pronote", "Plateforme", "Confirmation"];
+// Bug 1: 3 steps only — Infos, Pronote, Confirmation (platform removed)
+const STEPS = ["Vos informations", "Pronote", "Confirmation"];
 
 export default function InscriptionParentPage() {
   return (
@@ -74,13 +75,23 @@ function InscriptionParentContent() {
   const [schoolFilter, setSchoolFilter] = useState("");
   const [showManualUrl, setShowManualUrl] = useState(false);
 
-  // Step 3
-  const [platform, setPlatform] = useState<"whatsapp" | "telegram">("whatsapp");
+  // Bug 5: Pronote test state
+  const [pronoteTestLoading, setPronoteTestLoading] = useState(false);
+  const [pronoteTestError, setPronoteTestError] = useState("");
+  const [pronoteTestSuccess, setPronoteTestSuccess] = useState(false);
 
-  // Step 5 (success)
-  const [telegramLink, setTelegramLink] = useState("");
+  // Bug 1: platform always whatsapp, no step 3
+  const platform = "whatsapp";
+
+  // Step 4 (success)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Bug 4: Warm up Render on form load
+  useEffect(() => {
+    // Warm up Render backend (cold start takes 30-60s on free tier)
+    fetch(`${API_URL}/health`).catch(() => {});
+  }, []);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -91,7 +102,8 @@ function InscriptionParentContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          role: childHasPhone ? "parent_child" : "parent",
+          // Bug 2: inverted — childHasPhone=false means parent_child (shared), true means parent (separate)
+          role: childHasPhone === false ? "parent_child" : "parent",
           parent_first_name: prenom,
           parent_email: emailVal,
           parent_phone: telephone,
@@ -108,8 +120,8 @@ function InscriptionParentContent() {
       const data = await res.json();
 
       if (data.ok) {
-        setTelegramLink(data.telegram_link || "");
-        setStep(5);
+        // Bug 1: step 4 = success (no step 5 anymore, steps are 1,2,3,4)
+        setStep(4);
       } else {
         setError(data.error || "Une erreur est survenue. Réessayez.");
       }
@@ -122,6 +134,54 @@ function InscriptionParentContent() {
 
   const step1Valid = prenom.trim() && emailVal.trim() && telephone.trim() && childHasPhone !== null;
   const step2Valid = !connectPronote || (pronoteUrl.trim() && pronoteUsername.trim() && pronotePassword.trim());
+
+  // Bug 5: Test Pronote connection before advancing from step 2
+  async function handleStep2Continue() {
+    if (!connectPronote) {
+      setStep(3);
+      return;
+    }
+
+    // All pronote fields must be filled
+    if (!pronoteUrl.trim() || !pronoteUsername.trim() || !pronotePassword.trim()) {
+      return;
+    }
+
+    setPronoteTestLoading(true);
+    setPronoteTestError("");
+    setPronoteTestSuccess(false);
+
+    try {
+      const res = await fetch(`${API_URL}/api/pronote/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pronote_url: pronoteUrl,
+          username: pronoteUsername,
+          password: pronotePassword,
+          ent_type: pronoteEnt,
+          registration_id: "test_" + Date.now(),
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.ok || res.ok) {
+        setPronoteTestSuccess(true);
+        // Advance after short delay so user sees success message
+        setTimeout(() => {
+          setPronoteTestLoading(false);
+          setStep(3);
+        }, 800);
+      } else {
+        setPronoteTestLoading(false);
+        setPronoteTestError(data.error || "Connexion Pronote échouée. Vérifiez vos identifiants.");
+      }
+    } catch {
+      setPronoteTestLoading(false);
+      setPronoteTestError("Impossible de tester la connexion Pronote. Vérifiez vos identifiants ou continuez sans.");
+    }
+  }
 
   async function searchCity(q: string) {
     if (q.length < 2) { setCityResults([]); return; }
@@ -148,9 +208,21 @@ function InscriptionParentContent() {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: "data=" + encodeURIComponent(JSON.stringify({nomFonction: "geoLoc", lat: String(city.lat), long: String(city.lng)})),
       });
+      // Bug 3: better error handling + logging for schools fetch
+      if (!res.ok) {
+        console.error("schools fetch error:", res.status, res.statusText);
+        setSchools([]);
+        return;
+      }
       const data = await res.json();
-      setSchools(data || []);
-    } catch { setSchools([]); }
+      console.log("schools response:", data);
+      // API returns a flat array of objects with nomEtab, url, cp
+      const list = Array.isArray(data) ? data : (data.results || data.etablissements || []);
+      setSchools(list);
+    } catch (err) {
+      console.error("schools fetch exception:", err);
+      setSchools([]);
+    }
   }
 
   return (
@@ -191,10 +263,10 @@ function InscriptionParentContent() {
 
       <main className="flex-1 px-4 py-12 md:py-20">
         <div className="mx-auto max-w-2xl">
-          {/* Progress steps */}
-          {step < 5 && (
+          {/* Progress steps — Bug 1: 3 steps only (1=Infos, 2=Pronote, 3=Confirmation) */}
+          {step < 4 && (
             <div className="flex items-center justify-center gap-4 mb-12">
-              {[1, 2, 3, 4].map((s) => (
+              {[1, 2, 3].map((s) => (
                 <div key={s} className="flex items-center gap-2">
                   <div
                     className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
@@ -214,7 +286,7 @@ function InscriptionParentContent() {
                   >
                     {STEPS[s - 1]}
                   </span>
-                  {s < 4 && (
+                  {s < 3 && (
                     <div className={`w-8 h-0.5 ${step > s ? "bg-primary" : "bg-gray-200"}`} />
                   )}
                 </div>
@@ -346,7 +418,7 @@ function InscriptionParentContent() {
                   <div className="flex gap-3">
                     <button
                       type="button"
-                      onClick={() => setConnectPronote(true)}
+                      onClick={() => { setConnectPronote(true); setPronoteTestError(""); setPronoteTestSuccess(false); }}
                       className={`flex-1 rounded-lg border-2 p-4 text-sm font-medium transition-colors cursor-pointer ${
                         connectPronote
                           ? "border-primary bg-primary/5 text-primary"
@@ -357,7 +429,7 @@ function InscriptionParentContent() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => setConnectPronote(false)}
+                      onClick={() => { setConnectPronote(false); setPronoteTestError(""); setPronoteTestSuccess(false); }}
                       className={`flex-1 rounded-lg border-2 p-4 text-sm font-medium transition-colors cursor-pointer ${
                         !connectPronote
                           ? "border-primary bg-primary/5 text-primary"
@@ -473,7 +545,7 @@ function InscriptionParentContent() {
                           type="text"
                           placeholder="Votre identifiant"
                           value={pronoteUsername}
-                          onChange={(e) => setPronoteUsername(e.target.value)}
+                          onChange={(e) => { setPronoteUsername(e.target.value); setPronoteTestError(""); setPronoteTestSuccess(false); }}
                           className="h-11"
                         />
                       </div>
@@ -486,10 +558,51 @@ function InscriptionParentContent() {
                           type="password"
                           placeholder="Votre mot de passe"
                           value={pronotePassword}
-                          onChange={(e) => setPronotePassword(e.target.value)}
+                          onChange={(e) => { setPronotePassword(e.target.value); setPronoteTestError(""); setPronoteTestSuccess(false); }}
                           className="h-11"
                         />
                       </div>
+
+                      {/* Bug 5: Pronote test result feedback */}
+                      {pronoteTestLoading && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground bg-secondary/50 rounded-lg p-3">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Test de connexion Pronote en cours...
+                        </div>
+                      )}
+                      {pronoteTestSuccess && (
+                        <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg p-3">
+                          <CheckCircle className="h-4 w-4" />
+                          Connexion réussie !
+                        </div>
+                      )}
+                      {pronoteTestError && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 space-y-3">
+                          <div className="flex items-start gap-2">
+                            <AlertCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
+                            <p className="text-sm text-red-700">{pronoteTestError}</p>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => { setPronoteTestError(""); setPronoteTestSuccess(false); }}
+                              className="flex-1"
+                            >
+                              Réessayer
+                            </Button>
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={() => { setConnectPronote(false); setPronoteTestError(""); setStep(3); }}
+                              className="flex-1"
+                            >
+                              Continuer sans Pronote
+                            </Button>
+                          </div>
+                        </div>
+                      )}
                     </>
                   ) : (
                     <div className="bg-secondary/50 rounded-lg p-4">
@@ -509,88 +622,34 @@ function InscriptionParentContent() {
                       <ArrowLeft className="h-4 w-4" />
                       Retour
                     </Button>
-                    <Button
-                      onClick={() => setStep(3)}
-                      disabled={!step2Valid}
-                      className="flex-1 gap-2 h-11 text-base"
-                    >
-                      Continuer
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
+                    {/* Bug 5: use handleStep2Continue instead of direct setStep(3) */}
+                    {!pronoteTestError && (
+                      <Button
+                        onClick={handleStep2Continue}
+                        disabled={!step2Valid || pronoteTestLoading}
+                        className="flex-1 gap-2 h-11 text-base"
+                      >
+                        {pronoteTestLoading ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Test en cours...
+                          </>
+                        ) : (
+                          <>
+                            Continuer
+                            <ArrowRight className="h-4 w-4" />
+                          </>
+                        )}
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
             </div>
           )}
 
-          {/* Step 3: Plateforme */}
+          {/* Step 3: Confirmation (was step 4) — Bug 1: back goes to step 2 */}
           {step === 3 && (
-            <div>
-              <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-foreground mb-3">
-                  Comment voulez-vous utiliser Précepteur ?
-                </h1>
-                <p className="text-muted-foreground text-lg">
-                  Choisissez votre application de messagerie.
-                </p>
-              </div>
-
-              <Card>
-                <CardContent className="pt-6 space-y-6">
-                  <div className="flex items-stretch gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setPlatform("whatsapp")}
-                      className={`flex-1 rounded-lg border-2 p-5 text-sm font-medium transition-colors cursor-pointer ${
-                        platform === "whatsapp"
-                          ? "border-primary bg-primary/5 text-primary"
-                          : "border-gray-200 text-muted-foreground hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="text-2xl mb-2">💬</div>
-                      <div className="font-semibold">WhatsApp</div>
-                      <div className="text-xs mt-1 text-muted-foreground">Recommandé</div>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPlatform("telegram")}
-                      className={`flex-1 rounded-lg border-2 p-5 text-sm font-medium transition-colors cursor-pointer ${
-                        platform === "telegram"
-                          ? "border-primary bg-primary/5 text-primary"
-                          : "border-gray-200 text-muted-foreground hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="text-2xl mb-2">✈</div>
-                      <div className="font-semibold">Telegram</div>
-                      <div className="text-xs mt-1 text-muted-foreground">Sans numéro</div>
-                    </button>
-                  </div>
-
-                  <div className="flex gap-3">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setStep(2)}
-                      className="gap-2"
-                    >
-                      <ArrowLeft className="h-4 w-4" />
-                      Retour
-                    </Button>
-                    <Button
-                      onClick={() => setStep(4)}
-                      className="flex-1 gap-2 h-11 text-base"
-                    >
-                      Continuer
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Step 4: Confirmation */}
-          {step === 4 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
@@ -625,7 +684,7 @@ function InscriptionParentContent() {
                   </div>
                   <div className="flex justify-between py-2">
                     <span className="text-sm text-muted-foreground">Plateforme</span>
-                    <span className="text-sm font-medium capitalize">{platform === "whatsapp" ? "WhatsApp" : "Telegram"}</span>
+                    <span className="text-sm font-medium">WhatsApp</span>
                   </div>
                 </CardContent>
               </Card>
@@ -641,7 +700,7 @@ function InscriptionParentContent() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => { setStep(3); setError(""); }}
+                  onClick={() => { setStep(2); setError(""); }}
                   className="gap-2"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -668,8 +727,8 @@ function InscriptionParentContent() {
             </div>
           )}
 
-          {/* Step 5: Success */}
-          {step === 5 && (
+          {/* Step 4: Success — Bug 1: WhatsApp only, no Telegram button */}
+          {step === 4 && (
             <div className="text-center">
               <div className="mb-8">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
@@ -687,32 +746,16 @@ function InscriptionParentContent() {
               </div>
 
               <div className="space-y-4">
-                {platform === "whatsapp" ? (
-                  <a
-                    href="https://wa.me/33664624258?text=Bonjour"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Button className="w-full gap-2 h-14 text-lg font-semibold">
-                      Démarrer sur WhatsApp
-                      <ExternalLink className="h-5 w-5" />
-                    </Button>
-                  </a>
-                ) : telegramLink ? (
-                  <a href={telegramLink} target="_blank" rel="noopener noreferrer">
-                    <Button className="w-full gap-2 h-14 text-lg font-semibold">
-                      Démarrer sur Telegram
-                      <ExternalLink className="h-5 w-5" />
-                    </Button>
-                  </a>
-                ) : (
-                  <Link href="/">
-                    <Button className="w-full gap-2 h-14 text-lg font-semibold">
-                      Retour à l&apos;accueil
-                      <ArrowRight className="h-5 w-5" />
-                    </Button>
-                  </Link>
-                )}
+                <a
+                  href="https://wa.me/33664624258?text=Bonjour"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button className="w-full gap-2 h-14 text-lg font-semibold">
+                    Démarrer sur WhatsApp
+                    <ExternalLink className="h-5 w-5" />
+                  </Button>
+                </a>
 
                 <p className="text-sm text-muted-foreground">
                   Vous recevrez votre premier bilan ce soir à 19h.
