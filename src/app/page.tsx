@@ -358,6 +358,595 @@ function ExitIntentPopup() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Hero animated phones                                              */
+/* ------------------------------------------------------------------ */
+
+function HeroPhones() {
+  const [step, setStep] = useState(0);
+
+  useEffect(() => {
+    // step 0 = nothing shown, then we advance through steps
+    const timings = [800, 2300, 4300, 5000, 6500, 6900, 7700, 13000];
+    const timers: ReturnType<typeof setTimeout>[] = [];
+
+    function runCycle() {
+      setStep(0);
+      timings.forEach((ms, idx) => {
+        timers.push(setTimeout(() => setStep(idx + 1), ms));
+      });
+      // restart after fade out
+      timers.push(setTimeout(() => runCycle(), 14200));
+    }
+
+    runCycle();
+    return () => timers.forEach(clearTimeout);
+  }, []);
+
+  const show = (minStep: number) => step >= minStep && step < 8;
+
+  return (
+    <div
+      className="flex items-start gap-4 justify-center py-2"
+      style={{ opacity: step === 8 ? 0 : 1, transition: step === 8 ? "opacity 1.2s ease" : "none" }}
+    >
+      {/* Left phone: eleve (dark) */}
+      <div className="w-[200px] shrink-0 rounded-[32px] bg-[#0f172a] p-2 shadow-2xl"
+           style={{ boxShadow: "0 12px 40px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.08)" }}>
+        <div className="rounded-[26px] bg-[#1e293b] px-3.5 py-6 min-h-[400px] flex flex-col">
+          {/* Header */}
+          <div className="text-center mb-3.5">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#F97316] to-[#0EA5E9] flex items-center justify-center text-white font-bold text-sm mx-auto mb-1">P</div>
+            <div className="text-white font-semibold text-xs">Precepteur</div>
+            <div className="text-[#22c55e] text-[0.64rem]">En ligne</div>
+          </div>
+          {/* Messages */}
+          <div className="flex flex-col gap-2 flex-1">
+            {show(1) && (
+              <div className="max-w-[88%] px-3 py-2 rounded-[13px] rounded-bl-sm bg-[#334155] text-[#e2e8f0] text-[0.82rem] leading-snug self-start"
+                   style={{ animation: "phoneBubbleIn 0.4s ease forwards" }}>
+                Salut ! Ce soir, on attaque les fractions. Simplifie 12/18.
+              </div>
+            )}
+            {show(2) && (
+              <div className="max-w-[88%] px-3 py-2 rounded-[13px] rounded-br-sm bg-[#F97316] text-white text-[0.82rem] leading-snug self-end"
+                   style={{ animation: "phoneBubbleIn 0.4s ease forwards" }}>
+                2/3 ?
+              </div>
+            )}
+            {show(3) && (
+              <div className="max-w-[88%] px-3 py-2 rounded-[13px] rounded-bl-sm bg-[#334155] text-[#e2e8f0] text-[0.82rem] leading-snug self-start"
+                   style={{ animation: "phoneBubbleIn 0.4s ease forwards" }}>
+                Exact ! Tu as divise par 6, bien vu.
+              </div>
+            )}
+            {show(4) && (
+              <div className="pl-0.5">
+                <span className="inline-block bg-[#22c55e] text-white text-[0.63rem] font-bold px-2 py-0.5 rounded-full"
+                      style={{ animation: "phoneBadgeIn 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards" }}>
+                  REUSSI
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Right phone: parent (light) */}
+      <div className="w-[200px] shrink-0 rounded-[32px] bg-[#e2e8f0] p-2 shadow-2xl"
+           style={{
+             boxShadow: "0 12px 40px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.06)",
+             opacity: show(5) ? 1 : 0,
+             transform: show(5) ? "translateX(0)" : "translateX(16px)",
+             transition: "opacity 0.5s ease, transform 0.5s ease",
+           }}>
+        <div className="rounded-[26px] bg-white px-3.5 py-6 min-h-[400px] flex flex-col">
+          {/* Header */}
+          <div className="text-center mb-3.5">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#10b981] to-[#06b6d4] flex items-center justify-center text-white font-bold text-sm mx-auto mb-1">P</div>
+            <div className="text-[#1C1917] font-semibold text-xs">Precepteur</div>
+            <div className="text-[#64748b] text-[0.64rem]">Notification</div>
+          </div>
+          {/* Messages */}
+          <div className="flex flex-col gap-2 flex-1">
+            {show(6) && (
+              <div className="max-w-[88%] px-3 py-2 rounded-[13px] rounded-bl-sm bg-[#f1f5f9] text-[#1C1917] text-[0.82rem] leading-snug self-start"
+                   style={{ animation: "phoneBubbleIn 0.4s ease forwards" }}>
+                Emma a fini ses 3 exercices en 11 min. Fractions bien comprises. Demain : additions de fractions.
+              </div>
+            )}
+          </div>
+        </div>
+        {show(7) && (
+          <div className="text-center text-[0.66rem] text-[#ea580c] font-semibold mt-1.5"
+               style={{ animation: "phoneBubbleIn 0.4s ease forwards" }}>
+            Fractions : 72% &rarr; 85%
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Ecosysteme section                                                */
+/* ------------------------------------------------------------------ */
+
+function EcosystemeSection() {
+  return (
+    <section id="ecosysteme" className="relative py-24" style={{ background: "#0b1120", color: "#f1f5f9" }}>
+      {/* top/bottom fade */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-20 z-10" style={{ background: "linear-gradient(to bottom, #ffffff 0%, transparent 100%)" }} />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 z-10" style={{ background: "linear-gradient(to top, #ffffff 0%, transparent 100%)" }} />
+
+      <div className="relative z-20 mx-auto max-w-5xl px-4">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <span className="inline-block text-xs font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-4"
+                style={{ background: "rgba(249,115,22,0.15)", color: "#FB923C" }}>
+            Comment ca fonctionne
+          </span>
+          <h2 className="text-3xl font-bold md:text-4xl" style={{ color: "#f1f5f9" }}>
+            3 acteurs, 1 Precepteur, tout le monde est synchro
+          </h2>
+        </div>
+
+        {/* Trio grid */}
+        <div className="grid gap-6 md:gap-10" style={{ gridTemplateColumns: "1fr auto 1fr" }}>
+
+          {/* Parent */}
+          <div className="flex flex-col items-center gap-3 text-center">
+            <div className="w-14 h-14 rounded-full border-[2.5px] flex items-center justify-center text-xl font-extrabold"
+                 style={{ borderColor: "#F97316", color: "#F97316", background: "rgba(255,255,255,0.04)" }}>
+              P
+            </div>
+            <div className="text-sm font-bold" style={{ color: "#F97316" }}>Le parent</div>
+            <EcosCard>
+              <EcosTag>Recoit chaque soir</EcosTag>
+              Bilan factuel : notes, devoirs, absences, action concrete pour le soir
+            </EcosCard>
+            <EcosCard>
+              <EcosTag>Peut faire</EcosTag>
+              Poser des questions, demander un bilan complet, suivre la progression
+            </EcosCard>
+          </div>
+
+          {/* Center hub */}
+          <div className="flex items-center justify-center">
+            <div className="rounded-2xl px-6 py-5 text-center"
+                 style={{ background: "rgba(249,115,22,0.08)", border: "2px solid rgba(249,115,22,0.3)" }}>
+              <div className="text-lg font-extrabold" style={{ color: "#f5f5f4" }}>
+                precepteur<span style={{ color: "#F97316" }}>.</span>
+              </div>
+              <div className="text-[0.7rem] mt-1" style={{ color: "#a8a29e" }}>Connecte a Pronote</div>
+              <div className="text-[0.7rem]" style={{ color: "#a8a29e" }}>Memoire long terme</div>
+              <div className="text-[0.7rem]" style={{ color: "#a8a29e" }}>IA adaptative</div>
+            </div>
+          </div>
+
+          {/* Eleve */}
+          <div className="flex flex-col items-center gap-3 text-center">
+            <div className="w-14 h-14 rounded-full border-[2.5px] flex items-center justify-center text-xl font-extrabold"
+                 style={{ borderColor: "#0EA5E9", color: "#0EA5E9", background: "rgba(255,255,255,0.04)" }}>
+              E
+            </div>
+            <div className="text-sm font-bold" style={{ color: "#0EA5E9" }}>L&apos;eleve</div>
+            <EcosCard>
+              <EcosTag>Recoit chaque soir</EcosTag>
+              3 exercices adaptes, corriges en direct, parcours qui s&apos;ajuste
+            </EcosCard>
+            <EcosCard>
+              <EcosTag>Peut faire</EcosTag>
+              Poser des questions sur ses cours, demander des explications, reviser
+            </EcosCard>
+          </div>
+
+        </div>
+
+        {/* Bottom: accompagnant (full width) */}
+        <div className="mt-10 max-w-sm mx-auto flex flex-col items-center gap-3 text-center">
+          <div className="w-14 h-14 rounded-full border-[2.5px] flex items-center justify-center text-xl font-extrabold"
+               style={{ borderColor: "#22C55E", color: "#22C55E", background: "rgba(255,255,255,0.04)" }}>
+            A
+          </div>
+          <div className="text-sm font-bold" style={{ color: "#22C55E" }}>L&apos;accompagnant</div>
+          <EcosCard>
+            <EcosTag>Supervise entre les seances</EcosTag>
+            Entre deux cours particuliers, il sait exactement ou en est l&apos;eleve : exercices faits, taux de reussite, lacunes detectees
+          </EcosCard>
+          <EcosCard>
+            <EcosTag>Pilote le programme</EcosTag>
+            Voit les exercices prevus avant l&apos;eleve, les modifie si besoin, ajuste les objectifs. Ses seances deviennent plus efficaces.
+          </EcosCard>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EcosCard({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="w-full rounded-[10px] px-4 py-3.5 text-[0.82rem] leading-snug text-[#d6d3d1] transition-all hover:bg-white/[0.08]"
+         style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      {children}
+    </div>
+  );
+}
+
+function EcosTag({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="text-[0.68rem] font-bold uppercase tracking-widest mb-1.5 text-[#a8a29e]">
+      {children}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Skill tree section                                                */
+/* ------------------------------------------------------------------ */
+
+function SkillTreeSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    function drawConnectors() {
+      const svg = svgRef.current;
+      const container = containerRef.current;
+      if (!svg || !container) return;
+
+      svg.innerHTML = "";
+
+      const connections: Array<{ from: string; to: string }> = [
+        { from: "node-entiers",    to: "node-litteral" },
+        { from: "node-tables",     to: "node-litteral" },
+        { from: "node-tables",     to: "node-fractions" },
+        { from: "node-priorites",  to: "node-fractions" },
+        { from: "node-litteral",   to: "node-eq1" },
+        { from: "node-fractions",  to: "node-puissances" },
+        { from: "node-priorites",  to: "node-puissances" },
+        { from: "node-eq1",        to: "node-eq2" },
+        { from: "node-puissances", to: "node-eq2" },
+        { from: "node-eq1",        to: "node-fonctions" },
+        { from: "node-eq2",        to: "node-medecine" },
+        { from: "node-fonctions",  to: "node-medecine" },
+      ];
+
+      const containerRect = container.getBoundingClientRect();
+
+      connections.forEach(({ from, to }) => {
+        const fromEl = document.getElementById(from);
+        const toEl = document.getElementById(to);
+        if (!fromEl || !toEl) return;
+
+        const fr = fromEl.getBoundingClientRect();
+        const tr = toEl.getBoundingClientRect();
+
+        const x1 = fr.left + fr.width / 2 - containerRect.left;
+        const y1 = fr.top - containerRect.top;
+        const x2 = tr.left + tr.width / 2 - containerRect.left;
+        const y2 = tr.top + tr.height - containerRect.top;
+
+        const isFromMastered = fromEl.dataset.state === "mastered";
+        const isToLocked = toEl.dataset.state === "locked";
+
+        const color = isToLocked ? "#cbd5e1" : isFromMastered ? "#22C55E" : "#f59e0b";
+        const opacity = isToLocked ? "0.4" : "0.6";
+
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", String(x1));
+        line.setAttribute("y1", String(y1));
+        line.setAttribute("x2", String(x2));
+        line.setAttribute("y2", String(y2));
+        line.setAttribute("stroke", color);
+        line.setAttribute("stroke-width", "1.5");
+        line.setAttribute("stroke-dasharray", "5 3");
+        line.setAttribute("opacity", opacity);
+        svg.appendChild(line);
+      });
+    }
+
+    const timer = setTimeout(drawConnectors, 300);
+    window.addEventListener("resize", drawConnectors);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", drawConnectors);
+    };
+  }, []);
+
+  return (
+    <section id="parcours" className="py-24 bg-white">
+      <div className="mx-auto max-w-6xl px-4">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <span className="inline-block text-xs font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-4 text-primary bg-primary/8">
+            Chaque objectif a un chemin
+          </span>
+          <h2 className="text-3xl font-bold md:text-4xl mb-4">
+            Emma veut faire medecine. Precepteur construit le chemin.
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Du reve a la realite : Precepteur decompose chaque objectif en prerequis, identifie ou l&apos;eleve bloque, et construit le programme pour debloquer chaque etape.
+          </p>
+        </div>
+
+        <div className="grid gap-12 lg:grid-cols-[1fr_320px] items-start">
+
+          {/* Tree canvas */}
+          <div className="relative" ref={containerRef}>
+            {/* Legend */}
+            <div className="flex gap-5 flex-wrap mb-8 justify-center">
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#22C55E] inline-block" />
+                Maitrise
+              </div>
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#f59e0b] inline-block" />
+                En cours
+              </div>
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#cbd5e1] inline-block" />
+                Verrouille
+              </div>
+            </div>
+
+            {/* Levels */}
+            <div className="relative flex flex-col gap-10 py-5">
+
+              {/* Level 5 — dream */}
+              <div className="flex justify-center gap-4">
+                <TreeNode id="node-medecine" state="locked" style={{ minWidth: 180, borderStyle: "dashed" }}>
+                  <div className="text-base font-bold text-[#94a3b8]">Medecine</div>
+                  <div className="flex items-center justify-center gap-1 text-xs text-[#94a3b8] mt-1">
+                    <Star className="w-3 h-3" />
+                    Son reve — objectif long terme
+                  </div>
+                </TreeNode>
+              </div>
+
+              {/* Level 4 — locked */}
+              <div className="flex justify-center gap-4">
+                <TreeNode id="node-eq2" state="locked">
+                  <div className="text-sm font-bold text-[#94a3b8]">Equations 2nd degre</div>
+                  <div className="flex items-center justify-center gap-1 text-xs text-[#94a3b8] mt-1">
+                    <Lock className="w-3 h-3" />
+                    Prerequis non valides
+                  </div>
+                </TreeNode>
+                <TreeNode id="node-fonctions" state="locked">
+                  <div className="text-sm font-bold text-[#94a3b8]">Fonctions</div>
+                  <div className="flex items-center justify-center gap-1 text-xs text-[#94a3b8] mt-1">
+                    <Lock className="w-3 h-3" />
+                    Prerequis non valides
+                  </div>
+                </TreeNode>
+              </div>
+
+              {/* Level 3 — in progress */}
+              <div className="flex justify-center gap-4">
+                <TreeNode id="node-eq1" state="in-progress">
+                  <div className="text-sm font-bold text-foreground">Equations 1er degre</div>
+                  <ProgressRing pct={72} />
+                  <div className="text-xs font-semibold text-[#f59e0b]">72% maitrise</div>
+                </TreeNode>
+                <TreeNode id="node-puissances" state="in-progress">
+                  <div className="text-sm font-bold text-foreground">Puissances</div>
+                  <ProgressRing pct={45} />
+                  <div className="text-xs font-semibold text-[#f59e0b]">45% maitrise</div>
+                </TreeNode>
+              </div>
+
+              {/* Level 2 — mastered */}
+              <div className="flex justify-center gap-4">
+                <TreeNode id="node-litteral" state="mastered">
+                  <div className="text-sm font-bold text-foreground">Calcul litteral</div>
+                  <div className="flex items-center justify-center gap-1 text-xs text-[#22C55E] mt-1">
+                    <Check className="w-3 h-3" strokeWidth={3} />
+                    Valide
+                  </div>
+                </TreeNode>
+                <TreeNode id="node-fractions" state="mastered">
+                  <div className="text-sm font-bold text-foreground">Fractions</div>
+                  <div className="flex items-center justify-center gap-1 text-xs text-[#22C55E] mt-1">
+                    <Check className="w-3 h-3" strokeWidth={3} />
+                    Valide
+                  </div>
+                </TreeNode>
+              </div>
+
+              {/* Level 1 — mastered */}
+              <div className="flex justify-center gap-4 flex-wrap">
+                <TreeNode id="node-entiers" state="mastered">
+                  <div className="text-sm font-bold text-foreground">Entiers naturels</div>
+                  <div className="flex items-center justify-center gap-1 text-xs text-[#22C55E] mt-1">
+                    <Check className="w-3 h-3" strokeWidth={3} />
+                    Valide
+                  </div>
+                </TreeNode>
+                <TreeNode id="node-tables" state="mastered">
+                  <div className="text-sm font-bold text-foreground">Tables de multiplication</div>
+                  <div className="flex items-center justify-center gap-1 text-xs text-[#22C55E] mt-1">
+                    <Check className="w-3 h-3" strokeWidth={3} />
+                    Valide
+                  </div>
+                </TreeNode>
+                <TreeNode id="node-priorites" state="mastered">
+                  <div className="text-sm font-bold text-foreground">Priorites des operations</div>
+                  <div className="flex items-center justify-center gap-1 text-xs text-[#22C55E] mt-1">
+                    <Check className="w-3 h-3" strokeWidth={3} />
+                    Valide
+                  </div>
+                </TreeNode>
+              </div>
+
+              {/* SVG overlay for connectors */}
+              <svg
+                ref={svgRef}
+                aria-hidden="true"
+                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }}
+              />
+            </div>
+          </div>
+
+          {/* Annotations */}
+          <div className="hidden lg:flex flex-col gap-6">
+            <TreeAnnotation color="orange">
+              <div className="text-xs font-bold uppercase tracking-wider text-[#ea580c] mb-1.5">L&apos;objectif</div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Emma veut faire medecine. Precepteur part de cet objectif et remonte jusqu&apos;aux fondations. Chaque competence validee rapproche du reve.
+              </p>
+            </TreeAnnotation>
+            <TreeAnnotation color="amber">
+              <div className="text-xs font-bold uppercase tracking-wider text-[#d97706] mb-1.5">Niveau &quot;En cours&quot; detecte</div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Precepteur detecte que Emma bloque sur les puissances (45%). Il genere des exercices cibles chaque jour jusqu&apos;a ce que le seuil de 80% soit atteint.
+              </p>
+            </TreeAnnotation>
+            <TreeAnnotation color="slate">
+              <div className="text-xs font-bold uppercase tracking-wider text-[#64748b] mb-1.5">Niveau verrouille</div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Les equations du 2nd degre sont verrouillees tant que les prerequis ne sont pas valides. Precepteur ne surchargera pas Emma.
+              </p>
+            </TreeAnnotation>
+            <TreeAnnotation color="green">
+              <div className="text-xs font-bold uppercase tracking-wider text-[#16A34A] mb-1.5">Bases solides</div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Les bases sont validees. Emma les a maitrisees en 2 semaines avec le bot. Ces acquis servent de fondation pour la suite.
+              </p>
+            </TreeAnnotation>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
+
+type TreeNodeState = "mastered" | "in-progress" | "locked";
+
+function TreeNode({
+  id,
+  state,
+  children,
+  style,
+}: {
+  id: string;
+  state: TreeNodeState;
+  children: React.ReactNode;
+  style?: React.CSSProperties;
+}) {
+  const borderColor = state === "mastered" ? "#22C55E" : state === "in-progress" ? "#f59e0b" : "#cbd5e1";
+  const bg = state === "mastered" ? "rgba(34,197,94,0.06)" : state === "in-progress" ? "rgba(245,158,11,0.06)" : "rgba(203,213,225,0.3)";
+
+  return (
+    <div
+      id={id}
+      data-state={state}
+      className="rounded-xl px-4 py-3.5 text-center border-2 min-w-[140px] max-w-[160px] bg-white hover:-translate-y-0.5 transition-transform"
+      style={{ borderColor, background: bg, ...style }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function ProgressRing({ pct }: { pct: number }) {
+  const r = 13;
+  const circ = 2 * Math.PI * r;
+  const offset = circ * (1 - pct / 100);
+  return (
+    <div className="inline-flex items-center justify-center w-8 h-8 my-1 mx-auto">
+      <svg width="32" height="32" viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r={r} fill="none" stroke="rgba(245,158,11,0.2)" strokeWidth="3" />
+        <circle cx="16" cy="16" r={r} fill="none" stroke="#f59e0b" strokeWidth="3"
+          strokeLinecap="round"
+          strokeDasharray={circ}
+          strokeDashoffset={offset}
+          style={{ transform: "rotate(-90deg)", transformOrigin: "50% 50%" }}
+        />
+      </svg>
+    </div>
+  );
+}
+
+function TreeAnnotation({ color, children }: { color: "orange" | "amber" | "slate" | "green"; children: React.ReactNode }) {
+  const borderColor = color === "orange" ? "#F97316" : color === "amber" ? "#f59e0b" : color === "slate" ? "#94a3b8" : "#22C55E";
+  return (
+    <div className="rounded-xl px-4 py-4 bg-secondary/60"
+         style={{ borderLeft: `3px solid ${borderColor}` }}>
+      {children}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Fondateur section                                                 */
+/* ------------------------------------------------------------------ */
+
+function FounderSection() {
+  return (
+    <section id="fondateur" className="px-4 py-16 md:py-24 bg-white">
+      <div className="mx-auto max-w-4xl">
+        <div className="grid gap-12 md:grid-cols-[200px_1fr] items-start">
+
+          {/* Avatar */}
+          <div className="flex justify-center md:pt-10">
+            <div className="w-28 h-28 rounded-full flex items-center justify-center text-2xl font-extrabold text-white"
+                 style={{ background: "linear-gradient(135deg, #F97316, #0EA5E9)", boxShadow: "0 8px 32px rgba(249,115,22,0.25)" }}>
+              CM
+            </div>
+          </div>
+
+          {/* Story */}
+          <div>
+            <span className="inline-block text-xs font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-4 text-primary bg-primary/8">
+              Le fondateur
+            </span>
+            <h2 className="text-2xl font-bold md:text-3xl mb-5">Chaker</h2>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Scolarite en ZEP dans le 92, classes prepa, diplome de l&apos;Ecole des Mines de Nancy.
+              Apres mes etudes, j&apos;ai ete accompagnateur scolaire a la mairie pendant 3 ans — des dizaines d&apos;eleves suivis chaque semaine, du CM2 a la terminale.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Ce que j&apos;ai vu : des eleves capables, mais qui decrochent entre les seances. Le tuteur vient une fois par semaine.
+              Entre-temps, les lacunes s&apos;accumulent sans que personne ne s&apos;en rende compte. Quand on les detecte, il est souvent trop tard.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-6">
+              J&apos;ai construit Precepteur pour ca. Un suivi quotidien par IA qui travaille avec l&apos;eleve chaque soir, detecte les blocages en temps reel, et informe le parent et le tuteur.
+              L&apos;objectif : que chaque seance avec le tuteur soit deux fois plus efficace.
+            </p>
+
+            {/* LinkedIn */}
+            <div className="mb-6">
+              <a href="https://www.linkedin.com/in/chakerm/" target="_blank" rel="noopener noreferrer"
+                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0EA5E9] hover:text-primary transition-colors">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                LinkedIn
+              </a>
+            </div>
+
+            {/* CTA block */}
+            <div className="rounded-2xl border border-border bg-secondary/50 p-6">
+              <h3 className="text-lg font-bold mb-2">Discutons du meilleur pour votre enfant</h3>
+              <a href="tel:+33664624258">
+                <Button className="mt-2 gap-2">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+                  </svg>
+                  06 64 62 42 58
+                </Button>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Main Page                                                         */
 /* ------------------------------------------------------------------ */
 
@@ -552,42 +1141,9 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Right: Phone mockup */}
+            {/* Right: Animated two-phone mockup */}
             <div className="flex justify-center lg:justify-end">
-              <PhoneMockup>
-                <ChatBubbleBot>
-                  <p className="font-semibold mb-2">
-                    Bonsoir ! Voici le bilan de Yasmine (4eme B) :
-                  </p>
-                  <div className="space-y-1.5">
-                    <p>
-                      <TrendingUp className="inline h-4 w-4 mr-1 text-primary" />
-                      <strong>Notes :</strong> Maths 14/20{" "}
-                      <span className="text-muted-foreground">
-                        (moyenne classe 11.5)
-                      </span>
-                    </p>
-                    <p>
-                      <BookOpen className="inline h-4 w-4 mr-1 text-orange-500" />
-                      <strong>Devoirs :</strong> Exercices p.42 SVT{" "}
-                      <span className="text-muted-foreground">
-                        (pour jeudi)
-                      </span>
-                    </p>
-                    <p>
-                      <Check className="inline h-4 w-4 mr-1 text-green-500" />
-                      <strong>Absences :</strong> Aucune aujourd&apos;hui
-                    </p>
-                  </div>
-                  <p className="mt-3 pt-2 border-t border-gray-100 text-primary">
-                    <Brain className="inline h-4 w-4 mr-1" />
-                    Yasmine progresse en maths ! +2 points depuis septembre.
-                  </p>
-                </ChatBubbleBot>
-                <div className="text-center text-xs text-muted-foreground">
-                  19:02
-                </div>
-              </PhoneMockup>
+              <HeroPhones />
             </div>
           </div>
         </div>
@@ -812,6 +1368,16 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ============================================================ */}
+      {/*  ECOSYSTEME / BRAIN                                          */}
+      {/* ============================================================ */}
+      <EcosystemeSection />
+
+      {/* ============================================================ */}
+      {/*  SKILL TREE                                                  */}
+      {/* ============================================================ */}
+      <SkillTreeSection />
 
       {/* ============================================================ */}
       {/*  DEMO SECTION                                                */}
@@ -1184,6 +1750,11 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {/* ============================================================ */}
+      {/*  FONDATEUR                                                   */}
+      {/* ============================================================ */}
+      <FounderSection />
 
       {/* ============================================================ */}
       {/*  FAQ                                                         */}
