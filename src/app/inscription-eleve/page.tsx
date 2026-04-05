@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,10 +37,10 @@ const ENT_OPTIONS = [
   { value: "ile_de_france", label: "Ile-de-France (MonLycee / MonCollege)" },
   { value: "ent77", label: "Seine-et-Marne (ENT77)" },
   { value: "ent91", label: "Essonne (ENT91)" },
-  { value: "ac_lyon", label: "Academie de Lyon" },
-  { value: "ac_rennes", label: "Academie de Rennes" },
-  { value: "ac_reims", label: "Academie de Reims" },
-  { value: "ac_orleans_tours", label: "Academie Orleans-Tours" },
+  { value: "ac_lyon", label: "Académie de Lyon" },
+  { value: "ac_rennes", label: "Académie de Rennes" },
+  { value: "ac_reims", label: "Académie de Reims" },
+  { value: "ac_orleans_tours", label: "Académie Orléans-Tours" },
   { value: "val_doise", label: "Val d'Oise" },
   { value: "e_lyco", label: "e-lyco (Pays de la Loire)" },
   { value: "laclasse_lyon", label: "laclasse.com (Lyon)" },
@@ -64,9 +64,9 @@ export default function InscriptionElevePage() {
 
 function InscriptionEleveContent() {
   const [step, setStep] = useState(1);
-  const [platform, setPlatform] = useState<"telegram" | "whatsapp">("telegram");
   const [prenom, setPrenom] = useState("");
   const [classLevel, setClassLevel] = useState("4eme");
+  const [email, setEmail] = useState("");
   const [hasPronote, setHasPronote] = useState(false);
   const [pronoteUrl, setPronoteUrl] = useState("");
   const [entType, setEntType] = useState("ile_de_france");
@@ -75,7 +75,6 @@ function InscriptionEleveContent() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [telegramLink, setTelegramLink] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cityQuery, setCityQuery] = useState("");
   const [cityResults, setCityResults] = useState<Array<{name: string; context: string; lat: number; lng: number}>>([]);
@@ -83,6 +82,41 @@ function InscriptionEleveContent() {
   const [selectedSchool, setSelectedSchool] = useState<{nomEtab: string; url: string; cp?: string} | null>(null);
   const [schoolFilter, setSchoolFilter] = useState("");
   const [showManualUrl, setShowManualUrl] = useState(false);
+  const [pronoteTestStatus, setPronoteTestStatus] = useState<"idle" | "testing" | "success" | "failed">("idle");
+  const [pronoteTestError, setPronoteTestError] = useState("");
+
+  // Warm up Render on page load
+  useEffect(() => {
+    fetch(`${API_URL}/health`).catch(() => {});
+  }, []);
+
+  const testPronote = async () => {
+    if (!pronoteUrl || !username || !password) return;
+    setPronoteTestStatus("testing");
+    setPronoteTestError("");
+    try {
+      const res = await fetch(`${API_URL}/api/pronote/test`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          pronote_url: pronoteUrl,
+          ent_type: entType || "ile_de_france",
+          username,
+          password,
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setPronoteTestStatus("success");
+      } else {
+        setPronoteTestStatus("failed");
+        setPronoteTestError(data.error || "Connexion échouée.");
+      }
+    } catch {
+      setPronoteTestStatus("failed");
+      setPronoteTestError("Impossible de tester la connexion.");
+    }
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -92,11 +126,15 @@ function InscriptionEleveContent() {
       const body: Record<string, unknown> = {
         role: "child",
         parent_first_name: prenom,
+        child_class: classLevel,
         child_has_phone: true,
         has_pronote: hasPronote,
-        class_level: classLevel,
-        platform,
+        platform: "whatsapp",
       };
+
+      if (email.trim()) {
+        body.email = email.trim();
+      }
 
       if (hasPronote && pronoteUrl && username && password) {
         body.pronote_url = pronoteUrl;
@@ -114,8 +152,7 @@ function InscriptionEleveContent() {
       const data = await res.json();
 
       if (data.ok) {
-        setTelegramLink(data.telegram_link);
-        setStep(5);
+        setStep(4);
       } else {
         setError(data.error || "Une erreur est survenue. Réessaye.");
       }
@@ -156,7 +193,7 @@ function InscriptionEleveContent() {
     } catch { setSchools([]); }
   }
 
-  const STEPS = ["Plateforme", "Informations", "Pronote", "Confirmation"];
+  const STEPS = ["Informations", "Pronote", "Confirmation", "Succès"];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -202,14 +239,14 @@ function InscriptionEleveContent() {
               <div key={s} className="flex items-center gap-2">
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
-                    step > s || step === 5
+                    step > s
                       ? "bg-primary text-primary-foreground"
                       : step === s
                       ? "bg-primary text-primary-foreground"
                       : "bg-gray-200 text-gray-500"
                   }`}
                 >
-                  {step > s || step === 5 ? <Check className="h-4 w-4" /> : s}
+                  {step > s ? <Check className="h-4 w-4" /> : s}
                 </div>
                 <span
                   className={`text-sm hidden sm:inline ${
@@ -225,70 +262,15 @@ function InscriptionEleveContent() {
             ))}
           </div>
 
-          {/* Step 1: Plateforme */}
+          {/* Step 1: Informations */}
           {step === 1 && (
-            <div>
-              <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-foreground mb-3">
-                  Comment veux-tu utiliser Précepteur ?
-                </h1>
-                <p className="text-muted-foreground text-lg">
-                  Choisis ton application de messagerie.
-                </p>
-              </div>
-
-              <Card>
-                <CardContent className="pt-6 space-y-6">
-                  <div className="flex items-center gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setPlatform("telegram")}
-                      className={`flex-1 rounded-lg border-2 p-5 text-sm font-medium transition-colors cursor-pointer ${
-                        platform === "telegram"
-                          ? "border-primary bg-primary/5 text-primary"
-                          : "border-gray-200 text-muted-foreground hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="text-2xl mb-2">✈</div>
-                      <div className="font-semibold">Telegram</div>
-                      <div className="text-xs mt-1 text-muted-foreground">Recommandé</div>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPlatform("whatsapp")}
-                      className={`flex-1 rounded-lg border-2 p-5 text-sm font-medium transition-colors cursor-pointer ${
-                        platform === "whatsapp"
-                          ? "border-primary bg-primary/5 text-primary"
-                          : "border-gray-200 text-muted-foreground hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="text-2xl mb-2">💬</div>
-                      <div className="font-semibold">WhatsApp</div>
-                      <div className="text-xs mt-1 text-muted-foreground">Sans installation</div>
-                    </button>
-                  </div>
-
-                  <Button
-                    onClick={() => setStep(2)}
-                    className="w-full gap-2 h-12 text-base"
-                  >
-                    Continuer
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Step 2: Informations */}
-          {step === 2 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
                   Inscription élève
                 </h1>
                 <p className="text-muted-foreground text-lg">
-                  Reçois chaque soir ton bilan personnalisé.
+                  Reçois chaque soir ton bilan personnalisé sur WhatsApp.
                 </p>
               </div>
 
@@ -296,11 +278,11 @@ function InscriptionEleveContent() {
                 <CardContent className="pt-6 space-y-5">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Ton prenom
+                      Ton prénom
                     </label>
                     <Input
                       type="text"
-                      placeholder="Ton prenom"
+                      placeholder="Ton prénom"
                       value={prenom}
                       onChange={(e) => setPrenom(e.target.value)}
                       className="h-11"
@@ -324,8 +306,21 @@ function InscriptionEleveContent() {
                     </select>
                   </div>
 
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Email <span className="text-muted-foreground font-normal">(facultatif)</span>
+                    </label>
+                    <Input
+                      type="email"
+                      placeholder="ton@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="h-11"
+                    />
+                  </div>
+
                   <Button
-                    onClick={() => setStep(3)}
+                    onClick={() => setStep(2)}
                     disabled={!prenom.trim()}
                     className="w-full gap-2 h-12 text-base"
                   >
@@ -337,8 +332,8 @@ function InscriptionEleveContent() {
             </div>
           )}
 
-          {/* Step 3: Pronote */}
-          {step === 3 && (
+          {/* Step 2: Pronote */}
+          {step === 2 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
@@ -381,7 +376,7 @@ function InscriptionEleveContent() {
                   {!hasPronote && (
                     <div className="bg-secondary/50 rounded-lg p-4">
                       <p className="text-sm text-muted-foreground">
-                        Pas de problème. Tu pourras connecter ton compte Pronote plus tard depuis ton espace Telegram.
+                        Pas de problème. Tu pourras connecter ton compte Pronote plus tard depuis ton espace WhatsApp.
                       </p>
                     </div>
                   )}
@@ -427,7 +422,7 @@ function InscriptionEleveContent() {
                           <div className="border rounded-lg max-h-64 overflow-y-auto bg-white">
                             {schools.filter(s => !schoolFilter || s.nomEtab.toLowerCase().includes(schoolFilter.toLowerCase())).map((s, i) => (
                               <div key={i} className="px-4 py-3 cursor-pointer hover:bg-green-50 border-b last:border-b-0"
-                                   onClick={() => { setSelectedSchool(s); setPronoteUrl(s.url); }}>
+                                   onClick={() => { setSelectedSchool(s); setPronoteUrl(s.url); setPronoteTestStatus("idle"); }}>
                                 <div className="font-semibold text-sm">{s.nomEtab}</div>
                                 <div className="text-xs text-muted-foreground">{s.url}</div>
                                 {s.cp && <div className="text-xs text-muted-foreground">{s.cp}</div>}
@@ -442,7 +437,7 @@ function InscriptionEleveContent() {
                           <div className="font-semibold text-green-800 text-sm">{selectedSchool.nomEtab}</div>
                           <div className="text-xs text-muted-foreground mt-1">{selectedSchool.url}</div>
                           <button type="button" className="text-xs text-primary mt-2 underline"
-                                  onClick={() => { setSelectedSchool(null); setPronoteUrl(""); setSchools([]); setCityQuery(""); }}>
+                                  onClick={() => { setSelectedSchool(null); setPronoteUrl(""); setSchools([]); setCityQuery(""); setPronoteTestStatus("idle"); }}>
                             Changer d&apos;établissement
                           </button>
                         </div>
@@ -459,7 +454,7 @@ function InscriptionEleveContent() {
                               type="url"
                               placeholder="https://0000000a.index-education.net/pronote/"
                               value={pronoteUrl}
-                              onChange={(e) => setPronoteUrl(e.target.value)}
+                              onChange={(e) => { setPronoteUrl(e.target.value); setPronoteTestStatus("idle"); }}
                               className="h-11"
                             />
                           )}
@@ -468,7 +463,7 @@ function InscriptionEleveContent() {
 
                       <div>
                         <label className="block text-sm font-medium text-foreground mb-2">
-                          Espace Numerique de Travail (ENT)
+                          Espace Numérique de Travail (ENT)
                         </label>
                         <select
                           value={entType}
@@ -491,7 +486,7 @@ function InscriptionEleveContent() {
                           type="text"
                           placeholder="ton.identifiant"
                           value={username}
-                          onChange={(e) => setUsername(e.target.value)}
+                          onChange={(e) => { setUsername(e.target.value); setPronoteTestStatus("idle"); }}
                           className="h-11"
                         />
                       </div>
@@ -505,7 +500,7 @@ function InscriptionEleveContent() {
                             type={showPassword ? "text" : "password"}
                             placeholder="Ton mot de passe Pronote"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => { setPassword(e.target.value); setPronoteTestStatus("idle"); }}
                             className="h-11 pr-12"
                           />
                           <button
@@ -518,10 +513,48 @@ function InscriptionEleveContent() {
                         </div>
                       </div>
 
+                      {/* Pronote test button */}
+                      {pronoteTestStatus === "idle" && pronoteUrl && username && password && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={testPronote}
+                          className="w-full gap-2"
+                        >
+                          Tester la connexion Pronote
+                        </Button>
+                      )}
+
+                      {pronoteTestStatus === "testing" && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Test de connexion en cours...
+                        </div>
+                      )}
+
+                      {pronoteTestStatus === "success" && (
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-center gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-600 shrink-0" />
+                          <span className="text-sm text-green-700">Connexion Pronote vérifiée.</span>
+                        </div>
+                      )}
+
+                      {pronoteTestStatus === "failed" && (
+                        <div className="space-y-2">
+                          <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-start gap-2">
+                            <AlertCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
+                            <span className="text-sm text-red-700">{pronoteTestError}</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            Vérifie tes identifiants ou continue sans Pronote — tu pourras le connecter plus tard.
+                          </p>
+                        </div>
+                      )}
+
                       <div className="bg-secondary/50 rounded-lg p-4 flex items-start gap-3">
                         <Lock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                         <p className="text-sm text-muted-foreground">
-                          Tes identifiants sont chiffres avec le standard <strong className="text-foreground">AES-256</strong>.
+                          Tes identifiants sont chiffrés avec le standard <strong className="text-foreground">AES-256</strong>.
                           Personne chez Précepteur AI ne peut les lire. Tu peux les supprimer à tout moment.
                         </p>
                       </div>
@@ -532,27 +565,39 @@ function InscriptionEleveContent() {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => setStep(2)}
+                      onClick={() => setStep(1)}
                       className="gap-2"
                     >
                       <ArrowLeft className="h-4 w-4" />
                       Retour
                     </Button>
-                    <Button
-                      onClick={() => setStep(4)}
-                      className="flex-1 gap-2 h-11 text-base"
-                    >
-                      Continuer
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
+                    {/* If test failed, show "Continuer quand même" */}
+                    {hasPronote && pronoteTestStatus === "failed" ? (
+                      <Button
+                        onClick={() => setStep(3)}
+                        variant="outline"
+                        className="flex-1 gap-2 h-11 text-base"
+                      >
+                        Continuer quand même
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => setStep(3)}
+                        className="flex-1 gap-2 h-11 text-base"
+                      >
+                        Continuer
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
             </div>
           )}
 
-          {/* Step 4: Confirmation */}
-          {step === 4 && (
+          {/* Step 3: Confirmation */}
+          {step === 3 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
@@ -566,21 +611,33 @@ function InscriptionEleveContent() {
               <Card className="mb-6">
                 <CardContent className="pt-6 space-y-3">
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-sm text-muted-foreground">Plateforme</span>
-                    <span className="text-sm font-medium">{platform === "whatsapp" ? "WhatsApp" : "Telegram"}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="text-sm text-muted-foreground">Prenom</span>
+                    <span className="text-sm text-muted-foreground">Prénom</span>
                     <span className="text-sm font-medium">{prenom}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-sm text-muted-foreground">Classe</span>
                     <span className="text-sm font-medium">{classLevel}</span>
                   </div>
+                  {email.trim() && (
+                    <div className="flex justify-between py-2 border-b">
+                      <span className="text-sm text-muted-foreground">Email</span>
+                      <span className="text-sm font-medium">{email}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between py-2 border-b">
+                    <span className="text-sm text-muted-foreground">Plateforme</span>
+                    <span className="text-sm font-medium">WhatsApp</span>
+                  </div>
                   <div className="flex justify-between py-2">
                     <span className="text-sm text-muted-foreground">Pronote</span>
                     <span className="text-sm font-medium">
-                      {hasPronote && pronoteUrl ? "Connecté" : "À connecter plus tard"}
+                      {hasPronote && pronoteUrl && pronoteTestStatus === "success"
+                        ? "Connecté"
+                        : hasPronote && pronoteUrl && pronoteTestStatus !== "failed"
+                        ? "À vérifier"
+                        : hasPronote && pronoteTestStatus === "failed"
+                        ? "Échec — à reconnecter plus tard"
+                        : "À connecter plus tard"}
                     </span>
                   </div>
                 </CardContent>
@@ -597,7 +654,7 @@ function InscriptionEleveContent() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => { setStep(3); setError(""); }}
+                  onClick={() => { setStep(2); setError(""); }}
                   className="gap-2"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -624,8 +681,8 @@ function InscriptionEleveContent() {
             </div>
           )}
 
-          {/* Step 5: Success */}
-          {step === 5 && (
+          {/* Step 4: Success */}
+          {step === 4 && (
             <div className="text-center">
               <div className="mb-8">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
@@ -634,34 +691,28 @@ function InscriptionEleveContent() {
                 <h1 className="text-3xl font-bold text-foreground mb-3">
                   Inscription réussie !
                 </h1>
-                <p className="text-muted-foreground text-lg">
-                  Bienvenue sur Précepteur AI, {prenom}. Connecte-toi pour recevoir ton premier bilan ce soir.
+                <p className="text-muted-foreground text-lg mb-4">
+                  Bienvenue sur Précepteur AI, {prenom}.
                 </p>
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-left">
+                  <p className="text-sm text-green-800">
+                    Tu vas recevoir un message WhatsApp. Si tu ne le reçois pas, ouvre WhatsApp et envoie &ldquo;Bonjour&rdquo; au <strong>06 64 62 42 58</strong>.
+                  </p>
+                </div>
               </div>
 
               <div className="space-y-4">
-                {platform === "whatsapp" ? (
-                  <a href="https://wa.me/33664624258?text=Bonjour" target="_blank" rel="noopener noreferrer">
-                    <Button className="w-full gap-2 h-12 text-base">
-                      Ouvrir WhatsApp
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </a>
-                ) : telegramLink ? (
-                  <a href={telegramLink} target="_blank" rel="noopener noreferrer">
-                    <Button className="w-full gap-2 h-12 text-base">
-                      Ouvrir Telegram
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </a>
-                ) : (
-                  <Link href="/">
-                    <Button className="w-full gap-2 h-12 text-base">
-                      Retour a l&apos;accueil
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                )}
+                <a href="https://wa.me/33664624258?text=Bonjour" target="_blank" rel="noopener noreferrer">
+                  <Button className="w-full gap-2 h-12 text-base">
+                    Ouvrir WhatsApp
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </a>
+                <Link href="/">
+                  <Button variant="ghost" className="w-full text-sm text-muted-foreground">
+                    Retour à l&apos;accueil
+                  </Button>
+                </Link>
               </div>
             </div>
           )}
@@ -673,7 +724,7 @@ function InscriptionEleveContent() {
         <div className="mx-auto max-w-2xl text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} Précepteur AI. Tous droits réservés.</p>
           <div className="mt-2 flex items-center justify-center gap-4">
-            <Link href="/privacy" className="hover:text-primary transition-colors">Confidentialite</Link>
+            <Link href="/privacy" className="hover:text-primary transition-colors">Confidentialité</Link>
             <span>&middot;</span>
             <Link href="/terms" className="hover:text-primary transition-colors">CGU</Link>
             <span>&middot;</span>

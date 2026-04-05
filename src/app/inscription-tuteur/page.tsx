@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,40 +37,49 @@ export default function InscriptionTuteurPage() {
 
 function InscriptionTuteurContent() {
   const [step, setStep] = useState(1);
-  const [platform, setPlatform] = useState<"telegram" | "whatsapp">("telegram");
   const [prenom, setPrenom] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [hasEleves, setHasEleves] = useState(false);
   const [codeEleve, setCodeEleve] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [telegramLink, setTelegramLink] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Warm up Render on page load
+  useEffect(() => {
+    fetch(`${API_URL}/health`).catch(() => {});
+  }, []);
 
   const handleSubmit = async () => {
     setLoading(true);
     setError("");
 
     try {
+      const body: Record<string, unknown> = {
+        role: "tutor",
+        parent_first_name: prenom,
+        email,
+        phone,
+        child_has_phone: false,
+        has_pronote: false,
+        platform: "whatsapp",
+      };
+
+      if (hasEleves && codeEleve.trim()) {
+        body.student_code = codeEleve.trim();
+      }
+
       const res = await fetch(`${API_URL}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          role: "tutor",
-          parent_first_name: prenom,
-          parent_email: email,
-          child_has_phone: false,
-          has_pronote: false,
-          platform,
-          ...(hasEleves && codeEleve ? { liaison_code: codeEleve } : {}),
-        }),
+        body: JSON.stringify(body),
       });
 
       const data = await res.json();
 
       if (data.ok) {
-        setTelegramLink(data.telegram_link);
-        setStep(5);
+        setStep(4);
       } else {
         setError(data.error || "Une erreur est survenue. Réessayez.");
       }
@@ -81,7 +90,7 @@ function InscriptionTuteurContent() {
     }
   };
 
-  const STEPS = ["Plateforme", "Informations", "Élèves", "Confirmation"];
+  const STEPS = ["Informations", "Élèves", "Confirmation", "Succès"];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -127,14 +136,14 @@ function InscriptionTuteurContent() {
               <div key={s} className="flex items-center gap-2">
                 <div
                   className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
-                    step > s || step === 5
+                    step > s
                       ? "bg-primary text-primary-foreground"
                       : step === s
                       ? "bg-primary text-primary-foreground"
                       : "bg-gray-200 text-gray-500"
                   }`}
                 >
-                  {step > s || step === 5 ? <Check className="h-4 w-4" /> : s}
+                  {step > s ? <Check className="h-4 w-4" /> : s}
                 </div>
                 <span
                   className={`text-sm hidden sm:inline ${
@@ -150,70 +159,15 @@ function InscriptionTuteurContent() {
             ))}
           </div>
 
-          {/* Step 1: Plateforme */}
+          {/* Step 1: Informations */}
           {step === 1 && (
-            <div>
-              <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-foreground mb-3">
-                  Comment voulez-vous utiliser Précepteur ?
-                </h1>
-                <p className="text-muted-foreground text-lg">
-                  Choisissez votre application de messagerie.
-                </p>
-              </div>
-
-              <Card>
-                <CardContent className="pt-6 space-y-6">
-                  <div className="flex items-center gap-4">
-                    <button
-                      type="button"
-                      onClick={() => setPlatform("telegram")}
-                      className={`flex-1 rounded-lg border-2 p-5 text-sm font-medium transition-colors cursor-pointer ${
-                        platform === "telegram"
-                          ? "border-primary bg-primary/5 text-primary"
-                          : "border-gray-200 text-muted-foreground hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="text-2xl mb-2">✈</div>
-                      <div className="font-semibold">Telegram</div>
-                      <div className="text-xs mt-1 text-muted-foreground">Recommandé</div>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPlatform("whatsapp")}
-                      className={`flex-1 rounded-lg border-2 p-5 text-sm font-medium transition-colors cursor-pointer ${
-                        platform === "whatsapp"
-                          ? "border-primary bg-primary/5 text-primary"
-                          : "border-gray-200 text-muted-foreground hover:border-gray-300"
-                      }`}
-                    >
-                      <div className="text-2xl mb-2">💬</div>
-                      <div className="font-semibold">WhatsApp</div>
-                      <div className="text-xs mt-1 text-muted-foreground">Sans installation</div>
-                    </button>
-                  </div>
-
-                  <Button
-                    onClick={() => setStep(2)}
-                    className="w-full gap-2 h-12 text-base"
-                  >
-                    Continuer
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Step 2: Informations */}
-          {step === 2 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
                   Inscription tuteur / accompagnant
                 </h1>
                 <p className="text-muted-foreground text-lg">
-                  Suivez les progrès de vos élèves en temps réel.
+                  Suivez les progrès de vos élèves en temps réel sur WhatsApp.
                 </p>
               </div>
 
@@ -221,11 +175,11 @@ function InscriptionTuteurContent() {
                 <CardContent className="pt-6 space-y-5">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Votre prenom
+                      Votre prénom
                     </label>
                     <Input
                       type="text"
-                      placeholder="Votre prenom"
+                      placeholder="Votre prénom"
                       value={prenom}
                       onChange={(e) => setPrenom(e.target.value)}
                       className="h-11"
@@ -245,9 +199,25 @@ function InscriptionTuteurContent() {
                     />
                   </div>
 
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Votre téléphone (WhatsApp)
+                    </label>
+                    <Input
+                      type="tel"
+                      placeholder="06 12 34 56 78"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="h-11"
+                    />
+                    <p className="mt-1.5 text-xs text-muted-foreground">
+                      Nécessaire pour vous contacter via WhatsApp.
+                    </p>
+                  </div>
+
                   <Button
-                    onClick={() => setStep(3)}
-                    disabled={!prenom.trim() || !email.trim()}
+                    onClick={() => setStep(2)}
+                    disabled={!prenom.trim() || !email.trim() || !phone.trim()}
                     className="w-full gap-2 h-12 text-base"
                   >
                     Continuer
@@ -258,15 +228,15 @@ function InscriptionTuteurContent() {
             </div>
           )}
 
-          {/* Step 3: Eleves */}
-          {step === 3 && (
+          {/* Step 2: Eleves */}
+          {step === 2 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
                   Vos élèves
                 </h1>
                 <p className="text-muted-foreground">
-                  Avez-vous déjà des élèves inscrits sur Précepteur AI ?
+                  Avez-vous un code de liaison d&apos;un élève ?
                 </p>
               </div>
 
@@ -295,24 +265,24 @@ function InscriptionTuteurContent() {
                       }`}
                     >
                       <Check className="h-5 w-5 mx-auto mb-2" />
-                      Oui, j&apos;en ai
+                      Oui, j&apos;en ai un
                     </button>
                   </div>
 
                   {hasEleves && (
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">
-                        Code de liaison
+                        Code de liaison <span className="text-muted-foreground font-normal">(facultatif)</span>
                       </label>
                       <Input
                         type="text"
-                        placeholder="Code fourni par le parent"
+                        placeholder="Code fourni par le parent ou l'élève"
                         value={codeEleve}
                         onChange={(e) => setCodeEleve(e.target.value)}
                         className="h-11"
                       />
                       <p className="mt-1.5 text-xs text-muted-foreground">
-                        Ce code vous est transmis par le parent de l&apos;élève.
+                        Ce code vous est transmis par la famille de l&apos;élève.
                       </p>
                     </div>
                   )}
@@ -320,7 +290,7 @@ function InscriptionTuteurContent() {
                   {!hasEleves && (
                     <div className="bg-secondary/50 rounded-lg p-4">
                       <p className="text-sm text-muted-foreground">
-                        Vous pourrez inviter des parents et associer des élèves directement depuis votre espace après inscription.
+                        Vous pourrez associer des élèves directement depuis votre espace après inscription.
                       </p>
                     </div>
                   )}
@@ -329,14 +299,14 @@ function InscriptionTuteurContent() {
                     <Button
                       type="button"
                       variant="outline"
-                      onClick={() => setStep(2)}
+                      onClick={() => setStep(1)}
                       className="gap-2"
                     >
                       <ArrowLeft className="h-4 w-4" />
                       Retour
                     </Button>
                     <Button
-                      onClick={() => setStep(4)}
+                      onClick={() => setStep(3)}
                       className="flex-1 gap-2 h-11 text-base"
                     >
                       Continuer
@@ -348,8 +318,8 @@ function InscriptionTuteurContent() {
             </div>
           )}
 
-          {/* Step 4: Confirmation */}
-          {step === 4 && (
+          {/* Step 3: Confirmation */}
+          {step === 3 && (
             <div>
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-foreground mb-3">
@@ -363,21 +333,25 @@ function InscriptionTuteurContent() {
               <Card className="mb-6">
                 <CardContent className="pt-6 space-y-3">
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-sm text-muted-foreground">Plateforme</span>
-                    <span className="text-sm font-medium capitalize">{platform === "whatsapp" ? "WhatsApp" : "Telegram"}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="text-sm text-muted-foreground">Prenom</span>
+                    <span className="text-sm text-muted-foreground">Prénom</span>
                     <span className="text-sm font-medium">{prenom}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-sm text-muted-foreground">Email</span>
                     <span className="text-sm font-medium">{email}</span>
                   </div>
+                  <div className="flex justify-between py-2 border-b">
+                    <span className="text-sm text-muted-foreground">Téléphone</span>
+                    <span className="text-sm font-medium">{phone}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b">
+                    <span className="text-sm text-muted-foreground">Plateforme</span>
+                    <span className="text-sm font-medium">WhatsApp</span>
+                  </div>
                   <div className="flex justify-between py-2">
-                    <span className="text-sm text-muted-foreground">Élèves existants</span>
+                    <span className="text-sm text-muted-foreground">Code élève</span>
                     <span className="text-sm font-medium">
-                      {hasEleves ? (codeEleve ? `Oui (code: ${codeEleve})` : "Oui") : "Non"}
+                      {hasEleves && codeEleve.trim() ? codeEleve.trim() : "Aucun"}
                     </span>
                   </div>
                 </CardContent>
@@ -394,7 +368,7 @@ function InscriptionTuteurContent() {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => { setStep(3); setError(""); }}
+                  onClick={() => { setStep(2); setError(""); }}
                   className="gap-2"
                 >
                   <ArrowLeft className="h-4 w-4" />
@@ -421,8 +395,8 @@ function InscriptionTuteurContent() {
             </div>
           )}
 
-          {/* Step 5: Success */}
-          {step === 5 && (
+          {/* Step 4: Success */}
+          {step === 4 && (
             <div className="text-center">
               <div className="mb-8">
                 <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
@@ -431,37 +405,28 @@ function InscriptionTuteurContent() {
                 <h1 className="text-3xl font-bold text-foreground mb-3">
                   Inscription réussie !
                 </h1>
-                <p className="text-muted-foreground text-lg">
-                  Bienvenue sur Précepteur AI. Connectez-vous maintenant pour accéder à votre espace tuteur.
+                <p className="text-muted-foreground text-lg mb-4">
+                  Bienvenue sur Précepteur AI, {prenom}.
                 </p>
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-left">
+                  <p className="text-sm text-green-800">
+                    Vous allez recevoir un message WhatsApp. Si vous ne le recevez pas, ouvrez WhatsApp et envoyez &ldquo;Bonjour&rdquo; au <strong>06 64 62 42 58</strong>.
+                  </p>
+                </div>
               </div>
 
               <div className="space-y-4">
-                {platform === "whatsapp" ? (
-                  <a href="https://wa.me/33664624258?text=Bonjour" target="_blank" rel="noopener noreferrer">
-                    <Button className="w-full gap-2 h-12 text-base">
-                      Ouvrir WhatsApp
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </a>
-                ) : telegramLink ? (
-                  <a href={telegramLink} target="_blank" rel="noopener noreferrer">
-                    <Button className="w-full gap-2 h-12 text-base">
-                      Ouvrir Telegram
-                      <ExternalLink className="h-4 w-4" />
-                    </Button>
-                  </a>
-                ) : (
-                  <Link href="/#inscription">
-                    <Button className="w-full gap-2 h-12 text-base">
-                      Retour a l&apos;accueil
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                )}
-                <p className="text-sm text-muted-foreground">
-                  Un lien de confirmation a été envoyé à {email}.
-                </p>
+                <a href="https://wa.me/33664624258?text=Bonjour" target="_blank" rel="noopener noreferrer">
+                  <Button className="w-full gap-2 h-12 text-base">
+                    Ouvrir WhatsApp
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </a>
+                <Link href="/">
+                  <Button variant="ghost" className="w-full text-sm text-muted-foreground">
+                    Retour à l&apos;accueil
+                  </Button>
+                </Link>
               </div>
             </div>
           )}
@@ -473,7 +438,7 @@ function InscriptionTuteurContent() {
         <div className="mx-auto max-w-2xl text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} Précepteur AI. Tous droits réservés.</p>
           <div className="mt-2 flex items-center justify-center gap-4">
-            <Link href="/privacy" className="hover:text-primary transition-colors">Confidentialite</Link>
+            <Link href="/privacy" className="hover:text-primary transition-colors">Confidentialité</Link>
             <span>&middot;</span>
             <Link href="/terms" className="hover:text-primary transition-colors">CGU</Link>
             <span>&middot;</span>

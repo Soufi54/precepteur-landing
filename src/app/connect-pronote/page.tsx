@@ -60,6 +60,11 @@ function ConnectPronoteContent() {
   const [showManualUrl, setShowManualUrl] = useState(false);
 
   useEffect(() => {
+    // Warm up Render
+    fetch(`${API_URL}/health`).catch(() => {});
+  }, []);
+
+  useEffect(() => {
     const reg = searchParams.get("reg");
     if (reg) {
       setRegistrationId(reg);
