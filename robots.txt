@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://precepteur-ai.com/sitemap.xml
+Sitemap: https://precepteur.net/sitemap.xml
