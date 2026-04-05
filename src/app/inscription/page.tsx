@@ -113,6 +113,7 @@ function InscriptionParentContent() {
           pronote_username: connectPronote ? pronoteUsername : "",
           pronote_password: connectPronote ? pronotePassword : "",
           pronote_ent: connectPronote ? pronoteEnt : "",
+          pronote_tested: pronoteTestSuccess,
           platform,
         }),
       });
